@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
 public class WBBiomeTags {
-    public static final TagBuilder<Biome> TAGS = TagBuilder.create(BuiltinRegistries.BIOME, WildBackport.MOD_ID);
+    public static final TagBuilder<Biome> TAGS = TagBuilder.create(BuiltinRegistries.BIOME, "minecraft");
 
     public static final TagKey<Biome> SPAWNS_WARM_VARIANT_FROGS = TAGS.create("spawns_warm_variant_frogs");
     public static final TagKey<Biome> SPAWNS_COLD_VARIANT_FROGS = TAGS.create("spawns_cold_variant_frogs");

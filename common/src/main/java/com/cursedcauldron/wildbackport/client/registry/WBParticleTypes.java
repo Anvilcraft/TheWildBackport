@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBParticleTypes {
-    public static final CoreRegistry<ParticleType<?>> PARTICLES = CoreRegistry.create(Registry.PARTICLE_TYPE, WildBackport.MOD_ID);
+    public static final CoreRegistry<ParticleType<?>> PARTICLES = CoreRegistry.create(Registry.PARTICLE_TYPE, "minecraft");
 
     public static final Supplier<SimpleParticleType> SCULK_SOUL                         = create("sculk_soul", false);
     public static final Supplier<ParticleType<SculkChargeParticleOptions>> SCULK_CHARGE = create("sculk_charge", SculkChargeParticleOptions.DESERIALIZER, type -> SculkChargeParticleOptions.CODEC, true);

@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import java.util.function.Supplier;
 
 public class WBBiomes {
-    public static final CoreRegistry<Biome> BIOMES = CoreRegistry.create(BuiltinRegistries.BIOME, WildBackport.MOD_ID);
+    public static final CoreRegistry<Biome> BIOMES = CoreRegistry.create(BuiltinRegistries.BIOME, "minecraft");
 
     public static final ResourceKey<Biome> MANGROVE_SWAMP   = create("mangrove_swamp", WBBiomes::mangroveSwamp);
     public static final ResourceKey<Biome> DEEP_DARK        = create("deep_dark", WBBiomes::deepDark);
@@ -67,7 +67,7 @@ public class WBBiomes {
 
     private static ResourceKey<Biome> create(String key, Supplier<Biome> biome) {
         BIOMES.register(key, biome);
-        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(WildBackport.MOD_ID, key));
+        return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("minecraft", key));
     }
 
     protected static int calculateSkyColor(float temperature) {

@@ -24,6 +24,6 @@ public class WBProcessorLists {
     public static void bootstrap() {}
 
     private static Holder<StructureProcessorList> create(String key, ImmutableList<StructureProcessor> processors) {
-        return BuiltinRegistries.register(BuiltinRegistries.PROCESSOR_LIST, new ResourceLocation(WildBackport.MOD_ID, key), new StructureProcessorList(processors));
+        return BuiltinRegistries.register(BuiltinRegistries.PROCESSOR_LIST, new ResourceLocation(key), new StructureProcessorList(processors));
     }
 }

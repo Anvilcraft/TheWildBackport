@@ -10,6 +10,6 @@ import java.util.function.Supplier;
 
 public class MobRegistryImpl {
     public static void registerAttributes(Supplier<? extends EntityType<? extends LivingEntity>> type, Supplier<AttributeSupplier.Builder> attribute) {
-        EventBuses.getModEventBusOrThrow(WildBackport.MOD_ID).<EntityAttributeCreationEvent>addListener(event -> event.put(type.get(), attribute.get().build()));
+        EventBuses.getModEventBusOrThrow("minecraft").<EntityAttributeCreationEvent>addListener(event -> event.put(type.get(), attribute.get().build()));
     }
 }

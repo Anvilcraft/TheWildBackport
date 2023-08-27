@@ -80,6 +80,6 @@ public class ChestBoatModel extends ListModel<MangroveBoat> {
     }
 
     public static ModelLayerLocation createChestBoat(Boat.Type type) {
-        return new ModelLayerLocation(new ResourceLocation(WildBackport.MOD_ID, "chest_boat/" + type.getName()), "main");
+        return new ModelLayerLocation(new ResourceLocation("chest_boat/" + type.getName()), "main");
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import java.util.function.Supplier;
 
 public class Instruments {
-    public static final CoreRegistry<Instrument> INSTRUMENTS = CoreRegistry.create(WBRegistries.INSTRUMENT.registry(), WildBackport.MOD_ID);
+    public static final CoreRegistry<Instrument> INSTRUMENTS = CoreRegistry.create(WBRegistries.INSTRUMENT.registry(), "minecraft");
 
     public static final Supplier<Instrument> PONDER_GOAT_HORN = create("ponder_goat_horn", WBSoundEvents.GOAT_HORN_SOUNDS.get(0));
     public static final Supplier<Instrument> SIGN_GOAT_HORN = create("sign_goat_horn", WBSoundEvents.GOAT_HORN_SOUNDS.get(1));

@@ -32,6 +32,7 @@
     "access.WalkNodeEvaluatorAccessor",
     "access.WoodButtonBlockAccessor",
     "access.WoodTypeAccessor",
+    "common.ItemsMixin",
     "common.BlockEntityTypeMixin",
     "common.FlyNodeEvaluatorMixin",
     "common.LivingEntityMixin",

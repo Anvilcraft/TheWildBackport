@@ -102,10 +102,10 @@ public class WBWorldGeneration {
     // Registry
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> create(String key, F feature, FC configuration) {
-        return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, WildBackport.MOD_ID + ":" + key, new ConfiguredFeature<>(feature, configuration));
+        return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, "minecraft" + ":" + key, new ConfiguredFeature<>(feature, configuration));
     }
 
     public static Holder<PlacedFeature> create(String key, Holder<? extends ConfiguredFeature<?, ?>> feature, PlacementModifier... modifiers) {
-        return BuiltinRegistries.registerExact(BuiltinRegistries.PLACED_FEATURE, WildBackport.MOD_ID + ":" + key, new PlacedFeature(Holder.hackyErase(feature), List.copyOf(List.of(modifiers))));
+        return BuiltinRegistries.registerExact(BuiltinRegistries.PLACED_FEATURE, "minecraft" + ":" + key, new PlacedFeature(Holder.hackyErase(feature), List.copyOf(List.of(modifiers))));
     }
 }

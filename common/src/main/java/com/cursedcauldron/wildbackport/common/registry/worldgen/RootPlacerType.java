@@ -10,7 +10,7 @@ import com.mojang.serialization.Codec;
 import java.util.function.Supplier;
 
 public class RootPlacerType<P extends RootPlacer> {
-    public static final CoreRegistry<RootPlacerType<?>> PLACERS = CoreRegistry.create(WBRegistries.ROOT_PLACER_TYPES.registry(), WildBackport.MOD_ID);
+    public static final CoreRegistry<RootPlacerType<?>> PLACERS = CoreRegistry.create(WBRegistries.ROOT_PLACER_TYPES.registry(), "minecraft");
 
     public static final Supplier<RootPlacerType<MangroveRootPlacer>> MANGROVE_ROOT_PLACER = PLACERS.register("mangrove_root_placer", () -> new RootPlacerType<>(MangroveRootPlacer.CODEC));
 

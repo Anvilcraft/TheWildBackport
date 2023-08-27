@@ -12,7 +12,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import java.util.function.Supplier;
 
 public class WBMobEffects {
-    public static final CoreRegistry<MobEffect> EFFECTS = CoreRegistry.create(Registry.MOB_EFFECT, WildBackport.MOD_ID);
+    public static final CoreRegistry<MobEffect> EFFECTS = CoreRegistry.create(Registry.MOB_EFFECT, "minecraft");
 
     public static final Supplier<MobEffect> DARKNESS = EFFECTS.register("darkness", () -> EffectFactor.of(MobEffectAccessor.createMobEffect(MobEffectCategory.HARMFUL, 2696993)).setFactorCalculationData(() -> new FactorCalculationData(22)));
 }

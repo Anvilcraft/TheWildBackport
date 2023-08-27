@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
 public class WBBlockTags {
-    public static final TagBuilder<Block> BUILDER = TagBuilder.create(Registry.BLOCK, WildBackport.MOD_ID);
+    public static final TagBuilder<Block> BUILDER = TagBuilder.create(Registry.BLOCK, "minecraft");
 
     // Mangrove Swamp
     public static final TagKey<Block> CONVERTABLE_TO_MUD = BUILDER.create("convertable_to_mud");

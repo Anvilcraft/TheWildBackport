@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBGameEvents {
-    public static final CoreRegistry<GameEvent> EVENTS = CoreRegistry.create(Registry.GAME_EVENT, WildBackport.MOD_ID);
+    public static final CoreRegistry<GameEvent> EVENTS = CoreRegistry.create(Registry.GAME_EVENT, "minecraft");
 
     public static final Supplier<GameEvent> NOTE_BLOCK_PLAY                 = create("note_block_play");
     public static final Supplier<GameEvent> SCULK_SENSOR_TENDRILS_CLICKING  = create("sculk_sensor_tendrils_clicking");

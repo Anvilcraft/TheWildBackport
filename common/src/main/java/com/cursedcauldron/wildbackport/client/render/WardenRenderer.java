@@ -15,13 +15,13 @@ import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
 public class WardenRenderer extends MobRenderer<Warden, WardenModel<Warden>> {
-    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(WildBackport.MOD_ID, "warden"), "main");
+    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation("warden"), "main");
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(WildBackport.MOD_ID, "textures/entity/warden/warden.png");
-    private static final ResourceLocation BIOLUMINESCENT_LAYER_TEXTURE = new ResourceLocation(WildBackport.MOD_ID, "textures/entity/warden/warden_bioluminescent_layer.png");
-    private static final ResourceLocation HEART_TEXTURE = new ResourceLocation(WildBackport.MOD_ID, "textures/entity/warden/warden_heart.png");
-    private static final ResourceLocation PULSATING_SPOTS_1_TEXTURE = new ResourceLocation(WildBackport.MOD_ID, "textures/entity/warden/warden_pulsating_spots_1.png");
-    private static final ResourceLocation PULSATING_SPOTS_2_TEXTURE = new ResourceLocation(WildBackport.MOD_ID, "textures/entity/warden/warden_pulsating_spots_2.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/warden/warden.png");
+    private static final ResourceLocation BIOLUMINESCENT_LAYER_TEXTURE = new ResourceLocation("textures/entity/warden/warden_bioluminescent_layer.png");
+    private static final ResourceLocation HEART_TEXTURE = new ResourceLocation("textures/entity/warden/warden_heart.png");
+    private static final ResourceLocation PULSATING_SPOTS_1_TEXTURE = new ResourceLocation("textures/entity/warden/warden_pulsating_spots_1.png");
+    private static final ResourceLocation PULSATING_SPOTS_2_TEXTURE = new ResourceLocation("textures/entity/warden/warden_pulsating_spots_2.png");
 
     public WardenRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new WardenModel<>(ctx.bakeLayer(MODEL_LAYER)), 0.9F);

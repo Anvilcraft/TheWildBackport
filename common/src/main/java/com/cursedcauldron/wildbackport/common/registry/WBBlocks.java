@@ -51,7 +51,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBBlocks {
-    public static final CoreRegistry<Block> BLOCKS = CoreRegistry.create(Registry.BLOCK, WildBackport.MOD_ID);
+    public static final CoreRegistry<Block> BLOCKS = CoreRegistry.create(Registry.BLOCK, "minecraft");
 
     // Sculk
     public static final Supplier<Block> SCULK                       = create("sculk", () -> new SculkBlock(BlockBehaviour.Properties.of(Material.SCULK).strength(0.6F).sound(WBSoundTypes.SCULK)), CreativeModeTab.TAB_DECORATIONS);
@@ -117,7 +117,7 @@ public class WBBlocks {
     }
 
     public static Pair<Supplier<StandingSignBlock>, Supplier<WallSignBlock>> create(String key, BlockBehaviour.Properties blocks, Item.Properties items) {
-        WoodType woodType = WoodTypeRegistry.create(new ResourceLocation(WildBackport.MOD_ID, key));
+        WoodType woodType = WoodTypeRegistry.create(new ResourceLocation(key));
         Supplier<StandingSignBlock> standing = create(key + "_sign", () -> new StandingSignBlock(blocks, woodType));
         Supplier<WallSignBlock> wall = create(key + "_wall_sign", () -> new WallSignBlock(blocks.dropsLike(standing.get()), woodType));
         WBItems.ITEMS.register(key + "_sign", () -> new SignItem(items, standing.get(), wall.get()));

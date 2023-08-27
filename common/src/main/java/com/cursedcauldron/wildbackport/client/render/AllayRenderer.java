@@ -11,8 +11,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
 public class AllayRenderer extends MobRenderer<Allay, AllayModel> {
-    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(WildBackport.MOD_ID, "allay"), "main");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(WildBackport.MOD_ID, "textures/entity/allay/allay.png");
+    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation("minecraft", "allay"), "main");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/entity/allay/allay.png");
 
     public AllayRenderer(EntityRendererProvider.Context context) {
         super(context, new AllayModel(context.bakeLayer(MODEL_LAYER)), 0.4F);

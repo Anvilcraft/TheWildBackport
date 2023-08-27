@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 public class WildBackportForge {
     public WildBackportForge() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        EventBuses.registerModEventBus(WildBackport.MOD_ID, bus);
+        EventBuses.registerModEventBus("minecraft", bus);
         bus.<FMLCommonSetupEvent>addListener(event -> CommonSetup.onPostCommon());
         bus.<FMLClientSetupEvent>addListener(event -> ClientSetup.onPostClient());
 

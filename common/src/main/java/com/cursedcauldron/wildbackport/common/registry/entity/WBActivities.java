@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBActivities {
-    public static final CoreRegistry<Activity> ACTIVITIES = CoreRegistry.create(Registry.ACTIVITY, WildBackport.MOD_ID);
+    public static final CoreRegistry<Activity> ACTIVITIES = CoreRegistry.create(Registry.ACTIVITY, "minecraft");
 
     public static final Supplier<Activity> SNIFF        = create("sniff");
     public static final Supplier<Activity> INVESTIGATE  = create("investigate");

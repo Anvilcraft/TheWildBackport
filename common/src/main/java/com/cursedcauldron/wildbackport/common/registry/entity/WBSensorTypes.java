@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBSensorTypes {
-    public static final CoreRegistry<SensorType<?>> SENSORS = CoreRegistry.create(Registry.SENSOR_TYPE, WildBackport.MOD_ID);
+    public static final CoreRegistry<SensorType<?>> SENSORS = CoreRegistry.create(Registry.SENSOR_TYPE, "minecraft");
 
     public static final Supplier<SensorType<WardenEntitySensor>> WARDEN_ENTITY_SENSOR   = create("warden_entity_sensor", WardenEntitySensor::new);
     public static final Supplier<SensorType<TemptingSensor>> FROG_TEMPTATIONS           = create("frog_temptations", () -> new TemptingSensor(FrogBrain.getTemptItems()));

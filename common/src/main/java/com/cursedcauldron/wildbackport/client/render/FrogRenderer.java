@@ -13,11 +13,11 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 
 public class FrogRenderer extends MobRenderer<Frog, FrogModel<Frog>> {
-    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(WildBackport.MOD_ID, "frog"), "main");
+    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation("frog"), "main");
 
     private static final Map<Frog.Variant, ResourceLocation> TEXTURES = Util.make(Maps.newHashMap(), hashMap -> {
         for (Frog.Variant variant : Frog.Variant.values()) {
-            hashMap.put(variant, new ResourceLocation(WildBackport.MOD_ID, String.format("textures/entity/frog/%s_frog.png", variant.getName())));
+            hashMap.put(variant, new ResourceLocation(String.format("textures/entity/frog/%s_frog.png", variant.getName())));
         }
     });
 

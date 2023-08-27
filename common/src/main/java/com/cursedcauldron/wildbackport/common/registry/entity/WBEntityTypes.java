@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBEntityTypes {
-    public static final CoreRegistry<EntityType<?>> ENTITIES = CoreRegistry.create(Registry.ENTITY_TYPE, WildBackport.MOD_ID);
+    public static final CoreRegistry<EntityType<?>> ENTITIES = CoreRegistry.create(Registry.ENTITY_TYPE, "minecraft");
 
     public static final Supplier<EntityType<Allay>> ALLAY                   = create("allay", EntityType.Builder.of(Allay::new, MobCategory.CREATURE).sized(0.35F, 0.6F).clientTrackingRange(8).updateInterval(2));
     public static final Supplier<EntityType<Frog>> FROG                     = create("frog", EntityType.Builder.of(Frog::new, MobCategory.CREATURE).sized(0.5F, 0.5F).clientTrackingRange(10));

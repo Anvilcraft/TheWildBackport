@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildbackport:mud",
-    "wildbackport:muddy_mangrove_roots"
+    "minecraft:mud",
+    "minecraft:muddy_mangrove_roots"
   ]
 }

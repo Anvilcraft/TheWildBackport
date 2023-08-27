@@ -17,7 +17,7 @@ import java.util.List;
 public class StructureGeneration {
     public static void registerAllayCages() {
         PillagerOutpostPools.bootstrap();
-        StructureGeneration.addToPool(new ResourceLocation("pillager_outpost/features"), new ResourceLocation(WildBackport.MOD_ID, "pillager_outpost/feature_cage_with_allays"), 1);
+        StructureGeneration.addToPool(new ResourceLocation("pillager_outpost/features"), new ResourceLocation("pillager_outpost/feature_cage_with_allays"), 1);
     }
 
     private static void addToPool(ResourceLocation poolId, ResourceLocation pieceId, int weight) {

@@ -40,7 +40,7 @@ public class BoatTypeMixin {
         int i = 1;
 
 //        for (BoatTypes type : BoatTypes.values()) {
-            types.add(create("mangrove", last.ordinal() + 1, Registry.BLOCK.get(new ResourceLocation(WildBackport.MOD_ID, "mangrove_planks")), "mangrove"));
+            types.add(create("mangrove", last.ordinal() + 1, Registry.BLOCK.get(new ResourceLocation("mangrove_planks")), "mangrove"));
 //            i++;
 //        }
 

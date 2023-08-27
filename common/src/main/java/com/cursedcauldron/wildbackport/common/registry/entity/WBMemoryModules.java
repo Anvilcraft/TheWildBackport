@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBMemoryModules {
-    public static final CoreRegistry<MemoryModuleType<?>> MEMORIES = CoreRegistry.create(Registry.MEMORY_MODULE_TYPE, WildBackport.MOD_ID);
+    public static final CoreRegistry<MemoryModuleType<?>> MEMORIES = CoreRegistry.create(Registry.MEMORY_MODULE_TYPE, "minecraft");
 
 
     public static final Supplier<MemoryModuleType<Unit>> IS_IN_WATER                        = create("is_in_water", Codec.unit(Unit.INSTANCE));

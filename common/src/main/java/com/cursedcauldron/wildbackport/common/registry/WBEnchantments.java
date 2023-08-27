@@ -10,7 +10,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.function.Supplier;
 
 public class WBEnchantments {
-    public static final CoreRegistry<Enchantment> ENCHANTMENTS = CoreRegistry.create(Registry.ENCHANTMENT, WildBackport.MOD_ID);
+    public static final CoreRegistry<Enchantment> ENCHANTMENTS = CoreRegistry.create(Registry.ENCHANTMENT, "minecraft");
 
     public static final Supplier<Enchantment> SWIFT_SNEAK   = ENCHANTMENTS.register("swift_sneak", () -> new SwiftSneakEnchantment(Enchantment.Rarity.VERY_RARE, new EquipmentSlot[]{EquipmentSlot.LEGS}));
 }

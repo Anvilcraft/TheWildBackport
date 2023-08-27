@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 //<>
 
 public class WBSoundEvents {
-    public static final CoreRegistry<SoundEvent> SOUNDS = CoreRegistry.create(Registry.SOUND_EVENT, WildBackport.MOD_ID);
+    public static final CoreRegistry<SoundEvent> SOUNDS = CoreRegistry.create(Registry.SOUND_EVENT, "minecraft");
 
     // Blocks
     public static final SoundEvent BLOCK_SCULK_VEIN_BREAK                   = create("block.sculk_vein.break");
@@ -130,7 +130,7 @@ public class WBSoundEvents {
 //    public static final SoundEvent MUSIC_BIOME_DEEP_DARK                    = create("music.overworld.deep_dark");
     
     public static SoundEvent create(String key) {
-        SoundEvent sound = new SoundEvent(new ResourceLocation(WildBackport.MOD_ID, key));
+        SoundEvent sound = new SoundEvent(new ResourceLocation("minecraft", key));
         SOUNDS.register(key, () -> sound);
         return sound;
     }

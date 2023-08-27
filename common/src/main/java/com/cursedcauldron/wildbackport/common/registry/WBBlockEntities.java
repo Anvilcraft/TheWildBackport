@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBBlockEntities {
-    public static final CoreRegistry<BlockEntityType<?>> BLOCKS = CoreRegistry.create(Registry.BLOCK_ENTITY_TYPE, WildBackport.MOD_ID);
+    public static final CoreRegistry<BlockEntityType<?>> BLOCKS = CoreRegistry.create(Registry.BLOCK_ENTITY_TYPE, "minecraft");
 
     public static final Supplier<BlockEntityType<SculkCatalystBlockEntity>> SCULK_CATALYST  = BLOCKS.register("sculk_catalyst", () -> BlockEntityType.Builder.of(SculkCatalystBlockEntity::new, WBBlocks.SCULK_CATALYST.get()).build(null));
     public static final Supplier<BlockEntityType<SculkShriekerBlockEntity>> SCULK_SHRIEKER  = BLOCKS.register("sculk_shrieker", () -> BlockEntityType.Builder.of(SculkShriekerBlockEntity::new, WBBlocks.SCULK_SHRIEKER.get()).build(null));

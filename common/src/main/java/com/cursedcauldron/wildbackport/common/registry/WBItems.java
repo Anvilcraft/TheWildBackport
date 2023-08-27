@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 //<>
 
 public class WBItems {
-    public static final CoreRegistry<Item> ITEMS = CoreRegistry.create(Registry.ITEM, WildBackport.MOD_ID);
+    public static final CoreRegistry<Item> ITEMS = CoreRegistry.create(Registry.ITEM, "minecraft");
 
     // Spawns
     public static final Supplier<Item> ALLAY_SPAWN_EGG      = create("allay_spawn_egg", spawnEgg(WBEntityTypes.ALLAY, 56063, 44543));

@@ -42,9 +42,9 @@ public class ChestBoatRenderer extends EntityRenderer<MangroveBoat> {
 
     private static ResourceLocation getTexture(Boat.Type type, boolean chested) {
         if (chested) {
-            return new ResourceLocation(WildBackport.MOD_ID, "textures/entity/chest_boat/" + type.getName() + ".png");
+            return new ResourceLocation("minecraft", "textures/entity/chest_boat/" + type.getName() + ".png");
         } else {
-            return new ResourceLocation(type == BoatTypes.MANGROVE.get() ? WildBackport.MOD_ID: "minecraft", "textures/entity/boat/" + type.getName() + ".png");
+            return new ResourceLocation("minecraft", "textures/entity/boat/" + type.getName() + ".png");
         }
     }
 
