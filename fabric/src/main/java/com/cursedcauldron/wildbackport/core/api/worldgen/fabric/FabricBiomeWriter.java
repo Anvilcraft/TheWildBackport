@@ -17,7 +17,8 @@ public class FabricBiomeWriter extends BiomeWriter {
     private BiomeSelectionContext selection;
     private BiomeModificationContext modification;
 
-    public BiomeWriter build(BiomeSelectionContext selectionCtx, BiomeModificationContext modificationCtx) {
+    public BiomeWriter
+    build(BiomeSelectionContext selectionCtx, BiomeModificationContext modificationCtx) {
         this.selection = selectionCtx;
         this.modification = modificationCtx;
         return this;
@@ -30,16 +31,31 @@ public class FabricBiomeWriter extends BiomeWriter {
 
     @Override
     public Biome.BiomeCategory category() {
-        return ((BiomeAccessor)(Object)this.selection.getBiome()).callGetBiomeCategory();
+        return ((BiomeAccessor) (Object) this.selection.getBiome())
+            .callGetBiomeCategory();
     }
 
     @Override
-    public void addFeature(GenerationStep.Decoration step, Holder<PlacedFeature> feature) {
-        this.modification.getGenerationSettings().addBuiltInFeature(step, feature.value());
+    public void
+    addFeature(GenerationStep.Decoration step, Holder<PlacedFeature> feature) {
+        this.modification.getGenerationSettings().addBuiltInFeature(
+            step, feature.value()
+        );
     }
 
     @Override
-    public void addSpawn(MobCategory category, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {
-        this.modification.getSpawnSettings().addSpawn(category, new MobSpawnSettings.SpawnerData(entityType, weight, minGroupSize, maxGroupSize));
+    public void addSpawn(
+        MobCategory category,
+        EntityType<?> entityType,
+        int weight,
+        int minGroupSize,
+        int maxGroupSize
+    ) {
+        this.modification.getSpawnSettings().addSpawn(
+            category,
+            new MobSpawnSettings.SpawnerData(
+                entityType, weight, minGroupSize, maxGroupSize
+            )
+        );
     }
 }

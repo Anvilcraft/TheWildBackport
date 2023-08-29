@@ -13,10 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Sheets.class)
 public class SheetsMixin {
     @Inject(method = "createSignMaterial", at = @At("HEAD"), cancellable = true)
-    private static void wb$createSign(WoodType woodType, CallbackInfoReturnable<Material> cir) {
+    private static void
+    wb$createSign(WoodType woodType, CallbackInfoReturnable<Material> cir) {
         if (woodType instanceof WoodTypeRegistryImpl.WoodTypeImpl impl) {
             ResourceLocation location = impl.getLocation();
-            cir.setReturnValue(new Material(Sheets.SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/" + location.getPath())));
+            cir.setReturnValue(new Material(
+                Sheets.SIGN_SHEET,
+                new ResourceLocation(
+                    location.getNamespace(), "entity/signs/" + location.getPath()
+                )
+            ));
         }
     }
 }

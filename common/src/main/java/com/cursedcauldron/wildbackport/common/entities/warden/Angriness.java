@@ -1,10 +1,10 @@
 package com.cursedcauldron.wildbackport.common.entities.warden;
 
+import java.util.Arrays;
+
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
-
-import java.util.Arrays;
 
 //<>
 
@@ -13,7 +13,10 @@ public enum Angriness {
     AGITATED(40, WBSoundEvents.WARDEN_AGITATED, WBSoundEvents.WARDEN_LISTENING_ANGRY),
     ANGRY(80, WBSoundEvents.WARDEN_ANGRY, WBSoundEvents.WARDEN_LISTENING_ANGRY);
 
-    private static final Angriness[] VALUES = Util.make(Angriness.values(), values -> Arrays.sort(values, (a, b) -> Integer.compare(b.threshold, a.threshold)));
+    private static final Angriness[] VALUES = Util.make(
+        Angriness.values(),
+        values -> Arrays.sort(values, (a, b) -> Integer.compare(b.threshold, a.threshold))
+    );
     private final int threshold;
     private final SoundEvent sound;
     private final SoundEvent listeningSound;

@@ -24,8 +24,20 @@ public class TadpoleModel<T extends Tadpole> extends AgeableListModel<T> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 2.0F, 3.0F), PartPose.offset(0.0F, 22.0F, -3.0F));
-        root.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -1.0F, 0.0F, 0.0F, 2.0F, 7.0F), PartPose.offset(0.0F, 22.0F, 0.0F));
+        root.addOrReplaceChild(
+            "body",
+            CubeListBuilder.create().texOffs(0, 0).addBox(
+                -1.5F, -1.0F, 0.0F, 3.0F, 2.0F, 3.0F
+            ),
+            PartPose.offset(0.0F, 22.0F, -3.0F)
+        );
+        root.addOrReplaceChild(
+            "tail",
+            CubeListBuilder.create().texOffs(0, 0).addBox(
+                0.0F, -1.0F, 0.0F, 0.0F, 2.0F, 7.0F
+            ),
+            PartPose.offset(0.0F, 22.0F, 0.0F)
+        );
         return LayerDefinition.create(mesh, 16, 16);
     }
 
@@ -40,9 +52,15 @@ public class TadpoleModel<T extends Tadpole> extends AgeableListModel<T> {
     }
 
     @Override
-    public void setupAnim(T entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
+    public void setupAnim(
+        T entity,
+        float angle,
+        float distance,
+        float animationProgress,
+        float yaw,
+        float pitch
+    ) {
         float angles = entity.isInWater() ? 1.0F : 1.5F;
         this.tail.yRot = -angles * 0.25F * Mth.sin(0.3F * animationProgress);
     }
-
 }

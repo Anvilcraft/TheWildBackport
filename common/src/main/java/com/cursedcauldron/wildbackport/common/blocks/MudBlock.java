@@ -10,29 +10,40 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MudBlock extends Block {
-    private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
+    private static final VoxelShape SHAPE
+        = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
 
     public MudBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public VoxelShape getBlockSupportShape(BlockState state, BlockGetter getter, BlockPos pos) {
+    public VoxelShape
+    getBlockSupportShape(BlockState state, BlockGetter getter, BlockPos pos) {
         return Shapes.block();
     }
 
     @Override
-    public VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+    public VoxelShape getVisualShape(
+        BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context
+    ) {
         return Shapes.block();
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(
+        BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context
+    ) {
         return SHAPE;
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType pathComputation) {
+    public boolean isPathfindable(
+        BlockState state,
+        BlockGetter getter,
+        BlockPos pos,
+        PathComputationType pathComputation
+    ) {
         return false;
     }
 

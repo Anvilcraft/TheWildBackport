@@ -1,5 +1,9 @@
 package com.cursedcauldron.wildbackport.common.entities.brain.warden;
 
+import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
+
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,17 +12,22 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
-import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
-
 public class ForgetAttackTarget<E extends Mob> extends Behavior<E> {
     private final Predicate<LivingEntity> alternativeCondition;
     private final BiConsumer<E, LivingEntity> forgetCallback;
     private final boolean shouldForgetIfTargetUnreachable;
 
-    public ForgetAttackTarget(Predicate<LivingEntity> alternativeCondition, BiConsumer<E, LivingEntity> forgetCallback, boolean shouldForgetIfTargetUnreachable) {
-        super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryStatus.REGISTERED));
+    public ForgetAttackTarget(
+        Predicate<LivingEntity> alternativeCondition,
+        BiConsumer<E, LivingEntity> forgetCallback,
+        boolean shouldForgetIfTargetUnreachable
+    ) {
+        super(ImmutableMap.of(
+            MemoryModuleType.ATTACK_TARGET,
+            MemoryStatus.VALUE_PRESENT,
+            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+            MemoryStatus.REGISTERED
+        ));
         this.alternativeCondition = alternativeCondition;
         this.forgetCallback = forgetCallback;
         this.shouldForgetIfTargetUnreachable = shouldForgetIfTargetUnreachable;
@@ -49,12 +58,14 @@ public class ForgetAttackTarget<E extends Mob> extends Behavior<E> {
     }
 
     private static <E extends LivingEntity> boolean cannotReachTarget(E entity) {
-        Optional<Long> time = entity.getBrain().getMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
+        Optional<Long> time
+            = entity.getBrain().getMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
         return time.isPresent() && entity.level.getGameTime() - time.get() > 200L;
     }
 
     private boolean isAttackTargetDead(E entity) {
-        Optional<LivingEntity> target = entity.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
+        Optional<LivingEntity> target
+            = entity.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
         return target.isPresent() && !target.get().isAlive();
     }
 

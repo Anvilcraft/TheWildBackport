@@ -11,9 +11,18 @@ import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class WBStructures {
-//    public static final Holder<ConfiguredStructureFeature<?, ?>> ANCIENT_CITY = create("ancient_city", )
+    //    public static final Holder<ConfiguredStructureFeature<?, ?>> ANCIENT_CITY =
+    //    create("ancient_city", )
 
-    private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>> Holder<ConfiguredStructureFeature<?, ?>> create(String key, ConfiguredStructureFeature<FC, F> feature) {
-        return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, ResourceKey.create(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, new ResourceLocation(key)), feature);
+    private static <FC extends FeatureConfiguration, F extends StructureFeature<FC>>
+        Holder<ConfiguredStructureFeature<?, ?>>
+        create(String key, ConfiguredStructureFeature<FC, F> feature) {
+        return BuiltinRegistries.register(
+            BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE,
+            ResourceKey.create(
+                Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, new ResourceLocation(key)
+            ),
+            feature
+        );
     }
 }

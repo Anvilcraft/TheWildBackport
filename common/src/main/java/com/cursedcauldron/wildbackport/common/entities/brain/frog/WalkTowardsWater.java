@@ -21,7 +21,14 @@ public class WalkTowardsWater extends Behavior<AgeableMob> {
     private long nextStartTime;
 
     public WalkTowardsWater(int distance, float speedModifier) {
-        super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED));
+        super(ImmutableMap.of(
+            MemoryModuleType.ATTACK_TARGET,
+            MemoryStatus.VALUE_ABSENT,
+            MemoryModuleType.WALK_TARGET,
+            MemoryStatus.VALUE_ABSENT,
+            MemoryModuleType.LOOK_TARGET,
+            MemoryStatus.REGISTERED
+        ));
         this.distance = distance;
         this.speedModifier = speedModifier;
     }
@@ -43,13 +50,29 @@ public class WalkTowardsWater extends Behavior<AgeableMob> {
             BlockPos pos = entity.blockPosition();
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
-            for (BlockPos position : BlockPos.withinManhattan(pos, this.distance, this.distance, this.distance)) {
-                if (position.getX() != pos.getX() || position.getZ() != pos.getZ() && level.getBlockState(position).getCollisionShape(level, position, context).isEmpty() && level.getBlockState(mutable.setWithOffset(position, Direction.DOWN)).getCollisionShape(level, position, context).isEmpty()) {
+            for (BlockPos position : BlockPos.withinManhattan(
+                     pos, this.distance, this.distance, this.distance
+                 )) {
+                if (position.getX() != pos.getX()
+                    || position.getZ() != pos.getZ()
+                        && level.getBlockState(position)
+                               .getCollisionShape(level, position, context)
+                               .isEmpty()
+                        && level
+                               .getBlockState(
+                                   mutable.setWithOffset(position, Direction.DOWN)
+                               )
+                               .getCollisionShape(level, position, context)
+                               .isEmpty()) {
                     for (Direction direction : Direction.Plane.HORIZONTAL) {
                         mutable.setWithOffset(position, direction);
-                        if (level.getBlockState(mutable).isAir() && level.getBlockState(mutable.move(Direction.DOWN)).is(Blocks.WATER)) {
+                        if (level.getBlockState(mutable).isAir()
+                            && level.getBlockState(mutable.move(Direction.DOWN))
+                                   .is(Blocks.WATER)) {
                             this.nextStartTime = time + 40L;
-                            BehaviorUtils.setWalkAndLookTargetMemories(entity, position, this.speedModifier, 0);
+                            BehaviorUtils.setWalkAndLookTargetMemories(
+                                entity, position, this.speedModifier, 0
+                            );
                             return;
                         }
                     }

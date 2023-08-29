@@ -1,10 +1,15 @@
 package com.cursedcauldron.wildbackport.common.blocks;
 
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Random;
+import java.util.Set;
+
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
-import com.cursedcauldron.wildbackport.common.worldgen.VeinGrower;
 import com.cursedcauldron.wildbackport.common.registry.WBBlocks;
 import com.cursedcauldron.wildbackport.common.tag.WBBlockTags;
 import com.cursedcauldron.wildbackport.common.utils.DirectionUtils;
+import com.cursedcauldron.wildbackport.common.worldgen.VeinGrower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -26,17 +31,15 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Random;
-import java.util.Set;
-
 //<>
 
-public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, SimpleWaterloggedBlock {
+public class SculkVeinBlock
+    extends MultifaceBlock implements SculkSpreadable, SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public final VeinGrower allGrowTypeGrower = new VeinGrower(new SculkVeinGrowChecker(VeinGrower.GROW_TYPES));
-    private final VeinGrower samePositionOnlyGrower = new VeinGrower(new SculkVeinGrowChecker(VeinGrower.GrowType.SAME_POSITION));
+    public final VeinGrower allGrowTypeGrower
+        = new VeinGrower(new SculkVeinGrowChecker(VeinGrower.GROW_TYPES));
+    private final VeinGrower samePositionOnlyGrower
+        = new VeinGrower(new SculkVeinGrowChecker(VeinGrower.GrowType.SAME_POSITION));
 
     public SculkVeinBlock(Properties properties) {
         super(properties);
@@ -47,12 +50,16 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
         return this.allGrowTypeGrower;
     }
 
-
     public VeinGrower getSamePositionOnlyGrower() {
         return this.samePositionOnlyGrower;
     }
 
-    public static boolean place(LevelAccessor level, BlockPos pos, BlockState state, Collection<Direction> directions) {
+    public static boolean place(
+        LevelAccessor level,
+        BlockPos pos,
+        BlockState state,
+        Collection<Direction> directions
+    ) {
         boolean canPlace = false;
         BlockState veinState = WBBlocks.SCULK_VEIN.get().defaultBlockState();
 
@@ -77,11 +84,15 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
     }
 
     @Override
-    public void spreadAtSamePosition(LevelAccessor level, BlockState state, BlockPos pos, Random random) {
+    public void spreadAtSamePosition(
+        LevelAccessor level, BlockState state, BlockPos pos, Random random
+    ) {
         if (state.is(this)) {
             for (Direction direction : DIRECTIONS) {
                 BooleanProperty property = getFaceProperty(direction);
-                if (state.getValue(property) && level.getBlockState(pos.relative(direction)).is(WBBlocks.SCULK.get())) {
+                if (state.getValue(property)
+                    && level.getBlockState(pos.relative(direction))
+                           .is(WBBlocks.SCULK.get())) {
                     state = state.setValue(property, false);
                 }
             }
@@ -97,15 +108,27 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
     }
 
     @Override
-    public int spread(SculkSpreadManager.Cursor cursor, LevelAccessor level, BlockPos pos, Random random, SculkSpreadManager spreadManager, boolean shouldConvert) {
-        if (shouldConvert && this.convertToBlock(spreadManager, level, cursor.getPos(), random)) {
+    public int spread(
+        SculkSpreadManager.Cursor cursor,
+        LevelAccessor level,
+        BlockPos pos,
+        Random random,
+        SculkSpreadManager spreadManager,
+        boolean shouldConvert
+    ) {
+        if (shouldConvert
+            && this.convertToBlock(spreadManager, level, cursor.getPos(), random)) {
             return cursor.getCharge() - 1;
         } else {
-            return random.nextInt(spreadManager.getSpreadChance()) == 0 ? Mth.floor((float)cursor.getCharge() * 0.5F) : cursor.getCharge();
+            return random.nextInt(spreadManager.getSpreadChance()) == 0
+                ? Mth.floor((float) cursor.getCharge() * 0.5F)
+                : cursor.getCharge();
         }
     }
 
-    private boolean convertToBlock(SculkSpreadManager spreadManager, LevelAccessor level, BlockPos pos, Random random) {
+    private boolean convertToBlock(
+        SculkSpreadManager spreadManager, LevelAccessor level, BlockPos pos, Random random
+    ) {
         BlockState state = level.getBlockState(pos);
         TagKey<Block> replaceable = spreadManager.getReplaceableBlocks();
 
@@ -116,9 +139,19 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
                 if (blockState.is(replaceable)) {
                     BlockState sculk = WBBlocks.SCULK.get().defaultBlockState();
                     level.setBlock(blockPos, sculk, 3);
-                    if (level instanceof ServerLevel server) Block.pushEntitiesUp(blockState, sculk, server, pos);
-                    level.playSound(null, blockPos, WBSoundEvents.BLOCK_SCULK_SPREAD, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    this.allGrowTypeGrower.grow(sculk, level, blockPos, spreadManager.isWorldGen());
+                    if (level instanceof ServerLevel server)
+                        Block.pushEntitiesUp(blockState, sculk, server, pos);
+                    level.playSound(
+                        null,
+                        blockPos,
+                        WBSoundEvents.BLOCK_SCULK_SPREAD,
+                        SoundSource.BLOCKS,
+                        1.0F,
+                        1.0F
+                    );
+                    this.allGrowTypeGrower.grow(
+                        sculk, level, blockPos, spreadManager.isWorldGen()
+                    );
                     Direction opposite = direction.getOpposite();
 
                     for (Direction towards : DIRECTIONS) {
@@ -126,7 +159,9 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
                             BlockPos targetPos = blockPos.relative(towards);
                             BlockState targetState = level.getBlockState(targetPos);
                             if (targetState.is(this)) {
-                                this.spreadAtSamePosition(level, targetState, targetPos, random);
+                                this.spreadAtSamePosition(
+                                    level, targetState, targetPos, random
+                                );
                             }
                         }
                     }
@@ -139,10 +174,13 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
         return false;
     }
 
-    public static boolean veinCoversSculkReplaceable(LevelAccessor level, BlockState state, BlockPos pos) {
+    public static boolean
+    veinCoversSculkReplaceable(LevelAccessor level, BlockState state, BlockPos pos) {
         if (state.is(WBBlocks.SCULK_VEIN.get())) {
             for (Direction direction : DIRECTIONS) {
-                if (hasFace(state, direction) && level.getBlockState(pos.relative(direction)).is(WBBlockTags.SCULK_REPLACEABLE)) {
+                if (hasFace(state, direction)
+                    && level.getBlockState(pos.relative(direction))
+                           .is(WBBlockTags.SCULK_REPLACEABLE)) {
                     return true;
                 }
             }
@@ -151,8 +189,11 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
         return false;
     }
 
-    public boolean canGrowWithDirection(BlockGetter getter, BlockState state, BlockPos pos, Direction direction) {
-        if (this.isFaceSupported(direction) && (!state.is(this) || !hasFace(state, direction))) {
+    public boolean canGrowWithDirection(
+        BlockGetter getter, BlockState state, BlockPos pos, Direction direction
+    ) {
+        if (this.isFaceSupported(direction)
+            && (!state.is(this) || !hasFace(state, direction))) {
             BlockPos blockPos = pos.relative(direction);
             return canGrowOn(getter, direction, blockPos, getter.getBlockState(blockPos));
         } else {
@@ -161,27 +202,39 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(
+        BlockState state,
+        Direction direction,
+        BlockState neighborState,
+        LevelAccessor world,
+        BlockPos pos,
+        BlockPos neighborPos
+    ) {
         if (state.getValue(WATERLOGGED)) {
             world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
-        return super.updateShape(state, direction, neighborState, world, pos, neighborPos);
+        return super.updateShape(
+            state, direction, neighborState, world, pos, neighborPos
+        );
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void
+    createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
     }
 
     @Override
     public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-        return !context.getItemInHand().is(WBBlocks.SCULK_VEIN.get().asItem()) || super.canBeReplaced(state, context);
+        return !context.getItemInHand().is(WBBlocks.SCULK_VEIN.get().asItem())
+            || super.canBeReplaced(state, context);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false)
+                                           : super.getFluidState(state);
     }
 
     @Override
@@ -193,7 +246,7 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
         byte flag = 0;
 
         for (Direction direction : directions) {
-            flag = (byte)(flag | 1 << direction.ordinal());
+            flag = (byte) (flag | 1 << direction.ordinal());
         }
 
         return flag;
@@ -215,8 +268,14 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
         }
     }
 
-    public static boolean canGrowOn(BlockGetter getter, Direction direction, BlockPos pos, BlockState state) {
-        return Block.isFaceFull(state.getBlockSupportShape(getter, pos), direction.getOpposite()) || Block.isFaceFull(state.getCollisionShape(getter, pos), direction.getOpposite());
+    public static boolean
+    canGrowOn(BlockGetter getter, Direction direction, BlockPos pos, BlockState state) {
+        return Block.isFaceFull(
+                   state.getBlockSupportShape(getter, pos), direction.getOpposite()
+               )
+            || Block.isFaceFull(
+                state.getCollisionShape(getter, pos), direction.getOpposite()
+            );
     }
 
     public static boolean hasFace(BlockState state, Direction direction) {
@@ -233,21 +292,32 @@ public class SculkVeinBlock extends MultifaceBlock implements SculkSpreadable, S
         }
 
         @Override
-        public boolean canGrow(BlockGetter getter, BlockPos pos, BlockPos growPos, Direction direction, BlockState state) {
+        public boolean canGrow(
+            BlockGetter getter,
+            BlockPos pos,
+            BlockPos growPos,
+            Direction direction,
+            BlockState state
+        ) {
             BlockPos blockPos;
             BlockState blockState = getter.getBlockState(growPos.relative(direction));
-            boolean flag = blockState.is(WBBlocks.SCULK.get()) || blockState.is(WBBlocks.SCULK_CATALYST.get()) || blockState.is(Blocks.MOVING_PISTON);
+            boolean flag = blockState.is(WBBlocks.SCULK.get())
+                || blockState.is(WBBlocks.SCULK_CATALYST.get())
+                || blockState.is(Blocks.MOVING_PISTON);
             if (flag) {
                 return false;
             }
-            if (pos.distManhattan(growPos) == 2 && getter.getBlockState(blockPos = pos.relative(direction.getOpposite())).isFaceSturdy(getter, blockPos, direction)) {
+            if (pos.distManhattan(growPos) == 2
+                && getter.getBlockState(blockPos = pos.relative(direction.getOpposite()))
+                       .isFaceSturdy(getter, blockPos, direction)) {
                 return false;
             }
             FluidState fluidState = state.getFluidState();
             if (!fluidState.isEmpty() && !fluidState.is(Fluids.WATER)) {
                 return false;
             }
-            return state.getMaterial().isReplaceable() || super.canGrow(getter, pos, growPos, direction, state);
+            return state.getMaterial().isReplaceable()
+                || super.canGrow(getter, pos, growPos, direction, state);
         }
 
         @Override

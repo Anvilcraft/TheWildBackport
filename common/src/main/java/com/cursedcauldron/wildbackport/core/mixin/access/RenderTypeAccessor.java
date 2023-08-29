@@ -8,7 +8,15 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(RenderType.class)
 public interface RenderTypeAccessor {
     @Invoker
-    static RenderType.CompositeRenderType callCreate(String string, VertexFormat vertexFormat, VertexFormat.Mode mode, int i, boolean bl, boolean bl2, RenderType.CompositeState compositeState) {
+    static RenderType.CompositeRenderType callCreate(
+        String string,
+        VertexFormat vertexFormat,
+        VertexFormat.Mode mode,
+        int i,
+        boolean bl,
+        boolean bl2,
+        RenderType.CompositeState compositeState
+    ) {
         throw new UnsupportedOperationException();
     }
 }

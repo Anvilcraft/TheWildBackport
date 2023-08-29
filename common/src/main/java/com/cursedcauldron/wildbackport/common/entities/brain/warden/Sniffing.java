@@ -1,8 +1,8 @@
 package com.cursedcauldron.wildbackport.common.entities.brain.warden;
 
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
-import com.cursedcauldron.wildbackport.common.entities.access.api.Poses;
 import com.cursedcauldron.wildbackport.common.entities.Warden;
+import com.cursedcauldron.wildbackport.common.entities.access.api.Poses;
 import com.cursedcauldron.wildbackport.common.entities.brain.WardenBrain;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBMemoryModules;
 import com.google.common.collect.ImmutableMap;
@@ -14,7 +14,25 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 public class Sniffing<E extends Warden> extends Behavior<E> {
     public Sniffing(int duration) {
-        super(ImmutableMap.of(WBMemoryModules.IS_SNIFFING.get(), MemoryStatus.VALUE_PRESENT, MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.NEAREST_ATTACKABLE, MemoryStatus.REGISTERED, WBMemoryModules.DISTURBANCE_LOCATION.get(), MemoryStatus.REGISTERED, WBMemoryModules.SNIFF_COOLDOWN.get(), MemoryStatus.REGISTERED), duration);
+        super(
+            ImmutableMap.of(
+                WBMemoryModules.IS_SNIFFING.get(),
+                MemoryStatus.VALUE_PRESENT,
+                MemoryModuleType.ATTACK_TARGET,
+                MemoryStatus.VALUE_ABSENT,
+                MemoryModuleType.WALK_TARGET,
+                MemoryStatus.VALUE_ABSENT,
+                MemoryModuleType.LOOK_TARGET,
+                MemoryStatus.REGISTERED,
+                MemoryModuleType.NEAREST_ATTACKABLE,
+                MemoryStatus.REGISTERED,
+                WBMemoryModules.DISTURBANCE_LOCATION.get(),
+                MemoryStatus.REGISTERED,
+                WBMemoryModules.SNIFF_COOLDOWN.get(),
+                MemoryStatus.REGISTERED
+            ),
+            duration
+        );
     }
 
     @Override
@@ -34,14 +52,19 @@ public class Sniffing<E extends Warden> extends Behavior<E> {
         }
 
         entity.getBrain().eraseMemory(WBMemoryModules.IS_SNIFFING.get());
-        entity.getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE).filter(entity::isValidTarget).ifPresent(target -> {
-            if (entity.closerThan(target, 6.0D, 20.0D)) {
-                entity.increaseAngerAt(target);
-            }
+        entity.getBrain()
+            .getMemory(MemoryModuleType.NEAREST_ATTACKABLE)
+            .filter(entity::isValidTarget)
+            .ifPresent(target -> {
+                if (entity.closerThan(target, 6.0D, 20.0D)) {
+                    entity.increaseAngerAt(target);
+                }
 
-            if (!entity.getBrain().hasMemoryValue(WBMemoryModules.DISTURBANCE_LOCATION.get())) {
-                WardenBrain.lookAtDisturbance(entity, target.blockPosition());
-            }
-        });
+                if (!entity.getBrain().hasMemoryValue(
+                        WBMemoryModules.DISTURBANCE_LOCATION.get()
+                    )) {
+                    WardenBrain.lookAtDisturbance(entity, target.blockPosition());
+                }
+            });
     }
 }

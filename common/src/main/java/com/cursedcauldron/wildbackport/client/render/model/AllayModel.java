@@ -40,25 +40,72 @@ public class AllayModel extends HierarchicalModel<Allay> implements ArmedModel {
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
-        PartDefinition root = mesh.getRoot().addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 23.5F, 0.0F));
-        root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, -5.0F, -2.5F, 5.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.99F, 0.0F));
-        PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 10).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)).texOffs(0, 16).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 5.0F, 2.0F, new CubeDeformation(-0.2F)), PartPose.offset(0.0F, -4.0F, 0.0F));
-        body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(23, 0).addBox(-0.75F, -0.5F, -1.0F, 1.0F, 4.0F, 2.0F, new CubeDeformation(-0.01F)), PartPose.offset(-1.75F, 0.5F, 0.0F));
-        body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(23, 6).addBox(-0.25F, -0.5F, -1.0F, 1.0F, 4.0F, 2.0F, new CubeDeformation(-0.01F)), PartPose.offset(1.75F, 0.5F, 0.0F));
-        body.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.5F, 0.0F, 0.65F));
-        body.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 0.0F, 0.65F));
+        PartDefinition root = mesh.getRoot().addOrReplaceChild(
+            "root", CubeListBuilder.create(), PartPose.offset(0.0F, 23.5F, 0.0F)
+        );
+        root.addOrReplaceChild(
+            "head",
+            CubeListBuilder.create().texOffs(0, 0).addBox(
+                -2.5F, -5.0F, -2.5F, 5.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)
+            ),
+            PartPose.offset(0.0F, -3.99F, 0.0F)
+        );
+        PartDefinition body = root.addOrReplaceChild(
+            "body",
+            CubeListBuilder.create()
+                .texOffs(0, 10)
+                .addBox(-1.5F, 0.0F, -1.0F, 3.0F, 4.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 16)
+                .addBox(-1.5F, 0.0F, -1.0F, 3.0F, 5.0F, 2.0F, new CubeDeformation(-0.2F)),
+            PartPose.offset(0.0F, -4.0F, 0.0F)
+        );
+        body.addOrReplaceChild(
+            "right_arm",
+            CubeListBuilder.create().texOffs(23, 0).addBox(
+                -0.75F, -0.5F, -1.0F, 1.0F, 4.0F, 2.0F, new CubeDeformation(-0.01F)
+            ),
+            PartPose.offset(-1.75F, 0.5F, 0.0F)
+        );
+        body.addOrReplaceChild(
+            "left_arm",
+            CubeListBuilder.create().texOffs(23, 6).addBox(
+                -0.25F, -0.5F, -1.0F, 1.0F, 4.0F, 2.0F, new CubeDeformation(-0.01F)
+            ),
+            PartPose.offset(1.75F, 0.5F, 0.0F)
+        );
+        body.addOrReplaceChild(
+            "right_wing",
+            CubeListBuilder.create().texOffs(16, 14).addBox(
+                0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)
+            ),
+            PartPose.offset(-0.5F, 0.0F, 0.65F)
+        );
+        body.addOrReplaceChild(
+            "left_wing",
+            CubeListBuilder.create().texOffs(16, 14).addBox(
+                0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)
+            ),
+            PartPose.offset(0.5F, 0.0F, 0.65F)
+        );
         return LayerDefinition.create(mesh, 32, 32);
     }
 
     @Override
-    public void setupAnim(Allay entity, float angle, float distance, float animationProgress, float yaw, float pitch) {
+    public void setupAnim(
+        Allay entity,
+        float angle,
+        float distance,
+        float animationProgress,
+        float yaw,
+        float pitch
+    ) {
         this.root().getAllParts().forEach(Animated::resetToDefault);
-        this.head.xRot = pitch * ((float)Math.PI / 180F);
-        this.head.yRot = yaw * ((float)Math.PI / 180F);
-        float f = animationProgress * 20.0F * ((float)Math.PI / 180F) + distance;
-        float f1 = Mth.cos(f) * (float)Math.PI * 0.15F;
-        float f2 = animationProgress - (float)entity.tickCount;
-        float f3 = animationProgress * 9.0F * ((float)Math.PI / 180F);
+        this.head.xRot = pitch * ((float) Math.PI / 180F);
+        this.head.yRot = yaw * ((float) Math.PI / 180F);
+        float f = animationProgress * 20.0F * ((float) Math.PI / 180F) + distance;
+        float f1 = Mth.cos(f) * (float) Math.PI * 0.15F;
+        float f2 = animationProgress - (float) entity.tickCount;
+        float f3 = animationProgress * 9.0F * ((float) Math.PI / 180F);
         float f4 = Math.min(distance / 0.3F, 1.0F);
         float f5 = 1.0F - f4;
         float holdingItemAnimation = entity.getHoldingItemAnimationProgress(f2);
@@ -68,12 +115,17 @@ public class AllayModel extends HierarchicalModel<Allay> implements ArmedModel {
         this.left_wing.yRot = 0.61086524F - f1;
         float f7 = f4 * 0.6981317F;
         this.body.xRot = f7;
-        float f8 = Mth.lerp(holdingItemAnimation, f7, Mth.lerp(f4, (-(float)Math.PI / 3F), (-(float)Math.PI / 4F)));
-        this.root.y += (float)Math.cos(f3) * 0.25F * f5;
+        float f8 = Mth.lerp(
+            holdingItemAnimation,
+            f7,
+            Mth.lerp(f4, (-(float) Math.PI / 3F), (-(float) Math.PI / 4F))
+        );
+        this.root.y += (float) Math.cos(f3) * 0.25F * f5;
         this.right_arm.xRot = f8;
         this.left_arm.xRot = f8;
         float f9 = f5 * (1.0F - holdingItemAnimation);
-        float f10 = 0.43633232F - Mth.cos(f3 + ((float)Math.PI * 1.5F)) * (float)Math.PI * 0.075F * f9;
+        float f10 = 0.43633232F
+            - Mth.cos(f3 + ((float) Math.PI * 1.5F)) * (float) Math.PI * 0.075F * f9;
         this.left_arm.zRot = -f10;
         this.right_arm.zRot = f10;
         this.right_arm.yRot = 0.27925268F * holdingItemAnimation;
@@ -81,7 +133,16 @@ public class AllayModel extends HierarchicalModel<Allay> implements ArmedModel {
     }
 
     @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int i, int j, float f, float g, float h, float k) {
+    public void renderToBuffer(
+        PoseStack stack,
+        VertexConsumer consumer,
+        int i,
+        int j,
+        float f,
+        float g,
+        float h,
+        float k
+    ) {
         this.root.render(stack, consumer, i, j);
     }
 

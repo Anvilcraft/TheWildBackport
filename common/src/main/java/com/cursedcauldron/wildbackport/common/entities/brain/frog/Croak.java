@@ -13,7 +13,9 @@ public class Croak extends Behavior<Frog> {
     private int ticks;
 
     public Croak() {
-        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), 100);
+        super(
+            ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), 100
+        );
     }
 
     @Override
@@ -28,7 +30,6 @@ public class Croak extends Behavior<Frog> {
 
     @Override
     protected void start(ServerLevel level, Frog frog, long time) {
-
         if (!frog.isInWaterOrBubble() && !frog.isInLava()) {
             frog.setPose(Poses.CROAKING.get());
             this.ticks = 0;

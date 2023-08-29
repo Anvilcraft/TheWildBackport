@@ -1,9 +1,9 @@
 package com.cursedcauldron.wildbackport.client.sound;
 
+import java.util.function.Supplier;
+
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.SoundType;
-
-import java.util.function.Supplier;
 
 public class CoreSoundType extends SoundType {
     private final Supplier<SoundEvent> breakSound;
@@ -13,7 +13,13 @@ public class CoreSoundType extends SoundType {
     private final Supplier<SoundEvent> fallSound;
 
     @SuppressWarnings("all")
-    public CoreSoundType(Supplier<SoundEvent> breakSound, Supplier<SoundEvent> stepSound, Supplier<SoundEvent> placeSound, Supplier<SoundEvent> hitSound, Supplier<SoundEvent> fallSound) {
+    public CoreSoundType(
+        Supplier<SoundEvent> breakSound,
+        Supplier<SoundEvent> stepSound,
+        Supplier<SoundEvent> placeSound,
+        Supplier<SoundEvent> hitSound,
+        Supplier<SoundEvent> fallSound
+    ) {
         super(1.0F, 1.0F, null, null, null, null, null);
         this.breakSound = breakSound;
         this.stepSound = stepSound;

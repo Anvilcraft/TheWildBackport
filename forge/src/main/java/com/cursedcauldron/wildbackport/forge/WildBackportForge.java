@@ -1,5 +1,8 @@
 package com.cursedcauldron.wildbackport.forge;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.client.ClientSetup;
 import com.cursedcauldron.wildbackport.common.CommonSetup;
@@ -26,9 +29,6 @@ import terrablender.api.RegionType;
 import terrablender.api.Regions;
 import terrablender.api.SurfaceRuleManager;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 @Mod(WildBackport.MOD_ID)
 public class WildBackportForge {
     public WildBackportForge() {
@@ -45,15 +45,36 @@ public class WildBackportForge {
     }
 
     private void terrablenderSetup(final FMLCommonSetupEvent event) {
-        Regions.register(new Region(new ResourceLocation(WildBackport.MOD_ID, "overworld"), RegionType.OVERWORLD, 2) {
-            @Override public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
+        Regions.register(new Region(
+            new ResourceLocation(WildBackport.MOD_ID, "overworld"),
+            RegionType.OVERWORLD,
+            2
+        ) {
+            @Override
+            public void addBiomes(
+                Registry<Biome> registry,
+                Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper
+            ) {
                 this.addModifiedVanillaOverworldBiomes(mapper, builder -> {
                     builder.replaceBiome(Biomes.SWAMP, WBBiomes.MANGROVE_SWAMP);
-                    List<Climate.ParameterPoint> points = new ParameterUtils.ParameterPointListBuilder().erosion(ParameterUtils.Erosion.span(ParameterUtils.Erosion.EROSION_0, ParameterUtils.Erosion.EROSION_1)).depth(Climate.Parameter.point(1.1F)).build();
-                    points.forEach(point -> mapper.accept(Pair.of(point, WBBiomes.DEEP_DARK)));
+                    List<Climate.ParameterPoint> points
+                        = new ParameterUtils.ParameterPointListBuilder()
+                              .erosion(ParameterUtils.Erosion.span(
+                                  ParameterUtils.Erosion.EROSION_0,
+                                  ParameterUtils.Erosion.EROSION_1
+                              ))
+                              .depth(Climate.Parameter.point(1.1F))
+                              .build();
+                    points.forEach(
+                        point -> mapper.accept(Pair.of(point, WBBiomes.DEEP_DARK))
+                    );
                 });
             }
         });
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, WildBackport.MOD_ID, MangroveSwampSurface.makeRules());
+        SurfaceRuleManager.addSurfaceRules(
+            SurfaceRuleManager.RuleCategory.OVERWORLD,
+            WildBackport.MOD_ID,
+            MangroveSwampSurface.makeRules()
+        );
     }
 }

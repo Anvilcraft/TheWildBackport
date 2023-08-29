@@ -6,7 +6,8 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = WildBackport.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.
+EventBusSubscriber(modid = WildBackport.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BiomeModifierImpl {
     public static void setup() {}
 

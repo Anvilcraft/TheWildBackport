@@ -16,8 +16,11 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-
-@Mod.EventBusSubscriber(modid = WildBackport.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(
+    modid = WildBackport.MOD_ID,
+    value = Dist.CLIENT,
+    bus = Mod.EventBusSubscriber.Bus.FORGE
+)
 public class DarknessSetup {
     @SubscribeEvent
     public static void darknessFogColor(EntityViewRenderEvent.FogColors event) {
@@ -25,15 +28,20 @@ public class DarknessSetup {
         Level level = event.getCamera().getEntity().getLevel();
 
         if (level.isClientSide() && level instanceof ClientLevel client) {
-
-            double colorModifier = (event.getCamera().getPosition().y - (double)client.getMinBuildHeight()) * client.getLevelData().getClearColorScale();
-            if (event.getCamera().getEntity() instanceof LivingEntity living && living.hasEffect(WBMobEffects.DARKNESS.get())) {
+            double colorModifier = (event.getCamera().getPosition().y
+                                    - (double) client.getMinBuildHeight())
+                * client.getLevelData().getClearColorScale();
+            if (event.getCamera().getEntity() instanceof LivingEntity living
+                && living.hasEffect(WBMobEffects.DARKNESS.get())) {
                 MobEffectInstance effect = living.getEffect(WBMobEffects.DARKNESS.get());
 
                 if (effect != null) {
                     EffectFactor.Instance instance = EffectFactor.Instance.of(effect);
                     if (instance.getFactorCalculationData().isPresent()) {
-                        colorModifier = 1.0F - instance.getFactorCalculationData().get().lerp(living, (float)event.getPartialTicks());
+                        colorModifier = 1.0F
+                            - instance.getFactorCalculationData().get().lerp(
+                                living, (float) event.getPartialTicks()
+                            );
                     } else {
                         colorModifier = 0.0D;
                     }
@@ -46,9 +54,9 @@ public class DarknessSetup {
                 }
 
                 colorModifier *= colorModifier;
-                event.setRed((float)((double)event.getRed() * colorModifier));
-                event.setGreen((float)((double)event.getGreen() * colorModifier));
-                event.setBlue((float)((double)event.getBlue() * colorModifier));
+                event.setRed((float) ((double) event.getRed() * colorModifier));
+                event.setGreen((float) ((double) event.getGreen() * colorModifier));
+                event.setBlue((float) ((double) event.getBlue() * colorModifier));
             }
         }
     }
@@ -58,14 +66,23 @@ public class DarknessSetup {
         FogType type = event.getCamera().getFluidInCamera();
 
         if (type != FogType.WATER) {
-            if (event.getCamera().getEntity() instanceof LivingEntity living && living.hasEffect(WBMobEffects.DARKNESS.get())) {
+            if (event.getCamera().getEntity() instanceof LivingEntity living
+                && living.hasEffect(WBMobEffects.DARKNESS.get())) {
                 MobEffectInstance effect = living.getEffect(WBMobEffects.DARKNESS.get());
 
                 if (effect != null) {
                     EffectFactor.Instance instance = EffectFactor.Instance.of(effect);
                     if (instance.getFactorCalculationData().isPresent()) {
-                        float modifier = Mth.lerp(instance.getFactorCalculationData().get().lerp(living, (float)event.getPartialTicks()), event.getFarPlaneDistance(), 15.0F);
-                        float start = event.getMode() == FogRenderer.FogMode.FOG_SKY ? 0.0F : modifier * 0.75F;
+                        float modifier = Mth.lerp(
+                            instance.getFactorCalculationData().get().lerp(
+                                living, (float) event.getPartialTicks()
+                            ),
+                            event.getFarPlaneDistance(),
+                            15.0F
+                        );
+                        float start = event.getMode() == FogRenderer.FogMode.FOG_SKY
+                            ? 0.0F
+                            : modifier * 0.75F;
 
                         RenderSystem.setShaderFogStart(start);
                         RenderSystem.setShaderFogEnd(modifier);

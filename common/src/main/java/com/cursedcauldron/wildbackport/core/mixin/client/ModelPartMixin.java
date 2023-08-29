@@ -1,5 +1,8 @@
 package com.cursedcauldron.wildbackport.core.mixin.client;
 
+import java.util.List;
+import java.util.Map;
+
 import com.cursedcauldron.wildbackport.client.animation.api.Animated;
 import com.cursedcauldron.wildbackport.client.render.model.Drawable;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,19 +16,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-import java.util.Map;
-
 //<>
 
 @Mixin(ModelPart.class)
 public abstract class ModelPartMixin implements Animated, Drawable {
     @Shadow
     public boolean visible;
-    @Shadow @Final
+    @Shadow
+    @Final
     private List<ModelPart.Cube> cubes;
-    @Shadow @Final private Map<String, ModelPart> children;
-    @Shadow public abstract void translateAndRotate(PoseStack pose);
+    @Shadow
+    @Final
+    private Map<String, ModelPart> children;
+    @Shadow
+    public abstract void translateAndRotate(PoseStack pose);
 
     private float scaleX = 1.0F;
     private float scaleY = 1.0F;
@@ -64,15 +68,34 @@ public abstract class ModelPartMixin implements Animated, Drawable {
         }
     }
 
-    @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", at = @At("HEAD"), cancellable = true)
-    private void wb$render(PoseStack pose, VertexConsumer consumer, int light, int delta, float red, float green, float blue, float alpha, CallbackInfo ci) {
+    @Inject(
+        method
+        = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void
+    wb$render(
+        PoseStack pose,
+        VertexConsumer consumer,
+        int light,
+        int delta,
+        float red,
+        float green,
+        float blue,
+        float alpha,
+        CallbackInfo ci
+    ) {
         if (this.skipDraw()) {
             if (this.visible) {
                 if (!this.cubes.isEmpty() || !this.children.isEmpty()) {
                     pose.pushPose();
                     this.translateAndRotate(pose);
 
-                    for (ModelPart part : this.children.values()) part.render(pose, consumer, light, delta, red, green, blue, alpha);
+                    for (ModelPart part : this.children.values())
+                        part.render(
+                            pose, consumer, light, delta, red, green, blue, alpha
+                        );
                     pose.popPose();
                 }
             }

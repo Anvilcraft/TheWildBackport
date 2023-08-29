@@ -1,7 +1,5 @@
 package com.cursedcauldron.wildbackport.core.api.forge;
 
-import net.minecraftforge.eventbus.api.IEventBus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,16 +7,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import net.minecraftforge.eventbus.api.IEventBus;
+
 //<>
 
 public class EventBuses {
     private static final HashMap<String, IEventBus> MOD_EVENT_BUSES = new HashMap<>();
-    private static final Map<String, List<Consumer<IEventBus>>> ON_REGISTERED = new HashMap<>();
+    private static final Map<String, List<Consumer<IEventBus>>> ON_REGISTERED
+        = new HashMap<>();
 
     public static void registerModEventBus(String modId, IEventBus bus) {
         IEventBus previousBus = MOD_EVENT_BUSES.put(modId, bus);
         if (previousBus != null) {
-            throw new IllegalStateException("Attempted to register a mod event bus for modid '" + modId + "' twice.");
+            throw new IllegalStateException(
+                "Attempted to register a mod event bus for modid '" + modId + "' twice."
+            );
         }
     }
 
@@ -27,7 +30,8 @@ public class EventBuses {
             busConsumer.accept(MOD_EVENT_BUSES.get(modId));
         } else {
             synchronized (ON_REGISTERED) {
-                ON_REGISTERED.computeIfAbsent(modId, s -> new ArrayList<>()).add(busConsumer);
+                ON_REGISTERED.computeIfAbsent(modId, s -> new ArrayList<>())
+                    .add(busConsumer);
             }
         }
     }
@@ -38,7 +42,10 @@ public class EventBuses {
 
     public static IEventBus getModEventBusOrThrow(String modId) {
         return getModEventBus(modId).orElseThrow(
-                () -> new IllegalStateException("Mod Event Bus for modid '" + modId + "' has not been registered.")
+            ()
+                -> new IllegalStateException(
+                    "Mod Event Bus for modid '" + modId + "' has not been registered."
+                )
         );
     }
 }

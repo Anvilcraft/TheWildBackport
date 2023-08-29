@@ -21,8 +21,5 @@ public class Environment {
         throw new AssertionError();
     }
 
-    public enum Platform {
-        FORGE,
-        FABRIC
-    }
+    public enum Platform { FORGE, FABRIC }
 }

@@ -1,12 +1,12 @@
 package com.cursedcauldron.wildbackport.core.api.forge;
 
+import java.util.function.Supplier;
+
 import com.cursedcauldron.wildbackport.core.api.CoreRegistry;
 import net.minecraft.core.Registry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-
-import java.util.function.Supplier;
 
 public class CoreRegistryImpl<T extends IForgeRegistryEntry<T>> extends CoreRegistry<T> {
     private final DeferredRegister<T> registry;
@@ -28,7 +28,15 @@ public class CoreRegistryImpl<T extends IForgeRegistryEntry<T>> extends CoreRegi
 
     @Override
     public void bootstrap() {
-        IEventBus bus = EventBuses.getModEventBus(this.modId).orElseThrow(() -> new IllegalStateException("Attempted to register stuff before registering a Mod Event Bus for: " + this.modId));
+        IEventBus bus
+            = EventBuses.getModEventBus(this.modId)
+                  .orElseThrow(
+                      ()
+                          -> new IllegalStateException(
+                              "Attempted to register stuff before registering a Mod Event Bus for: "
+                              + this.modId
+                          )
+                  );
         this.registry.register(bus);
     }
 }

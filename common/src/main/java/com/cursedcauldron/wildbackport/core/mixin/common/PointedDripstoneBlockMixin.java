@@ -13,7 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PointedDripstoneBlock.class)
 public class PointedDripstoneBlockMixin {
     @Inject(method = "maybeFillCauldron", at = @At("HEAD"), cancellable = true)
-    private static void wb$maybeFillCauldron(BlockState state, ServerLevel level, BlockPos pos, float dripChance, CallbackInfo ci) {
+    private static void wb$maybeFillCauldron(
+        BlockState state,
+        ServerLevel level,
+        BlockPos pos,
+        float dripChance,
+        CallbackInfo ci
+    ) {
         DrippingFluid.fillCauldron(state, level, pos, ci);
     }
 }

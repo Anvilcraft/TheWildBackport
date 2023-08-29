@@ -16,17 +16,21 @@ public interface TreeFeatureAccessor {
     }
 
     @Invoker("isBlockWater")
-    static boolean isBlockWater(LevelSimulatedReader levelSimulatedReader, BlockPos blockPos) {
+    static boolean
+    isBlockWater(LevelSimulatedReader levelSimulatedReader, BlockPos blockPos) {
         throw new UnsupportedOperationException();
     }
 
     @Invoker("isReplaceablePlant")
-    static boolean isReplaceablePlant(LevelSimulatedReader levelSimulatedReader, BlockPos blockPos) {
+    static boolean
+    isReplaceablePlant(LevelSimulatedReader levelSimulatedReader, BlockPos blockPos) {
         throw new UnsupportedOperationException();
     }
 
     @Invoker("setBlockKnownShape")
-    static void setBlockKnownShape(LevelWriter levelWriter, BlockPos blockPos, BlockState blockState) {
+    static void setBlockKnownShape(
+        LevelWriter levelWriter, BlockPos blockPos, BlockState blockState
+    ) {
         throw new UnsupportedOperationException();
     }
 }

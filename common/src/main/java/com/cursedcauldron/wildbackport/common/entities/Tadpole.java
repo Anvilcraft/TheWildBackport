@@ -39,8 +39,20 @@ import org.jetbrains.annotations.Nullable;
 public class Tadpole extends AbstractFish {
     public static final int MAX_TADPOLE_AGE = Math.abs(-24000);
     private int age;
-    protected static final ImmutableList<SensorType<? extends Sensor<? super Tadpole>>> SENSORS = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY);
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORIES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.NEAREST_VISIBLE_ADULT);
+    protected static final ImmutableList<SensorType<? extends Sensor<? super Tadpole>>>
+        SENSORS = ImmutableList.of(
+            SensorType.NEAREST_LIVING_ENTITIES,
+            SensorType.NEAREST_PLAYERS,
+            SensorType.HURT_BY
+        );
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORIES = ImmutableList.of(
+        MemoryModuleType.LOOK_TARGET,
+        MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+        MemoryModuleType.WALK_TARGET,
+        MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+        MemoryModuleType.PATH,
+        MemoryModuleType.NEAREST_VISIBLE_ADULT
+    );
 
     public Tadpole(EntityType<? extends AbstractFish> type, Level level) {
         super(type, level);
@@ -63,7 +75,8 @@ public class Tadpole extends AbstractFish {
         return TadpoleBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public Brain<Tadpole> getBrain() {
         return (Brain<Tadpole>) super.getBrain();
     }
@@ -76,7 +89,7 @@ public class Tadpole extends AbstractFish {
     @Override
     protected void customServerAiStep() {
         this.level.getProfiler().push("tadpoleBrain");
-        this.getBrain().tick((ServerLevel)this.level, this);
+        this.getBrain().tick((ServerLevel) this.level, this);
         this.level.getProfiler().pop();
         this.level.getProfiler().push("tadpoleActivityUpdate");
         TadpoleBrain.updateActivities(this);
@@ -85,13 +98,16 @@ public class Tadpole extends AbstractFish {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 1.0D).add(Attributes.MAX_HEALTH, 6.0D);
+        return Mob.createMobAttributes()
+            .add(Attributes.MOVEMENT_SPEED, 1.0D)
+            .add(Attributes.MAX_HEALTH, 6.0D);
     }
 
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide) this.setAge(this.age + 1);
+        if (!this.level.isClientSide)
+            this.setAge(this.age + 1);
     }
 
     @Override
@@ -106,17 +122,20 @@ public class Tadpole extends AbstractFish {
         this.setAge(tag.getInt("Age"));
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected SoundEvent getAmbientSound() {
         return null;
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected SoundEvent getHurtSound(DamageSource source) {
         return WBSoundEvents.TADPOLE_HURT;
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected SoundEvent getDeathSound() {
         return WBSoundEvents.TADPOLE_DEATH;
     }
@@ -128,7 +147,8 @@ public class Tadpole extends AbstractFish {
             this.eatSlimeBall(player, stack);
             return InteractionResult.sidedSuccess(this.level.isClientSide());
         } else {
-            return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+            return Bucketable.bucketMobPickup(player, hand, this)
+                .orElse(super.mobInteract(player, hand));
         }
     }
 
@@ -177,8 +197,16 @@ public class Tadpole extends AbstractFish {
 
     private void eatSlimeBall(Player player, ItemStack stack) {
         this.decrementItem(player, stack);
-        this.increaseAge((int)((float)(this.getTicksUntilGrowth() / 20) * 0.1F));
-        this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 0.0D, 0.0D, 0.0D);
+        this.increaseAge((int) ((float) (this.getTicksUntilGrowth() / 20) * 0.1F));
+        this.level.addParticle(
+            ParticleTypes.HAPPY_VILLAGER,
+            this.getRandomX(1.0D),
+            this.getRandomY() + 0.5D,
+            this.getRandomZ(1.0D),
+            0.0D,
+            0.0D,
+            0.0D
+        );
     }
 
     private void decrementItem(Player player, ItemStack stack) {
@@ -197,16 +225,26 @@ public class Tadpole extends AbstractFish {
 
     private void setAge(int age) {
         this.age = age;
-        if (this.age >= MAX_TADPOLE_AGE) this.growUp();
+        if (this.age >= MAX_TADPOLE_AGE)
+            this.growUp();
     }
 
     private void growUp() {
         if (this.level instanceof ServerLevel server) {
             Frog frog = WBEntityTypes.FROG.get().create(this.level);
-            if (frog == null) return;
+            if (frog == null)
+                return;
 
-            frog.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            frog.finalizeSpawn(server, this.level.getCurrentDifficultyAt(frog.blockPosition()), MobSpawnType.CONVERSION, null, null);
+            frog.moveTo(
+                this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot()
+            );
+            frog.finalizeSpawn(
+                server,
+                this.level.getCurrentDifficultyAt(frog.blockPosition()),
+                MobSpawnType.CONVERSION,
+                null,
+                null
+            );
             frog.setNoAi(this.isNoAi());
             if (this.hasCustomName()) {
                 frog.setCustomName(this.getCustomName());

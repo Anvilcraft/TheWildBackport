@@ -11,8 +11,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NoteBlock.class)
 public class NoteBlockMixin {
-    @Inject(method = "playNote", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;blockEvent(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;II)V", shift = At.Shift.AFTER))
-    private void wb$playNote(Level level, BlockPos pos, CallbackInfo ci) {
+    @Inject(
+        method = "playNote",
+        at = @At(
+            value = "INVOKE",
+            target
+            = "Lnet/minecraft/world/level/Level;blockEvent(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;II)V",
+            shift = At.Shift.AFTER
+        )
+    )
+    private void
+    wb$playNote(Level level, BlockPos pos, CallbackInfo ci) {
         level.gameEvent(WBGameEvents.NOTE_BLOCK_PLAY.get(), pos);
     }
 }

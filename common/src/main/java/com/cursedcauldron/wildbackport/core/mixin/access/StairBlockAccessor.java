@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(StairBlock.class)
 public interface StairBlockAccessor {
     @Invoker("<init>")
-    static StairBlock createStairBlock(BlockState blockState, BlockBehaviour.Properties properties) {
+    static StairBlock
+    createStairBlock(BlockState blockState, BlockBehaviour.Properties properties) {
         throw new UnsupportedOperationException();
     }
 }

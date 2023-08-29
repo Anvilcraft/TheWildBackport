@@ -10,29 +10,43 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = WildBackport.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.
+EventBusSubscriber(modid = WildBackport.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RemappingSetup {
     @SubscribeEvent
-    public static void missingBlockEntityMapping(RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
-        for (RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>> mapping : event.getMappings(WildBackport.MOD_ID)) {
+    public static void
+    missingBlockEntityMapping(RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
+        for (RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>> mapping :
+             event.getMappings(WildBackport.MOD_ID)) {
             ResourceLocation location = mapping.key;
-            if (location != null) if (location.getPath().equals("wb_sign")) mapping.remap(BlockEntityType.SIGN);
+            if (location != null)
+                if (location.getPath().equals("wb_sign"))
+                    mapping.remap(BlockEntityType.SIGN);
         }
     }
 
     @SubscribeEvent
-    public static void missingEntityMapping(RegistryEvent.MissingMappings<EntityType<?>> event) {
-        for (RegistryEvent.MissingMappings.Mapping<EntityType<?>> mapping : event.getMappings(WildBackport.MOD_ID)) {
+    public static void
+    missingEntityMapping(RegistryEvent.MissingMappings<EntityType<?>> event) {
+        for (RegistryEvent.MissingMappings.Mapping<EntityType<?>> mapping :
+             event.getMappings(WildBackport.MOD_ID)) {
             ResourceLocation location = mapping.key;
-            if (location != null) if (location.getPath().equals("wb_boat")) mapping.remap(WBEntityTypes.MANGROVE_BOAT.get());
+            if (location != null)
+                if (location.getPath().equals("wb_boat"))
+                    mapping.remap(WBEntityTypes.MANGROVE_BOAT.get());
         }
     }
 
     @SubscribeEvent
-    public static void missingPositionSourceMapping(RegistryEvent.MissingMappings<FoliagePlacerType<?>> event) {
-        for (RegistryEvent.MissingMappings.Mapping<FoliagePlacerType<?>> mapping : event.getMappings(WildBackport.MOD_ID)) {
+    public static void
+    missingPositionSourceMapping(RegistryEvent.MissingMappings<FoliagePlacerType<?>> event
+    ) {
+        for (RegistryEvent.MissingMappings.Mapping<FoliagePlacerType<?>> mapping :
+             event.getMappings(WildBackport.MOD_ID)) {
             ResourceLocation location = mapping.key;
-            if (location != null) if (location.getPath().equals("water_tree_foliage_placer")) mapping.remap(FoliagePlacerType.RANDOM_SPREAD_FOLIAGE_PLACER);
+            if (location != null)
+                if (location.getPath().equals("water_tree_foliage_placer"))
+                    mapping.remap(FoliagePlacerType.RANDOM_SPREAD_FOLIAGE_PLACER);
         }
     }
 }

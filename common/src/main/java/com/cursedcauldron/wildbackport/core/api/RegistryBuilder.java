@@ -15,8 +15,12 @@ public class RegistryBuilder {
         return new RegistryBuilder(modId);
     }
 
-    public <T> SampleRegistry<T> create(String key, Registry.RegistryBootstrap<T> bootstrap) {
-        ResourceKey<Registry<T>> resource = ResourceKey.createRegistryKey(new ResourceLocation(this.modId, key));
-        return new SampleRegistry<>(resource, Registry.registerSimple(resource, bootstrap));
+    public <T> SampleRegistry<T>
+    create(String key, Registry.RegistryBootstrap<T> bootstrap) {
+        ResourceKey<Registry<T>> resource
+            = ResourceKey.createRegistryKey(new ResourceLocation(this.modId, key));
+        return new SampleRegistry<>(
+            resource, Registry.registerSimple(resource, bootstrap)
+        );
     }
 }

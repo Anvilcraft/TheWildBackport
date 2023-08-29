@@ -13,11 +13,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MultiPlayerGameMode.class)
 public class MultiPlayerGameModeMixin {
-    @Shadow @Final private Minecraft minecraft;
+    @Shadow
+    @Final
+    private Minecraft minecraft;
 
     @Inject(method = "isServerControlledInventory", at = @At("TAIL"), cancellable = true)
     private void wb$handleInventory(CallbackInfoReturnable<Boolean> cir) {
         LocalPlayer player = this.minecraft.player;
-        cir.setReturnValue(player != null && player.isPassenger() && player.getVehicle() instanceof ChestBoat || cir.getReturnValue());
+        cir.setReturnValue(
+            player != null && player.isPassenger()
+                && player.getVehicle() instanceof ChestBoat
+            || cir.getReturnValue()
+        );
     }
 }

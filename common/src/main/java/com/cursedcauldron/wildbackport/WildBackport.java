@@ -14,14 +14,14 @@ import com.cursedcauldron.wildbackport.common.registry.WBGameRules;
 import com.cursedcauldron.wildbackport.common.registry.WBItems;
 import com.cursedcauldron.wildbackport.common.registry.WBMobEffects;
 import com.cursedcauldron.wildbackport.common.registry.WBPositionSources;
-import com.cursedcauldron.wildbackport.common.registry.worldgen.WBFeatures;
-import com.cursedcauldron.wildbackport.common.registry.worldgen.RootPlacerType;
-import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTreeDecorators;
-import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTrunkPlacers;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBActivities;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBEntityTypes;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBMemoryModules;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBSensorTypes;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.RootPlacerType;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBFeatures;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTreeDecorators;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTrunkPlacers;
 import com.cursedcauldron.wildbackport.common.tag.InstrumentTags;
 import com.cursedcauldron.wildbackport.common.tag.WBBiomeTags;
 import com.cursedcauldron.wildbackport.common.tag.WBBlockTags;
@@ -72,8 +72,11 @@ public class WildBackport {
         WBItemTags.TAGS.bootstrap();
         InstrumentTags.TAGS.bootstrap();
 
-//        ItemProperties.register(WBItems.RECOVERY_COMPASS.get(), new ResourceLocation("angle"), new CompassItemPropertyFunction((level, stack, entity) -> {
-//            return entity instanceof Player player ? Recovery.of(player).getLastDeathLocation().orElse(null) : null;
-//        }));
+        //        ItemProperties.register(WBItems.RECOVERY_COMPASS.get(), new
+        //        ResourceLocation("angle"), new CompassItemPropertyFunction((level,
+        //        stack, entity) -> {
+        //            return entity instanceof Player player ?
+        //            Recovery.of(player).getLastDeathLocation().orElse(null) : null;
+        //        }));
     }
 }

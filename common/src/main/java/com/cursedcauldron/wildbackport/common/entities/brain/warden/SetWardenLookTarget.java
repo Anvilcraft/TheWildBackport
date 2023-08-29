@@ -15,17 +15,35 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 public class SetWardenLookTarget extends Behavior<Warden> {
     public SetWardenLookTarget() {
-        super(ImmutableMap.of(WBMemoryModules.DISTURBANCE_LOCATION.get(), MemoryStatus.REGISTERED, WBMemoryModules.ROAR_TARGET.get(), MemoryStatus.REGISTERED, MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT));
+        super(ImmutableMap.of(
+            WBMemoryModules.DISTURBANCE_LOCATION.get(),
+            MemoryStatus.REGISTERED,
+            WBMemoryModules.ROAR_TARGET.get(),
+            MemoryStatus.REGISTERED,
+            MemoryModuleType.ATTACK_TARGET,
+            MemoryStatus.VALUE_ABSENT
+        ));
     }
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, Warden warden) {
-        return warden.getBrain().hasMemoryValue(WBMemoryModules.DISTURBANCE_LOCATION.get()) || warden.getBrain().hasMemoryValue(WBMemoryModules.ROAR_TARGET.get());
+        return warden.getBrain().hasMemoryValue(WBMemoryModules.DISTURBANCE_LOCATION.get()
+               )
+            || warden.getBrain().hasMemoryValue(WBMemoryModules.ROAR_TARGET.get());
     }
 
     @Override
     protected void start(ServerLevel level, Warden warden, long time) {
-        BlockPos pos = warden.getBrain().getMemory(WBMemoryModules.ROAR_TARGET.get()).map(Entity::blockPosition).or(() -> warden.getBrain().getMemory(WBMemoryModules.DISTURBANCE_LOCATION.get())).get();
-        warden.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(pos));
+        BlockPos pos = warden.getBrain()
+                           .getMemory(WBMemoryModules.ROAR_TARGET.get())
+                           .map(Entity::blockPosition)
+                           .or(()
+                                   -> warden.getBrain().getMemory(
+                                       WBMemoryModules.DISTURBANCE_LOCATION.get()
+                                   ))
+                           .get();
+        warden.getBrain().setMemory(
+            MemoryModuleType.LOOK_TARGET, new BlockPosTracker(pos)
+        );
     }
 }

@@ -11,9 +11,18 @@ public class FlyingRandomStroll extends RandomStroll {
         super(distance, true);
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected Vec3 getTargetPos(PathfinderMob mob) {
         Vec3 vector = mob.getViewVector(0.0F);
-        return AirAndWaterRandomPos.getPos(mob, this.maxHorizontalDistance, this.maxVerticalDistance, -2, vector.x, vector.z, (float)Math.PI / 2.0F);
+        return AirAndWaterRandomPos.getPos(
+            mob,
+            this.maxHorizontalDistance,
+            this.maxVerticalDistance,
+            -2,
+            vector.x,
+            vector.z,
+            (float) Math.PI / 2.0F
+        );
     }
 }

@@ -11,6 +11,6 @@ public interface WardenTracker {
     }
 
     static WardenTracker of(Player player) {
-        return (WardenTracker)player;
+        return (WardenTracker) player;
     }
 }

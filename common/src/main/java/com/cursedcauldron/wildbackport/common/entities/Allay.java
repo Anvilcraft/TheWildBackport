@@ -1,5 +1,9 @@
 package com.cursedcauldron.wildbackport.common.entities;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
 import com.cursedcauldron.wildbackport.common.entities.brain.AllayBrain;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBMemoryModules;
@@ -46,16 +50,48 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 //<>
 
 public class Allay extends PathfinderMob implements InventoryCarrier {
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Allay>>> SENSORS = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY, SensorType.NEAREST_ITEMS);
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORIES = ImmutableList.of(MemoryModuleType.PATH, MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.HURT_BY, MemoryModuleType.NEAREST_VISIBLE_WANTED_ITEM, WBMemoryModules.LIKED_PLAYER.get(), WBMemoryModules.LIKED_NOTEBLOCK.get(), WBMemoryModules.LIKED_NOTEBLOCK_COOLDOWN_TICKS.get(), WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get());
-    public static final ImmutableList<Float> THROW_SOUND_PITCHES = ImmutableList.of(0.5625F, 0.625F, 0.75F, 0.9375F, 1.0F, 1.0F, 1.125F, 1.25F, 1.5F, 1.875F, 2.0F, 2.25F, 2.5F, 3.0F, 3.75F, 4.0F);
+    protected static final
+        ImmutableList<? extends SensorType<? extends Sensor<? super Allay>>> SENSORS
+        = ImmutableList.of(
+            SensorType.NEAREST_LIVING_ENTITIES,
+            SensorType.NEAREST_PLAYERS,
+            SensorType.HURT_BY,
+            SensorType.NEAREST_ITEMS
+        );
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORIES = ImmutableList.of(
+        MemoryModuleType.PATH,
+        MemoryModuleType.LOOK_TARGET,
+        MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+        MemoryModuleType.WALK_TARGET,
+        MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+        MemoryModuleType.HURT_BY,
+        MemoryModuleType.NEAREST_VISIBLE_WANTED_ITEM,
+        WBMemoryModules.LIKED_PLAYER.get(),
+        WBMemoryModules.LIKED_NOTEBLOCK.get(),
+        WBMemoryModules.LIKED_NOTEBLOCK_COOLDOWN_TICKS.get(),
+        WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get()
+    );
+    public static final ImmutableList<Float> THROW_SOUND_PITCHES = ImmutableList.of(
+        0.5625F,
+        0.625F,
+        0.75F,
+        0.9375F,
+        1.0F,
+        1.0F,
+        1.125F,
+        1.25F,
+        1.5F,
+        1.875F,
+        2.0F,
+        2.25F,
+        2.5F,
+        3.0F,
+        3.75F,
+        4.0F
+    );
     private final SimpleContainer inventory = new SimpleContainer(1);
     private float holdingTicks;
     private float holdingTicksOld;
@@ -76,13 +112,19 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
         return AllayBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public Brain<Allay> getBrain() {
-        return (Brain<Allay>)super.getBrain();
+        return (Brain<Allay>) super.getBrain();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FLYING_SPEED, 0.1F).add(Attributes.MOVEMENT_SPEED, 0.1F).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.FOLLOW_RANGE, 48.0D);
+        return Mob.createMobAttributes()
+            .add(Attributes.MAX_HEALTH, 20.0D)
+            .add(Attributes.FLYING_SPEED, 0.1F)
+            .add(Attributes.MOVEMENT_SPEED, 0.1F)
+            .add(Attributes.ATTACK_DAMAGE, 2.0D)
+            .add(Attributes.FOLLOW_RANGE, 48.0D);
     }
 
     @Override
@@ -121,15 +163,18 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     }
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource source) {
+    public boolean
+    causeFallDamage(float fallDistance, float damageMultiplier, DamageSource source) {
         return false;
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.getEntity() instanceof Player player) {
-            Optional<UUID> likedPlayer = this.getBrain().getMemory(WBMemoryModules.LIKED_PLAYER.get());
-            if (likedPlayer.isPresent() && player.getUUID().equals(likedPlayer.get())) return false;
+            Optional<UUID> likedPlayer
+                = this.getBrain().getMemory(WBMemoryModules.LIKED_PLAYER.get());
+            if (likedPlayer.isPresent() && player.getUUID().equals(likedPlayer.get()))
+                return false;
         }
 
         return super.hurt(source, amount);
@@ -139,19 +184,26 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     protected void playStepSound(BlockPos pos, BlockState state) {}
 
     @Override
-    protected void checkFallDamage(double fallenDistance, boolean canLand, BlockState state, BlockPos pos) {}
+    protected void checkFallDamage(
+        double fallenDistance, boolean canLand, BlockState state, BlockPos pos
+    ) {}
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected SoundEvent getAmbientSound() {
-        return this.hasItemInSlot(EquipmentSlot.MAINHAND) ? WBSoundEvents.ALLAY_AMBIENT_WITH_ITEM : WBSoundEvents.ALLAY_AMBIENT_WITHOUT_ITEM;
+        return this.hasItemInSlot(EquipmentSlot.MAINHAND)
+            ? WBSoundEvents.ALLAY_AMBIENT_WITH_ITEM
+            : WBSoundEvents.ALLAY_AMBIENT_WITHOUT_ITEM;
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected SoundEvent getHurtSound(DamageSource source) {
         return WBSoundEvents.ALLAY_HURT;
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     protected SoundEvent getDeathSound() {
         return WBSoundEvents.ALLAY_DEATH;
     }
@@ -164,16 +216,22 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     @Override
     protected void customServerAiStep() {
         this.level.getProfiler().push("allayBrain");
-        this.getBrain().tick((ServerLevel)this.level, this);
+        this.getBrain().tick((ServerLevel) this.level, this);
         this.level.getProfiler().pop();
         this.level.getProfiler().push("allayActivityUpdate");
         AllayBrain.updateActivities(this);
         this.level.getProfiler().pop();
         this.level.getProfiler().push("looting");
-        if (!this.level.isClientSide && this.canPickUpLoot() && this.isAlive() && !this.dead && this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-            List<ItemEntity> items = this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(1.0, 1.0, 1.0));
+        if (!this.level.isClientSide && this.canPickUpLoot() && this.isAlive()
+            && !this.dead
+            && this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            List<ItemEntity> items = this.level.getEntitiesOfClass(
+                ItemEntity.class, this.getBoundingBox().inflate(1.0, 1.0, 1.0)
+            );
             for (ItemEntity item : items) {
-                if (item.isRemoved() || item.getItem().isEmpty() || item.hasPickUpDelay() || !this.wantsToPickUp(item.getItem())) continue;
+                if (item.isRemoved() || item.getItem().isEmpty() || item.hasPickUpDelay()
+                    || !this.wantsToPickUp(item.getItem()))
+                    continue;
                 this.pickUpItem(item);
             }
         }
@@ -184,7 +242,8 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level.isClientSide && this.isAlive() && this.tickCount % 10 == 0) this.heal(1.0F);
+        if (!this.level.isClientSide && this.isAlive() && this.tickCount % 10 == 0)
+            this.heal(1.0F);
     }
 
     @Override
@@ -215,7 +274,9 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     }
 
     private boolean isOnItemPickupCooldown() {
-        return this.getBrain().checkMemory(WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_PRESENT);
+        return this.getBrain().checkMemory(
+            WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_PRESENT
+        );
     }
 
     @Override
@@ -226,15 +287,33 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
             ItemStack stack = playerStack.copy();
             stack.setCount(1);
             this.setItemInHand(InteractionHand.MAIN_HAND, stack);
-            if (!player.getAbilities().instabuild) playerStack.shrink(1);
-            this.level.playSound(player, this, WBSoundEvents.ALLAY_ITEM_GIVEN, SoundSource.NEUTRAL, 2.0F, 1.0F);
-            this.getBrain().setMemory(WBMemoryModules.LIKED_PLAYER.get(), player.getUUID());
+            if (!player.getAbilities().instabuild)
+                playerStack.shrink(1);
+            this.level.playSound(
+                player,
+                this,
+                WBSoundEvents.ALLAY_ITEM_GIVEN,
+                SoundSource.NEUTRAL,
+                2.0F,
+                1.0F
+            );
+            this.getBrain().setMemory(
+                WBMemoryModules.LIKED_PLAYER.get(), player.getUUID()
+            );
             return InteractionResult.SUCCESS;
         } else if (!allayStack.isEmpty() && hand == InteractionHand.MAIN_HAND && playerStack.isEmpty()) {
             this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-            this.level.playSound(player, this, WBSoundEvents.ALLAY_ITEM_TAKEN, SoundSource.NEUTRAL, 2.0F, 1.0F);
+            this.level.playSound(
+                player,
+                this,
+                WBSoundEvents.ALLAY_ITEM_TAKEN,
+                SoundSource.NEUTRAL,
+                2.0F,
+                1.0F
+            );
             this.swing(InteractionHand.MAIN_HAND);
-            for (ItemStack stack : this.getInventory().removeAllItems()) BehaviorUtils.throwItem(this, stack, this.position());
+            for (ItemStack stack : this.getInventory().removeAllItems())
+                BehaviorUtils.throwItem(this, stack, this.position());
             this.getBrain().eraseMemory(WBMemoryModules.LIKED_PLAYER.get());
             player.addItem(allayStack);
             return InteractionResult.SUCCESS;
@@ -251,7 +330,8 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     @Override
     public boolean wantsToPickUp(ItemStack stack) {
         ItemStack heldItem = this.getItemInHand(InteractionHand.MAIN_HAND);
-        return !heldItem.isEmpty() && heldItem.sameItemStackIgnoreDurability(stack) && this.inventory.canAddItem(stack);
+        return !heldItem.isEmpty() && heldItem.sameItemStackIgnoreDurability(stack)
+            && this.inventory.canAddItem(stack);
     }
 
     @Override
@@ -260,7 +340,8 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
         if (this.wantsToPickUp(stack)) {
             SimpleContainer inventory = this.getInventory();
             boolean canAdd = inventory.canAddItem(stack);
-            if (!canAdd) return;
+            if (!canAdd)
+                return;
 
             this.onItemPickup(itemEntity);
             this.take(itemEntity, stack.getCount());
@@ -285,7 +366,8 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
     }
 
     public float getHoldingItemAnimationProgress(float animationProgress) {
-        return Mth.lerp(animationProgress, this.holdingTicksOld, this.holdingTicks) / 5.0F;
+        return Mth.lerp(animationProgress, this.holdingTicksOld, this.holdingTicks)
+            / 5.0F;
     }
 
     @Override

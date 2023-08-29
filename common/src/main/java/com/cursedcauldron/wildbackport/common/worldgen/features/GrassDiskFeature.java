@@ -1,13 +1,13 @@
 package com.cursedcauldron.wildbackport.common.worldgen.features;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-
-import java.util.Random;
 
 public class GrassDiskFeature extends Feature<GrassDiskConfiguration> {
     public GrassDiskFeature(Codec<GrassDiskConfiguration> codec) {
@@ -27,23 +27,35 @@ public class GrassDiskFeature extends Feature<GrassDiskConfiguration> {
         int radius = config.radius().sample(random);
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
-        for (BlockPos position : BlockPos.betweenClosed(pos.offset(-radius, 0, -radius), pos.offset(radius, 0, radius))) {
+        for (BlockPos position : BlockPos.betweenClosed(
+                 pos.offset(-radius, 0, -radius), pos.offset(radius, 0, radius)
+             )) {
             int x = position.getX() - position.getX();
             int z = position.getZ() - position.getZ();
             if (x * x + z * z <= radius * radius) {
-                place |= this.placeBlock(config, level, random, topY, bottomY, mutable.set(position));
+                place |= this.placeBlock(
+                    config, level, random, topY, bottomY, mutable.set(position)
+                );
             }
         }
 
         return place;
     }
 
-    protected boolean placeBlock(GrassDiskConfiguration config, WorldGenLevel level, Random random, int topY, int bottomY, BlockPos.MutableBlockPos pos) {
+    protected boolean placeBlock(
+        GrassDiskConfiguration config,
+        WorldGenLevel level,
+        Random random,
+        int topY,
+        int bottomY,
+        BlockPos.MutableBlockPos pos
+    ) {
         boolean place = false;
         for (int y = topY; y > bottomY; y--) {
             pos.setY(y);
             if (config.target().test(level, pos)) {
-                BlockState state = config.stateProvider().getBlockState(level, random, pos);
+                BlockState state
+                    = config.stateProvider().getBlockState(level, random, pos);
                 level.setBlock(pos, state, 2);
                 this.markAboveForPostProcessing(level, pos);
                 place = true;

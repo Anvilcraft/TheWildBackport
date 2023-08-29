@@ -1,5 +1,8 @@
 package com.cursedcauldron.wildbackport.common.entities.brain.allay;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
 import com.cursedcauldron.wildbackport.common.entities.Allay;
 import com.cursedcauldron.wildbackport.common.entities.brain.AllayBrain;
@@ -21,17 +24,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Optional;
-import java.util.function.Function;
-
 //<>
 
-public class GiveInventoryToLookTarget<E extends LivingEntity & InventoryCarrier> extends Behavior<E> {
+public class GiveInventoryToLookTarget<E extends LivingEntity & InventoryCarrier>
+    extends Behavior<E> {
     private final Function<LivingEntity, Optional<PositionTracker>> lookTarget;
     private final float speed;
 
-    public GiveInventoryToLookTarget(Function<LivingEntity, Optional<PositionTracker>> lookTarget, float speed) {
-        super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get(), MemoryStatus.REGISTERED));
+    public GiveInventoryToLookTarget(
+        Function<LivingEntity, Optional<PositionTracker>> lookTarget, float speed
+    ) {
+        super(ImmutableMap.of(
+            MemoryModuleType.LOOK_TARGET,
+            MemoryStatus.REGISTERED,
+            MemoryModuleType.WALK_TARGET,
+            MemoryStatus.REGISTERED,
+            WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get(),
+            MemoryStatus.REGISTERED
+        ));
         this.lookTarget = lookTarget;
         this.speed = speed;
     }
@@ -48,7 +58,9 @@ public class GiveInventoryToLookTarget<E extends LivingEntity & InventoryCarrier
 
     @Override
     protected void start(ServerLevel level, E entity, long time) {
-        this.lookTarget.apply(entity).ifPresent(target -> MobUtils.walkTowards(entity, target, this.speed, 3));
+        this.lookTarget.apply(entity).ifPresent(
+            target -> MobUtils.walkTowards(entity, target, this.speed, 3)
+        );
     }
 
     @Override
@@ -56,28 +68,35 @@ public class GiveInventoryToLookTarget<E extends LivingEntity & InventoryCarrier
         Optional<PositionTracker> lookTarget = this.lookTarget.apply(entity);
         if (lookTarget.isPresent()) {
             PositionTracker target = lookTarget.get();
-            double distance = target.currentPosition().distanceTo(entity.getEyePosition());
+            double distance
+                = target.currentPosition().distanceTo(entity.getEyePosition());
             if (distance < 3.0D) {
                 ItemStack stack = entity.getInventory().removeItem(0, 1);
                 if (!stack.isEmpty()) {
                     playThrowSound(entity, stack, offsetTarget(target));
                     if (entity instanceof Allay allay) {
-                        AllayBrain.getLikedPlayer(allay).ifPresent(player -> this.triggerCriteria(target, stack, player));
+                        AllayBrain.getLikedPlayer(allay).ifPresent(
+                            player -> this.triggerCriteria(target, stack, player)
+                        );
                     }
 
-                    entity.getBrain().setMemory(WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get(), 60);
+                    entity.getBrain().setMemory(
+                        WBMemoryModules.ITEM_PICKUP_COOLDOWN_TICKS.get(), 60
+                    );
                 }
             }
         }
     }
 
-    private void triggerCriteria(PositionTracker target, ItemStack stack, ServerPlayer player) {
+    private void
+    triggerCriteria(PositionTracker target, ItemStack stack, ServerPlayer player) {
         BlockPos pos = target.currentBlockPosition().below();
-//        WBCriteriaTriggers.ALLAY_DROP_ITEM_ON_BLOCK.trigger(player, pos, stack);
+        //        WBCriteriaTriggers.ALLAY_DROP_ITEM_ON_BLOCK.trigger(player, pos, stack);
     }
 
     private boolean hasItemAndTarget(E entity) {
-        return !entity.getInventory().isEmpty() && this.lookTarget.apply(entity).isPresent();
+        return !entity.getInventory().isEmpty()
+            && this.lookTarget.apply(entity).isPresent();
     }
 
     private static Vec3 offsetTarget(PositionTracker tracker) {
@@ -90,7 +109,14 @@ public class GiveInventoryToLookTarget<E extends LivingEntity & InventoryCarrier
         Level level = entity.level;
         if (level.getGameTime() % 7L == 0L && level.random.nextDouble() < 0.9D) {
             float pitch = Util.getRandom(Allay.THROW_SOUND_PITCHES, level.getRandom());
-            level.playSound(null, entity, WBSoundEvents.ALLAY_ITEM_THROW, SoundSource.NEUTRAL, 1.0F, pitch);
+            level.playSound(
+                null,
+                entity,
+                WBSoundEvents.ALLAY_ITEM_THROW,
+                SoundSource.NEUTRAL,
+                1.0F,
+                pitch
+            );
         }
     }
 }

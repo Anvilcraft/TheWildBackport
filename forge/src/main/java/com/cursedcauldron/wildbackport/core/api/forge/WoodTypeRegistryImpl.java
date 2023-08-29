@@ -8,7 +8,8 @@ import net.minecraftforge.fml.loading.FMLLoader;
 public class WoodTypeRegistryImpl {
     public static WoodType create(ResourceLocation location) {
         WoodType woodType = WoodType.register(WoodType.create(location.toString()));
-        if (FMLLoader.getDist().isClient()) Sheets.addWoodType(woodType);
+        if (FMLLoader.getDist().isClient())
+            Sheets.addWoodType(woodType);
         return woodType;
     }
 }

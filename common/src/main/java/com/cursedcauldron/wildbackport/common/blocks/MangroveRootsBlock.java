@@ -21,32 +21,50 @@ public class MangroveRootsBlock extends Block implements SimpleWaterloggedBlock 
 
     public MangroveRootsBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false)
+        );
     }
 
     @Override
-    public boolean skipRendering(BlockState state, BlockState stateFrom, Direction direction) {
-        return stateFrom.is(WBBlocks.MANGROVE_ROOTS.get()) && direction.getAxis() == Direction.Axis.Y;
+    public boolean
+    skipRendering(BlockState state, BlockState stateFrom, Direction direction) {
+        return stateFrom.is(WBBlocks.MANGROVE_ROOTS.get())
+            && direction.getAxis() == Direction.Axis.Y;
     }
 
-    @Override @Nullable @SuppressWarnings("ConstantConditions")
+    @Override
+    @Nullable
+    @SuppressWarnings("ConstantConditions")
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return super.getStateForPlacement(ctx).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
+        return super.getStateForPlacement(ctx).setValue(
+            WATERLOGGED,
+            ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER
+        );
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor level, BlockPos pos, BlockPos newPos) {
-        if (state.getValue(WATERLOGGED)) level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+    public BlockState updateShape(
+        BlockState state,
+        Direction direction,
+        BlockState newState,
+        LevelAccessor level,
+        BlockPos pos,
+        BlockPos newPos
+    ) {
+        if (state.getValue(WATERLOGGED))
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         return super.updateShape(state, direction, newState, level, pos, newPos);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false)
+                                           : super.getFluidState(state);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void
+    createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
 }

@@ -20,7 +20,13 @@ public class VibrationListenerMixin implements Vibration.Instance {
     private Vibration vibration;
 
     @Inject(method = "handleGameEvent", at = @At("HEAD"))
-    private void handleSource(Level level, GameEvent event, Entity entity, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    private void handleSource(
+        Level level,
+        GameEvent event,
+        Entity entity,
+        BlockPos pos,
+        CallbackInfoReturnable<Boolean> cir
+    ) {
         if (level instanceof ServerLevel server) {
             this.setPos(pos);
             this.setVibration(new Vibration(entity));

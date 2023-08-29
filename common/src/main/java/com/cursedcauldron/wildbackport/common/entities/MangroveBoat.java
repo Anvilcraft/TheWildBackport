@@ -37,9 +37,12 @@ public class MangroveBoat extends Boat {
             this.setDamage(this.getDamage() + amount * 10.0F);
             this.markHurt();
             this.gameEvent(GameEvent.ENTITY_DAMAGED, source.getEntity());
-            boolean isCreativePlayer = source.getEntity() instanceof Player player && player.getAbilities().instabuild;
+            boolean isCreativePlayer = source.getEntity() instanceof Player player
+                && player.getAbilities().instabuild;
             if (isCreativePlayer || this.getDamage() > 40.0F) {
-                if (!isCreativePlayer && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) this.dropItems(source);
+                if (!isCreativePlayer
+                    && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+                    this.dropItems(source);
 
                 this.discard();
             }
@@ -56,6 +59,8 @@ public class MangroveBoat extends Boat {
 
     @Override
     public Item getDropItem() {
-        return this.getBoatType() != BoatTypes.MANGROVE.get() ? super.getDropItem() : WBItems.MANGROVE_BOAT.get();
+        return this.getBoatType() != BoatTypes.MANGROVE.get()
+            ? super.getDropItem()
+            : WBItems.MANGROVE_BOAT.get();
     }
 }

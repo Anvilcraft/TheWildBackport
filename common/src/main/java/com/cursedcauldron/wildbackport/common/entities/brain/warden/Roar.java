@@ -18,15 +18,30 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 public class Roar extends Behavior<Warden> {
     public Roar() {
-        super(ImmutableMap.of(WBMemoryModules.ROAR_TARGET.get(), MemoryStatus.VALUE_PRESENT, MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT, WBMemoryModules.ROAR_SOUND_COOLDOWN.get(), MemoryStatus.REGISTERED, WBMemoryModules.ROAR_SOUND_DELAY.get(), MemoryStatus.REGISTERED), WardenBrain.ROAR_DURATION);
+        super(
+            ImmutableMap.of(
+                WBMemoryModules.ROAR_TARGET.get(),
+                MemoryStatus.VALUE_PRESENT,
+                MemoryModuleType.ATTACK_TARGET,
+                MemoryStatus.VALUE_ABSENT,
+                WBMemoryModules.ROAR_SOUND_COOLDOWN.get(),
+                MemoryStatus.REGISTERED,
+                WBMemoryModules.ROAR_SOUND_DELAY.get(),
+                MemoryStatus.REGISTERED
+            ),
+            WardenBrain.ROAR_DURATION
+        );
     }
 
     @Override
     protected void start(ServerLevel level, Warden warden, long time) {
         Brain<?> brain = warden.getBrain();
-        brain.setMemoryWithExpiry(WBMemoryModules.ROAR_SOUND_DELAY.get(), Unit.INSTANCE, 26L);
+        brain.setMemoryWithExpiry(
+            WBMemoryModules.ROAR_SOUND_DELAY.get(), Unit.INSTANCE, 26L
+        );
         brain.eraseMemory(MemoryModuleType.WALK_TARGET);
-        LivingEntity target = warden.getBrain().getMemory(WBMemoryModules.ROAR_TARGET.get()).get();
+        LivingEntity target
+            = warden.getBrain().getMemory(WBMemoryModules.ROAR_TARGET.get()).get();
         BehaviorUtils.lookAtEntity(warden, target);
         warden.setPose(Poses.ROARING.get());
         warden.increaseAngerAt(target, 20, false);
@@ -39,16 +54,25 @@ public class Roar extends Behavior<Warden> {
 
     @Override
     protected void tick(ServerLevel level, Warden warden, long time) {
-        if (!warden.getBrain().hasMemoryValue(WBMemoryModules.ROAR_SOUND_DELAY.get()) && !warden.getBrain().hasMemoryValue(WBMemoryModules.ROAR_SOUND_COOLDOWN.get())) {
-            warden.getBrain().setMemoryWithExpiry(WBMemoryModules.ROAR_SOUND_COOLDOWN.get(), Unit.INSTANCE, WardenBrain.ROAR_DURATION - 25);
+        if (!warden.getBrain().hasMemoryValue(WBMemoryModules.ROAR_SOUND_DELAY.get())
+            && !warden.getBrain().hasMemoryValue(WBMemoryModules.ROAR_SOUND_COOLDOWN.get()
+            )) {
+            warden.getBrain().setMemoryWithExpiry(
+                WBMemoryModules.ROAR_SOUND_COOLDOWN.get(),
+                Unit.INSTANCE,
+                WardenBrain.ROAR_DURATION - 25
+            );
             warden.playSound(WBSoundEvents.WARDEN_ROAR, 3.0F, 1.0F);
         }
     }
 
     @Override
     protected void stop(ServerLevel level, Warden warden, long time) {
-        if (warden.hasPose(Poses.ROARING.get())) warden.setPose(Pose.STANDING);
-        warden.getBrain().getMemory(WBMemoryModules.ROAR_TARGET.get()).ifPresent(warden::updateAttackTarget);
+        if (warden.hasPose(Poses.ROARING.get()))
+            warden.setPose(Pose.STANDING);
+        warden.getBrain()
+            .getMemory(WBMemoryModules.ROAR_TARGET.get())
+            .ifPresent(warden::updateAttackTarget);
         warden.getBrain().eraseMemory(WBMemoryModules.ROAR_TARGET.get());
     }
 }

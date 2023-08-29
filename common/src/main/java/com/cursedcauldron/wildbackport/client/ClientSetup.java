@@ -41,28 +41,58 @@ public class ClientSetup {
      */
     public static void onClient() {
         // Colors
-        ColorRegistry.register((state, getter, pos, tint) -> (getter == null || pos == null) ? FoliageColor.getDefaultColor() : BiomeColors.getAverageFoliageColor(getter, pos), WBBlocks.MANGROVE_LEAVES);
+        ColorRegistry.register(
+            (state, getter, pos, tint)
+                -> (getter == null || pos == null)
+                ? FoliageColor.getDefaultColor()
+                : BiomeColors.getAverageFoliageColor(getter, pos),
+            WBBlocks.MANGROVE_LEAVES
+        );
         ColorRegistry.register((stack, tint) -> 9619016, WBBlocks.MANGROVE_LEAVES);
 
         // Entity Renderers
-        RenderRegistry.setLayerDefinition(AllayRenderer.MODEL_LAYER, AllayModel::createBodyLayer);
+        RenderRegistry.setLayerDefinition(
+            AllayRenderer.MODEL_LAYER, AllayModel::createBodyLayer
+        );
         RenderRegistry.setEntityRender(WBEntityTypes.ALLAY, AllayRenderer::new);
-        RenderRegistry.setLayerDefinition(WardenRenderer.MODEL_LAYER, WardenModel::createBodyLayer);
+        RenderRegistry.setLayerDefinition(
+            WardenRenderer.MODEL_LAYER, WardenModel::createBodyLayer
+        );
         RenderRegistry.setEntityRender(WBEntityTypes.WARDEN, WardenRenderer::new);
-        RenderRegistry.setLayerDefinition(FrogRenderer.MODEL_LAYER, FrogModel::createBodyLayer);
+        RenderRegistry.setLayerDefinition(
+            FrogRenderer.MODEL_LAYER, FrogModel::createBodyLayer
+        );
         RenderRegistry.setEntityRender(WBEntityTypes.FROG, FrogRenderer::new);
-        RenderRegistry.setLayerDefinition(TadpoleRenderer.MODEL_LAYER, TadpoleModel::createBodyLayer);
+        RenderRegistry.setLayerDefinition(
+            TadpoleRenderer.MODEL_LAYER, TadpoleModel::createBodyLayer
+        );
         RenderRegistry.setEntityRender(WBEntityTypes.TADPOLE, TadpoleRenderer::new);
-        for (Boat.Type type : Boat.Type.values()) RenderRegistry.setLayerDefinition(ChestBoatModel.createChestBoat(type), () -> ChestBoatModel.createBodyModel(true));
-        RenderRegistry.setEntityRender(WBEntityTypes.MANGROVE_BOAT, context -> new ChestBoatRenderer(context, false));
-        RenderRegistry.setEntityRender(WBEntityTypes.CHEST_BOAT, context -> new ChestBoatRenderer(context, true));
+        for (Boat.Type type : Boat.Type.values())
+            RenderRegistry.setLayerDefinition(
+                ChestBoatModel.createChestBoat(type),
+                () -> ChestBoatModel.createBodyModel(true)
+            );
+        RenderRegistry.setEntityRender(
+            WBEntityTypes.MANGROVE_BOAT, context -> new ChestBoatRenderer(context, false)
+        );
+        RenderRegistry.setEntityRender(
+            WBEntityTypes.CHEST_BOAT, context -> new ChestBoatRenderer(context, true)
+        );
 
         // Particle Renderers
-        ParticleRegistry.create(WBParticleTypes.SCULK_SOUL, SculkSoulParticle.Provider::new);
-        ParticleRegistry.create(WBParticleTypes.SCULK_CHARGE, SculkChargeParticle.Provider::new);
-        ParticleRegistry.create(WBParticleTypes.SCULK_CHARGE_POP, SculkChargePopParticle.Provider::new);
+        ParticleRegistry.create(
+            WBParticleTypes.SCULK_SOUL, SculkSoulParticle.Provider::new
+        );
+        ParticleRegistry.create(
+            WBParticleTypes.SCULK_CHARGE, SculkChargeParticle.Provider::new
+        );
+        ParticleRegistry.create(
+            WBParticleTypes.SCULK_CHARGE_POP, SculkChargePopParticle.Provider::new
+        );
         ParticleRegistry.create(WBParticleTypes.SHRIEK, ShriekParticle.Provider::new);
-        ParticleRegistry.create(WBParticleTypes.SONIC_BOOM, SonicBoomParticle.Provider::new);
+        ParticleRegistry.create(
+            WBParticleTypes.SONIC_BOOM, SonicBoomParticle.Provider::new
+        );
     }
 
     /**
@@ -70,14 +100,15 @@ public class ClientSetup {
      */
     public static void onPostClient() {
         // Block Render Types
-        RenderRegistry.setBlockRenderType(RenderType.cutout(),
-                WBBlocks.SCULK_VEIN.get(),
-                WBBlocks.SCULK_SHRIEKER.get(),
-                WBBlocks.FROGSPAWN.get(),
-                WBBlocks.MANGROVE_ROOTS.get(),
-                WBBlocks.MANGROVE_TRAPDOOR.get(),
-                WBBlocks.MANGROVE_PROPAGULE.get(),
-                WBBlocks.POTTED_MANGROVE_PROPAGULE.get()
+        RenderRegistry.setBlockRenderType(
+            RenderType.cutout(),
+            WBBlocks.SCULK_VEIN.get(),
+            WBBlocks.SCULK_SHRIEKER.get(),
+            WBBlocks.FROGSPAWN.get(),
+            WBBlocks.MANGROVE_ROOTS.get(),
+            WBBlocks.MANGROVE_TRAPDOOR.get(),
+            WBBlocks.MANGROVE_PROPAGULE.get(),
+            WBBlocks.POTTED_MANGROVE_PROPAGULE.get()
         );
     }
 }

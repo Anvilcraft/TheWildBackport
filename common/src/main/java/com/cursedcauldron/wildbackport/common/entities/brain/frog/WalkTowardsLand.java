@@ -20,7 +20,14 @@ public class WalkTowardsLand extends Behavior<PathfinderMob> {
     private long nextStartTime;
 
     public WalkTowardsLand(int distance, float speedModifier) {
-        super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED));
+        super(ImmutableMap.of(
+            MemoryModuleType.ATTACK_TARGET,
+            MemoryStatus.VALUE_ABSENT,
+            MemoryModuleType.WALK_TARGET,
+            MemoryStatus.VALUE_ABSENT,
+            MemoryModuleType.LOOK_TARGET,
+            MemoryStatus.REGISTERED
+        ));
         this.distance = distance;
         this.speedModifier = speedModifier;
     }
@@ -42,13 +49,21 @@ public class WalkTowardsLand extends Behavior<PathfinderMob> {
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             CollisionContext context = CollisionContext.of(entity);
 
-            for (BlockPos position : BlockPos.withinManhattan(pos, this.distance, this.distance, this.distance)) {
+            for (BlockPos position : BlockPos.withinManhattan(
+                     pos, this.distance, this.distance, this.distance
+                 )) {
                 if (position.getX() != pos.getX() || position.getZ() != pos.getZ()) {
                     BlockState state = level.getBlockState(position);
-                    BlockState landState = level.getBlockState(mutable.setWithOffset(position, Direction.DOWN));
-                    if (!state.is(Blocks.WATER) && level.getFluidState(position).isEmpty() && state.getCollisionShape(level, position, context).isEmpty() && landState.isFaceSturdy(level, mutable, Direction.UP)) {
+                    BlockState landState = level.getBlockState(
+                        mutable.setWithOffset(position, Direction.DOWN)
+                    );
+                    if (!state.is(Blocks.WATER) && level.getFluidState(position).isEmpty()
+                        && state.getCollisionShape(level, position, context).isEmpty()
+                        && landState.isFaceSturdy(level, mutable, Direction.UP)) {
                         this.nextStartTime = time + 60L;
-                        BehaviorUtils.setWalkAndLookTargetMemories(entity, position.immutable(), this.speedModifier, 1);
+                        BehaviorUtils.setWalkAndLookTargetMemories(
+                            entity, position.immutable(), this.speedModifier, 1
+                        );
                         return;
                     }
                 }

@@ -1,16 +1,18 @@
 package com.cursedcauldron.wildbackport.core.api.worldgen;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+
 public class BiomeModifier {
-    private static final Map<Consumer<BiomeWriter>, ResourceKey<Biome>[]> FEATURES_PER_BIOME = new ConcurrentHashMap<>();
-    private static final Map<Consumer<BiomeWriter>, Biome.BiomeCategory[]> FEATURES_PER_CATEGORY = new ConcurrentHashMap<>();
+    private static final Map<Consumer<BiomeWriter>, ResourceKey<Biome>[]>
+        FEATURES_PER_BIOME = new ConcurrentHashMap<>();
+    private static final Map<Consumer<BiomeWriter>, Biome.BiomeCategory[]>
+        FEATURES_PER_CATEGORY = new ConcurrentHashMap<>();
     public static final BiomeModifier INSTANCE = new BiomeModifier();
 
     @ExpectPlatform

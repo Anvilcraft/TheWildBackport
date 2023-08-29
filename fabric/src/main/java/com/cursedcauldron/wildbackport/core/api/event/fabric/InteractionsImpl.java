@@ -6,6 +6,9 @@ import net.minecraft.world.item.context.UseOnContext;
 
 public class InteractionsImpl {
     public static void addRightClick(Interactions.Interaction interaction) {
-        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> interaction.of(new UseOnContext(player, hand, hitResult)));
+        UseBlockCallback.EVENT.register(
+            (player, level, hand, hitResult
+            ) -> interaction.of(new UseOnContext(player, hand, hitResult))
+        );
     }
 }

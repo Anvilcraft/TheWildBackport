@@ -1,18 +1,18 @@
 package com.cursedcauldron.wildbackport.common.entities.access;
 
+import java.util.function.BiConsumer;
+import javax.annotation.Nullable;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.LevelCallback;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.level.gameevent.GameEventListenerRegistrar;
 
-import javax.annotation.Nullable;
-import java.util.function.BiConsumer;
-
 public class Listener {
     public interface Instance {
         static Instance of(GameEventListenerRegistrar instance) {
-            return (Instance)instance;
+            return (Instance) instance;
         }
 
         void onPosCallback(Level level);
@@ -27,15 +27,16 @@ public class Listener {
             return MobInstance.class.cast(entity);
         }
 
-        default void updateEventHandler(BiConsumer<GameEventListenerRegistrar, Level> callback) {
-        }
+        default void
+        updateEventHandler(BiConsumer<GameEventListenerRegistrar, Level> callback) {}
     }
 
     public interface Callback<T> extends LevelCallback<T> {
         @SuppressWarnings("unchecked")
         static <T> Callback<T> of(T entity) {
-            return (Callback<T>)entity;
+            return (Callback<T>) entity;
         }
+
         void onSectionChange(T entry);
     }
 }

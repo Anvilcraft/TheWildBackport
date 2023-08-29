@@ -1,15 +1,15 @@
 package com.cursedcauldron.wildbackport.common.effects;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 public interface EffectFactor {
     static EffectFactor of(MobEffect effect) {
-        return (EffectFactor)effect;
+        return (EffectFactor) effect;
     }
 
     MobEffect setFactorCalculationData(Supplier<FactorCalculationData> data);
@@ -22,7 +22,7 @@ public interface EffectFactor {
 
     interface Instance {
         static Instance of(MobEffectInstance instance) {
-            return (Instance)instance;
+            return (Instance) instance;
         }
 
         void setFactorCalculationData(Optional<FactorCalculationData> data);
@@ -32,7 +32,7 @@ public interface EffectFactor {
 
     interface Network {
         static Network of(Packet<?> packet) {
-            return (Network)packet;
+            return (Network) packet;
         }
 
         FactorCalculationData getFactorCalculationData();

@@ -1,9 +1,9 @@
 package com.cursedcauldron.wildbackport.common.utils;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.util.List;
 import java.util.Random;
+
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class ModUtils {
     public static <T> void shuffle(List<T> entries, Random random) {

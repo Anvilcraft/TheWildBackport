@@ -20,22 +20,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class FogRendererMixin {
     @Shadow
     private static float fogRed;
-    @Shadow private static float fogGreen;
-    @Shadow private static float fogBlue;
+    @Shadow
+    private static float fogGreen;
+    @Shadow
+    private static float fogBlue;
     private static float fogPartialTicks;
 
     @Inject(method = "setupColor", at = @At("TAIL"))
-    private static void applyDarknessColor(Camera camera, float partialTicks, ClientLevel level, int viewDistance, float skyDarkness, CallbackInfo ci) {
+    private static void applyDarknessColor(
+        Camera camera,
+        float partialTicks,
+        ClientLevel level,
+        int viewDistance,
+        float skyDarkness,
+        CallbackInfo ci
+    ) {
         FogType type = camera.getFluidInCamera();
         fogPartialTicks = partialTicks;
 
-        double colorModifier = (camera.getPosition().y - (double)level.getMinBuildHeight()) * level.getLevelData().getClearColorScale();
-        if (camera.getEntity() instanceof LivingEntity living && living.hasEffect(WBMobEffects.DARKNESS.get())) {
+        double colorModifier
+            = (camera.getPosition().y - (double) level.getMinBuildHeight())
+            * level.getLevelData().getClearColorScale();
+        if (camera.getEntity() instanceof LivingEntity living
+            && living.hasEffect(WBMobEffects.DARKNESS.get())) {
             MobEffectInstance effect = living.getEffect(WBMobEffects.DARKNESS.get());
 
             if (effect != null) {
                 EffectFactor.Instance instance = EffectFactor.Instance.of(effect);
-                colorModifier = instance.getFactorCalculationData().isPresent() ? 1.0F - instance.getFactorCalculationData().get().lerp(living, partialTicks) : 0.0D;
+                colorModifier = instance.getFactorCalculationData().isPresent() ? 1.0F
+                        - instance.getFactorCalculationData().get().lerp(
+                            living, partialTicks
+                        )
+                                                                                : 0.0D;
             }
         }
 
@@ -45,9 +61,9 @@ public class FogRendererMixin {
             }
 
             colorModifier *= colorModifier;
-            fogRed = (float)((double)fogRed * colorModifier);
-            fogGreen = (float)((double)fogGreen * colorModifier);
-            fogBlue = (float)((double)fogBlue * colorModifier);
+            fogRed = (float) ((double) fogRed * colorModifier);
+            fogGreen = (float) ((double) fogGreen * colorModifier);
+            fogBlue = (float) ((double) fogBlue * colorModifier);
         }
 
         if (skyDarkness > 0.0F) {
@@ -60,18 +76,33 @@ public class FogRendererMixin {
     }
 
     @Inject(method = "setupFog", at = @At("TAIL"))
-    private static void applyDarknessFog(Camera camera, FogRenderer.FogMode mode, float viewDistance, boolean thickFog, CallbackInfo ci) {
+    private static void applyDarknessFog(
+        Camera camera,
+        FogRenderer.FogMode mode,
+        float viewDistance,
+        boolean thickFog,
+        CallbackInfo ci
+    ) {
         FogType fogtype = camera.getFluidInCamera();
 
         if (fogtype != FogType.WATER) {
-            if (camera.getEntity() instanceof LivingEntity living && living.hasEffect(WBMobEffects.DARKNESS.get())) {
+            if (camera.getEntity() instanceof LivingEntity living
+                && living.hasEffect(WBMobEffects.DARKNESS.get())) {
                 MobEffectInstance effect = living.getEffect(WBMobEffects.DARKNESS.get());
 
                 if (effect != null) {
                     EffectFactor.Instance instance = EffectFactor.Instance.of(effect);
                     if (instance.getFactorCalculationData().isPresent()) {
-                        float modifier = Mth.lerp(instance.getFactorCalculationData().get().lerp(living, fogPartialTicks), viewDistance, 15.0F);
-                        float start = mode == FogRenderer.FogMode.FOG_SKY ? 0.0F : modifier * 0.75F;
+                        float modifier = Mth.lerp(
+                            instance.getFactorCalculationData().get().lerp(
+                                living, fogPartialTicks
+                            ),
+                            viewDistance,
+                            15.0F
+                        );
+                        float start = mode == FogRenderer.FogMode.FOG_SKY
+                            ? 0.0F
+                            : modifier * 0.75F;
 
                         RenderSystem.setShaderFogStart(start);
                         RenderSystem.setShaderFogEnd(modifier);

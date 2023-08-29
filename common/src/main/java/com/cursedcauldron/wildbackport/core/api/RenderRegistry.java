@@ -1,5 +1,7 @@
 package com.cursedcauldron.wildbackport.core.api;
 
+import java.util.function.Supplier;
+
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -12,8 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import java.util.function.Supplier;
-
 //<>
 
 public class RenderRegistry {
@@ -23,17 +23,24 @@ public class RenderRegistry {
     }
 
     @ExpectPlatform
-    public static <T extends BlockEntity> void setBlockEntityRender(Supplier<? extends BlockEntityType<? extends T>> type, BlockEntityRendererProvider<T> provider) {
+    public static <T extends BlockEntity> void setBlockEntityRender(
+        Supplier<? extends BlockEntityType<? extends T>> type,
+        BlockEntityRendererProvider<T> provider
+    ) {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static <T extends Entity> void setEntityRender(Supplier<? extends EntityType<? extends T>> type, EntityRendererProvider<T> provider) {
+    public static <T extends Entity> void setEntityRender(
+        Supplier<? extends EntityType<? extends T>> type,
+        EntityRendererProvider<T> provider
+    ) {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static void setLayerDefinition(ModelLayerLocation layer, Supplier<LayerDefinition> definition) {
+    public static void
+    setLayerDefinition(ModelLayerLocation layer, Supplier<LayerDefinition> definition) {
         throw new AssertionError();
     }
 }

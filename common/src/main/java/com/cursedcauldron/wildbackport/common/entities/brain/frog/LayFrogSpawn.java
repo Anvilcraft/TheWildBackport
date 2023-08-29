@@ -19,7 +19,14 @@ public class LayFrogSpawn extends Behavior<Frog> {
     private final MemoryModuleType<?> triggerMemory;
 
     public LayFrogSpawn(Block block, MemoryModuleType<?> triggerMemory) {
-        super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_PRESENT, WBMemoryModules.IS_PREGNANT.get(), MemoryStatus.VALUE_PRESENT));
+        super(ImmutableMap.of(
+            MemoryModuleType.ATTACK_TARGET,
+            MemoryStatus.VALUE_ABSENT,
+            MemoryModuleType.WALK_TARGET,
+            MemoryStatus.VALUE_PRESENT,
+            WBMemoryModules.IS_PREGNANT.get(),
+            MemoryStatus.VALUE_PRESENT
+        ));
         this.frogSpawn = block;
         this.triggerMemory = triggerMemory;
     }
@@ -35,9 +42,17 @@ public class LayFrogSpawn extends Behavior<Frog> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockPos offset = blockPos.relative(direction);
             BlockPos above = offset.above();
-            if (level.getBlockState(offset).is(Blocks.WATER) && level.getBlockState(above).isAir()) {
+            if (level.getBlockState(offset).is(Blocks.WATER)
+                && level.getBlockState(above).isAir()) {
                 level.setBlock(above, this.frogSpawn.defaultBlockState(), 3);
-                level.playSound(null, frog, WBSoundEvents.FROG_LAY_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(
+                    null,
+                    frog,
+                    WBSoundEvents.FROG_LAY_SPAWN,
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    1.0F
+                );
                 frog.getBrain().eraseMemory(this.triggerMemory);
                 return;
             }

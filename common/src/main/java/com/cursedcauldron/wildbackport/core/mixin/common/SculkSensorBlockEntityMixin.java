@@ -21,17 +21,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SculkSensorBlockEntity.class)
 public class SculkSensorBlockEntityMixin extends BlockEntity {
-    @Shadow @Final private VibrationListener listener;
+    @Shadow
+    @Final
+    private VibrationListener listener;
 
-    public SculkSensorBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public SculkSensorBlockEntityMixin(
+        BlockEntityType<?> type, BlockPos pos, BlockState state
+    ) {
         super(type, pos, state);
     }
 
     @Inject(method = "onSignalReceive", at = @At("HEAD"))
-    private void receiveSignal(Level level, GameEventListener listener, GameEvent event, int delay, CallbackInfo ci) {
+    private void receiveSignal(
+        Level level,
+        GameEventListener listener,
+        GameEvent event,
+        int delay,
+        CallbackInfo ci
+    ) {
         if (!level.isClientSide() && SculkSensorBlock.canActivate(this.getBlockState())) {
             Vibration.Instance instance = Vibration.Instance.of(this.listener);
-            level.gameEvent(instance.getEntity(), WBGameEvents.SCULK_SENSOR_TENDRILS_CLICKING.get(), instance.getPos());
+            level.gameEvent(
+                instance.getEntity(),
+                WBGameEvents.SCULK_SENSOR_TENDRILS_CLICKING.get(),
+                instance.getPos()
+            );
         }
     }
 }

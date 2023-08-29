@@ -12,7 +12,13 @@ import com.cursedcauldron.wildbackport.core.api.SampleRegistry;
 public class WBRegistries {
     public static final RegistryBuilder BUILDER = RegistryBuilder.create("minecraft");
 
-    public static final SampleRegistry<RootPlacerType<?>> ROOT_PLACER_TYPES = BUILDER.create("worldgen/root_placer_type", registry -> RootPlacerType.MANGROVE_ROOT_PLACER.get());
-    public static final SampleRegistry<Instrument> INSTRUMENT = BUILDER.create("instrument", registry -> Instruments.DREAM_GOAT_HORN.get());
-//    public static final SampleRegistry<Instrument> INSTRUMENT = BUILDER.create("instrument", Instruments::registerAndGetDefault);
+    public static final SampleRegistry<RootPlacerType<?>> ROOT_PLACER_TYPES
+        = BUILDER.create(
+            "worldgen/root_placer_type",
+            registry -> RootPlacerType.MANGROVE_ROOT_PLACER.get()
+        );
+    public static final SampleRegistry<Instrument> INSTRUMENT
+        = BUILDER.create("instrument", registry -> Instruments.DREAM_GOAT_HORN.get());
+    //    public static final SampleRegistry<Instrument> INSTRUMENT =
+    //    BUILDER.create("instrument", Instruments::registerAndGetDefault);
 }

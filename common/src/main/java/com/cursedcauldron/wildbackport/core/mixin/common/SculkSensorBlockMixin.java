@@ -23,14 +23,19 @@ public abstract class SculkSensorBlockMixin extends BaseEntityBlock {
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!level.isClientSide() && SculkSensorBlock.canActivate(state)) {
             SculkSensorBlock.activate(level, pos, state, 1);
-            level.gameEvent(entity, WBGameEvents.SCULK_SENSOR_TENDRILS_CLICKING.get(), pos);
+            level.gameEvent(
+                entity, WBGameEvents.SCULK_SENSOR_TENDRILS_CLICKING.get(), pos
+            );
         }
 
         super.stepOn(level, pos, state, entity);
     }
 
     @Override
-    public void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) this.popExperience(level, pos, 5);
+    public void
+    spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack)
+            == 0)
+            this.popExperience(level, pos, 5);
     }
 }

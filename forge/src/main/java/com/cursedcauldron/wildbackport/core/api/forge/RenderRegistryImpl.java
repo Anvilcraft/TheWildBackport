@@ -1,5 +1,10 @@
 package com.cursedcauldron.wildbackport.core.api.forge;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.cursedcauldron.wildbackport.WildBackport;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -17,17 +22,16 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 //<>
 
-@Mod.EventBusSubscriber(modid = WildBackport.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(
+    modid = WildBackport.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD
+)
 public class RenderRegistryImpl {
-    private static final Set<Consumer<EntityRenderersEvent.RegisterRenderers>> RENDERERS = ConcurrentHashMap.newKeySet();
-    private static final Set<Consumer<EntityRenderersEvent.RegisterLayerDefinitions>> LAYER_DEFINITIONS = ConcurrentHashMap.newKeySet();
+    private static final Set<Consumer<EntityRenderersEvent.RegisterRenderers>> RENDERERS
+        = ConcurrentHashMap.newKeySet();
+    private static final Set<Consumer<EntityRenderersEvent.RegisterLayerDefinitions>>
+        LAYER_DEFINITIONS = ConcurrentHashMap.newKeySet();
 
     public static void setBlockRenderType(RenderType type, Block... blocks) {
         for (Block block : blocks) {
@@ -45,15 +49,22 @@ public class RenderRegistryImpl {
         LAYER_DEFINITIONS.forEach(consumer -> consumer.accept(event));
     }
 
-    public static <T extends Entity> void setEntityRender(Supplier<? extends EntityType<? extends T>> type, EntityRendererProvider<T> provider) {
+    public static <T extends Entity> void setEntityRender(
+        Supplier<? extends EntityType<? extends T>> type,
+        EntityRendererProvider<T> provider
+    ) {
         RENDERERS.add(event -> event.registerEntityRenderer(type.get(), provider));
     }
 
-    public static void setLayerDefinition(ModelLayerLocation layer, Supplier<LayerDefinition> definition) {
+    public static void
+    setLayerDefinition(ModelLayerLocation layer, Supplier<LayerDefinition> definition) {
         LAYER_DEFINITIONS.add(event -> event.registerLayerDefinition(layer, definition));
     }
 
-    public static <T extends BlockEntity> void setBlockEntityRender(Supplier<? extends BlockEntityType<? extends T>> type, BlockEntityRendererProvider<T> provider) {
+    public static <T extends BlockEntity> void setBlockEntityRender(
+        Supplier<? extends BlockEntityType<? extends T>> type,
+        BlockEntityRendererProvider<T> provider
+    ) {
         RENDERERS.add(event -> event.registerBlockEntityRenderer(type.get(), provider));
     }
 }

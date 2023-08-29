@@ -1,5 +1,10 @@
 package com.cursedcauldron.wildbackport.common.items;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
 import com.cursedcauldron.wildbackport.common.registry.WBGameEvents;
 import com.cursedcauldron.wildbackport.common.registry.WBItems;
 import com.cursedcauldron.wildbackport.common.registry.WBRegistries;
@@ -26,11 +31,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
 public class GoatHornItem extends Item {
     private static final String INSTRUMENT_KEY = "instrument";
     private TagKey<Instrument> instruments;
@@ -41,43 +41,65 @@ public class GoatHornItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(
+        ItemStack stack,
+        @Nullable Level level,
+        List<Component> components,
+        TooltipFlag tooltipFlag
+    ) {
         super.appendHoverText(stack, level, components, tooltipFlag);
-        Optional<ResourceKey<Instrument>> instrument = this.getInstrument(stack).flatMap(Holder::unwrapKey);
+        Optional<ResourceKey<Instrument>> instrument
+            = this.getInstrument(stack).flatMap(Holder::unwrapKey);
         if (instrument.isPresent()) {
-            MutableComponent component = new TranslatableComponent(Util.makeDescriptionId(INSTRUMENT_KEY, instrument.get().location()));
+            MutableComponent component = new TranslatableComponent(
+                Util.makeDescriptionId(INSTRUMENT_KEY, instrument.get().location())
+            );
             components.add(component.withStyle(ChatFormatting.GRAY));
         }
     }
 
-    public static ItemStack getStackForInstrument(Item item, Holder<Instrument> instrument) {
+    public static ItemStack
+    getStackForInstrument(Item item, Holder<Instrument> instrument) {
         ItemStack stack = new ItemStack(item);
         setInstrument(stack, instrument);
         return stack;
     }
 
-    public static void setRandomInstrumentFromTag(ItemStack stack, TagKey<Instrument> tag, Random random) {
-        Optional<Holder<Instrument>> instrument = WBRegistries.INSTRUMENT.registry().getTag(tag).flatMap(holders -> holders.getRandomElement(random));
+    public static void
+    setRandomInstrumentFromTag(ItemStack stack, TagKey<Instrument> tag, Random random) {
+        Optional<Holder<Instrument>> instrument
+            = WBRegistries.INSTRUMENT.registry().getTag(tag).flatMap(
+                holders -> holders.getRandomElement(random)
+            );
         instrument.ifPresent(holder -> setInstrument(stack, holder));
     }
 
     private static void setInstrument(ItemStack stack, Holder<Instrument> instrument) {
-        stack.getOrCreateTag().putString(INSTRUMENT_KEY, instrument.unwrapKey().orElseThrow(() -> {
-            return new IllegalStateException("Invalid instrument");
-        }).location().toString());
+        stack.getOrCreateTag().putString(
+            INSTRUMENT_KEY,
+            instrument.unwrapKey()
+                .orElseThrow(() -> {
+                    return new IllegalStateException("Invalid instrument");
+                })
+                .location()
+                .toString()
+        );
     }
 
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if (this.allowdedIn(tab)) {
-            for (Holder<Instrument> holder : WBRegistries.INSTRUMENT.registry().getTagOrEmpty(this.instruments)) {
-//                stacks.add(getStackForInstrument(WBItems.GOAT_HORN.get(), holder));
+            for (Holder<Instrument> holder :
+                 WBRegistries.INSTRUMENT.registry().getTagOrEmpty(this.instruments)) {
+                //                stacks.add(getStackForInstrument(WBItems.GOAT_HORN.get(),
+                //                holder));
             }
         }
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack>
+    use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         Optional<Holder<Instrument>> holder = this.getInstrument(stack);
         if (holder.isPresent()) {
@@ -100,13 +122,18 @@ public class GoatHornItem extends Item {
     private Optional<Holder<Instrument>> getInstrument(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag != null) {
-            ResourceLocation location = ResourceLocation.tryParse(tag.getString("instrument"));
+            ResourceLocation location
+                = ResourceLocation.tryParse(tag.getString("instrument"));
             if (location != null) {
-                return WBRegistries.INSTRUMENT.registry().getHolder(ResourceKey.create(WBRegistries.INSTRUMENT.key(), location));
+                return WBRegistries.INSTRUMENT.registry().getHolder(
+                    ResourceKey.create(WBRegistries.INSTRUMENT.key(), location)
+                );
             }
         }
 
-        Iterator<Holder<Instrument>> instruments = WBRegistries.INSTRUMENT.registry().getTagOrEmpty(this.instruments).iterator();
+        Iterator<Holder<Instrument>> instruments = WBRegistries.INSTRUMENT.registry()
+                                                       .getTagOrEmpty(this.instruments)
+                                                       .iterator();
         return instruments.hasNext() ? Optional.of(instruments.next()) : Optional.empty();
     }
 
@@ -116,7 +143,14 @@ public class GoatHornItem extends Item {
     }
 
     private static void playSound(Level level, Player player, Instrument instrument) {
-        level.playSound(player, player, instrument.soundEvent(), SoundSource.RECORDS, instrument.range() / 16.0F, 1.0F);
+        level.playSound(
+            player,
+            player,
+            instrument.soundEvent(),
+            SoundSource.RECORDS,
+            instrument.range() / 16.0F,
+            1.0F
+        );
         level.gameEvent(WBGameEvents.INSTRUMENT_PLAY.get(), player);
     }
 }

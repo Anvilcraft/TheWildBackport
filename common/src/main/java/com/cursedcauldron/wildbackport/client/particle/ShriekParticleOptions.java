@@ -1,5 +1,7 @@
 package com.cursedcauldron.wildbackport.client.particle;
 
+import java.util.Locale;
+
 import com.cursedcauldron.wildbackport.client.registry.WBParticleTypes;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -10,27 +12,33 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 
-import java.util.Locale;
-
 public record ShriekParticleOptions(int delay) implements ParticleOptions {
-    public static final Codec<ShriekParticleOptions> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(Codec.INT.fieldOf("delay").forGetter(options -> {
-            return options.delay;
-        })).apply(instance, ShriekParticleOptions::new);
-    });
+    public static final Codec<ShriekParticleOptions> CODEC
+        = RecordCodecBuilder.create(instance -> {
+              return instance
+                  .group(Codec.INT.fieldOf("delay").forGetter(options -> {
+                      return options.delay;
+                  }))
+                  .apply(instance, ShriekParticleOptions::new);
+          });
 
-    public static final ParticleOptions.Deserializer<ShriekParticleOptions> DESERIALIZER = new ParticleOptions.Deserializer<>() {
-        @Override
-        public ShriekParticleOptions fromCommand(ParticleType<ShriekParticleOptions> type, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-            return new ShriekParticleOptions(reader.readInt());
-        }
+    public static final ParticleOptions.Deserializer<ShriekParticleOptions> DESERIALIZER
+        = new ParticleOptions.Deserializer<>() {
+              @Override
+              public ShriekParticleOptions fromCommand(
+                  ParticleType<ShriekParticleOptions> type, StringReader reader
+              ) throws CommandSyntaxException {
+                  reader.expect(' ');
+                  return new ShriekParticleOptions(reader.readInt());
+              }
 
-        @Override
-        public ShriekParticleOptions fromNetwork(ParticleType<ShriekParticleOptions> type, FriendlyByteBuf buf) {
-            return new ShriekParticleOptions(buf.readVarInt());
-        }
-    };
+              @Override
+              public ShriekParticleOptions fromNetwork(
+                  ParticleType<ShriekParticleOptions> type, FriendlyByteBuf buf
+              ) {
+                  return new ShriekParticleOptions(buf.readVarInt());
+              }
+          };
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buf) {
@@ -39,7 +47,9 @@ public record ShriekParticleOptions(int delay) implements ParticleOptions {
 
     @Override
     public String writeToString() {
-        return String.format(Locale.ROOT, "%s %d", Registry.PARTICLE_TYPE.getId(this.getType()), this.delay);
+        return String.format(
+            Locale.ROOT, "%s %d", Registry.PARTICLE_TYPE.getId(this.getType()), this.delay
+        );
     }
 
     @Override

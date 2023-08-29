@@ -12,10 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public class ServerGamePacketListenerImplMixin {
-    @Shadow public ServerPlayer player;
+    @Shadow
+    public ServerPlayer player;
 
     @Inject(method = "handlePlayerCommand", at = @At("HEAD"))
-    private void wb$handleInventory(ServerboundPlayerCommandPacket packet, CallbackInfo ci) {
+    private void
+    wb$handleInventory(ServerboundPlayerCommandPacket packet, CallbackInfo ci) {
         if (packet.getAction() == ServerboundPlayerCommandPacket.Action.OPEN_INVENTORY) {
             if (this.player.getVehicle() instanceof ChestBoat boat) {
                 boat.openInventory(this.player);

@@ -5,4 +5,5 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public record Keyframe(float timestamp, Vector3f target, Transformation.Interpolation interpolation) {}
+public record
+Keyframe(float timestamp, Vector3f target, Transformation.Interpolation interpolation) {}

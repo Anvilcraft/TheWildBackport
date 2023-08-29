@@ -16,7 +16,16 @@ import net.minecraft.core.particles.SimpleParticleType;
 public class SculkSoulParticle extends RisingParticle {
     private final SpriteSet sprites;
 
-    public SculkSoulParticle(ClientLevel level, double x, double y, double z, double xMotion, double yMotion, double zMotion, SpriteSet sprites) {
+    public SculkSoulParticle(
+        ClientLevel level,
+        double x,
+        double y,
+        double z,
+        double xMotion,
+        double yMotion,
+        double zMotion,
+        SpriteSet sprites
+    ) {
         super(level, x, y, z, xMotion, yMotion, zMotion);
         this.sprites = sprites;
         this.getQuadSize(1.5F);
@@ -40,10 +49,22 @@ public class SculkSoulParticle extends RisingParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+    public record Provider(SpriteSet sprites)
+        implements ParticleProvider<SimpleParticleType> {
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xMotion, double yMotion, double zMotion) {
-            SculkSoulParticle particle = new SculkSoulParticle(level, x, y, z, xMotion, yMotion, zMotion, this.sprites);
+        public Particle createParticle(
+            SimpleParticleType type,
+            ClientLevel level,
+            double x,
+            double y,
+            double z,
+            double xMotion,
+            double yMotion,
+            double zMotion
+        ) {
+            SculkSoulParticle particle = new SculkSoulParticle(
+                level, x, y, z, xMotion, yMotion, zMotion, this.sprites
+            );
             particle.setAlpha(1.0F);
             return particle;
         }

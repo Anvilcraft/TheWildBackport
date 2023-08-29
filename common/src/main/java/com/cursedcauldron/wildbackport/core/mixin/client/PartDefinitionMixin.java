@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PartDefinition.class)
 public class PartDefinitionMixin {
-    @Shadow @Final private PartPose partPose;
+    @Shadow
+    @Final
+    private PartPose partPose;
 
     @Inject(method = "bake", at = @At(value = "RETURN"), cancellable = true)
     private void wb$bake(int i, int j, CallbackInfoReturnable<ModelPart> cir) {

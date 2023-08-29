@@ -1,5 +1,11 @@
 package com.cursedcauldron.wildbackport.common.entities.warden;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.function.Predicate;
+
 import com.cursedcauldron.wildbackport.common.entities.Warden;
 import com.cursedcauldron.wildbackport.common.entities.access.WardenTracker;
 import com.mojang.serialization.Codec;
@@ -15,30 +21,34 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.function.Predicate;
-
 //<>
 
 public class WardenSpawnTracker {
-    public static final Codec<WardenSpawnTracker> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(ExtraCodecs.NON_NEGATIVE_INT.fieldOf("ticks_since_last_warning").orElse(0).forGetter(tracker -> {
-            return tracker.ticksSinceLastWarning;
-        }), ExtraCodecs.NON_NEGATIVE_INT.fieldOf("warning_level").orElse(0).forGetter(tracker -> {
-            return tracker.warningLevel;
-        }), ExtraCodecs.NON_NEGATIVE_INT.fieldOf("cooldown_ticks").orElse(0).forGetter(tracker -> {
-            return tracker.cooldownTicks;
-        })).apply(instance, WardenSpawnTracker::new);
-    });
+    public static final Codec<WardenSpawnTracker> CODEC = RecordCodecBuilder.create(
+        instance -> {
+            return instance
+                .group(
+                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("ticks_since_last_warning")
+                        .orElse(0)
+                        .forGetter(tracker -> { return tracker.ticksSinceLastWarning; }),
+                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("warning_level")
+                        .orElse(0)
+                        .forGetter(tracker -> { return tracker.warningLevel; }),
+                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("cooldown_ticks")
+                        .orElse(0)
+                        .forGetter(tracker -> { return tracker.cooldownTicks; })
+                )
+                .apply(instance, WardenSpawnTracker::new);
+        }
+    );
 
     private int ticksSinceLastWarning;
     private int warningLevel;
     private int cooldownTicks;
 
-    public WardenSpawnTracker(int ticksSinceLastWarning, int warningLevel, int cooldownTicks) {
+    public WardenSpawnTracker(
+        int ticksSinceLastWarning, int warningLevel, int cooldownTicks
+    ) {
         this.ticksSinceLastWarning = ticksSinceLastWarning;
         this.warningLevel = warningLevel;
         this.cooldownTicks = cooldownTicks;
@@ -67,21 +77,31 @@ public class WardenSpawnTracker {
         return this.cooldownTicks > 0;
     }
 
-    public static OptionalInt tryWarn(ServerLevel level, BlockPos pos, ServerPlayer player) {
+    public static OptionalInt
+    tryWarn(ServerLevel level, BlockPos pos, ServerPlayer player) {
         if (!hasNearbyWarden(level, pos)) {
             List<ServerPlayer> players = getNearbyPlayers(level, pos);
             if (!players.contains(player)) {
                 players.add(player);
             }
 
-            if (players.stream().anyMatch(playerIn -> WardenTracker.of(playerIn).getWardenSpawnTracker().onCooldown())) {
+            if (players.stream().anyMatch(
+                    playerIn
+                    -> WardenTracker.of(playerIn).getWardenSpawnTracker().onCooldown()
+                )) {
                 return OptionalInt.empty();
             }
 
-            Optional<WardenSpawnTracker> optional = players.stream().map(WardenTracker::getWardenSpawnTracker).max(Comparator.comparingInt(tracker -> tracker.warningLevel));
+            Optional<WardenSpawnTracker> optional
+                = players.stream()
+                      .map(WardenTracker::getWardenSpawnTracker)
+                      .max(Comparator.comparingInt(tracker -> tracker.warningLevel));
             WardenSpawnTracker tracker = optional.get();
             tracker.increaseWarningLevel();
-            players.forEach(playerIn -> WardenTracker.of(playerIn).getWardenSpawnTracker().copyData(tracker));
+            players.forEach(
+                playerIn
+                -> WardenTracker.of(playerIn).getWardenSpawnTracker().copyData(tracker)
+            );
             return OptionalInt.of(tracker.warningLevel);
         } else {
             return OptionalInt.empty();
@@ -95,8 +115,11 @@ public class WardenSpawnTracker {
 
     private static List<ServerPlayer> getNearbyPlayers(ServerLevel level, BlockPos pos) {
         Vec3 center = Vec3.atCenterOf(pos);
-        Predicate<ServerPlayer> predicate = player -> player.position().closerThan(center, 16.0D);
-        return level.getPlayers(predicate.and(LivingEntity::isAlive).and(EntitySelector.NO_SPECTATORS));
+        Predicate<ServerPlayer> predicate
+            = player -> player.position().closerThan(center, 16.0D);
+        return level.getPlayers(
+            predicate.and(LivingEntity::isAlive).and(EntitySelector.NO_SPECTATORS)
+        );
     }
 
     private void increaseWarningLevel() {

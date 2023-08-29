@@ -11,7 +11,10 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 public class WoodTypeRegistryImpl {
     public static WoodType create(ResourceLocation location) {
         WoodType woodType = WoodTypeAccessor.callRegister(new WoodTypeImpl(location));
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) Sheets.SIGN_MATERIALS.put(woodType, SheetsAccessor.callCreateSignMaterial(woodType));
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+            Sheets.SIGN_MATERIALS.put(
+                woodType, SheetsAccessor.callCreateSignMaterial(woodType)
+            );
         return woodType;
     }
 

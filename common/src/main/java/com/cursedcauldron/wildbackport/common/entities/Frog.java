@@ -1,9 +1,16 @@
 package com.cursedcauldron.wildbackport.common.entities;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.Random;
+
 import com.cursedcauldron.wildbackport.client.animation.api.AnimationState;
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
-import com.cursedcauldron.wildbackport.common.entities.brain.FrogBrain;
 import com.cursedcauldron.wildbackport.common.entities.access.api.Poses;
+import com.cursedcauldron.wildbackport.common.entities.brain.FrogBrain;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBEntityTypes;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBMemoryModules;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBSensorTypes;
@@ -66,21 +73,47 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.Random;
-
 //<>
 
 public class Frog extends Animal {
     public static final Ingredient FOOD = Ingredient.of(Items.SLIME_BALL);
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Frog>>> SENSORS = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY, WBSensorTypes.FROG_ATTACKABLES.get(), WBSensorTypes.FROG_TEMPTATIONS.get(), WBSensorTypes.IS_IN_WATER.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORIES = ImmutableList.of(MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.BREED_TARGET, MemoryModuleType.LONG_JUMP_COOLDOWN_TICKS, MemoryModuleType.LONG_JUMP_MID_JUMP, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HURT_BY, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, WBMemoryModules.IS_IN_WATER.get(), WBMemoryModules.IS_PREGNANT.get(), WBMemoryModules.UNREACHABLE_TONGUE_TARGETS.get());
-    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Frog.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<OptionalInt> TARGET = SynchedEntityData.defineId(Frog.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
+    protected static final
+        ImmutableList<? extends SensorType<? extends Sensor<? super Frog>>> SENSORS
+        = ImmutableList.of(
+            SensorType.NEAREST_LIVING_ENTITIES,
+            SensorType.HURT_BY,
+            WBSensorTypes.FROG_ATTACKABLES.get(),
+            WBSensorTypes.FROG_TEMPTATIONS.get(),
+            WBSensorTypes.IS_IN_WATER.get()
+        );
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORIES
+        = ImmutableList.of(
+            MemoryModuleType.LOOK_TARGET,
+            MemoryModuleType.NEAREST_LIVING_ENTITIES,
+            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+            MemoryModuleType.WALK_TARGET,
+            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+            MemoryModuleType.PATH,
+            MemoryModuleType.BREED_TARGET,
+            MemoryModuleType.LONG_JUMP_COOLDOWN_TICKS,
+            MemoryModuleType.LONG_JUMP_MID_JUMP,
+            MemoryModuleType.ATTACK_TARGET,
+            MemoryModuleType.TEMPTING_PLAYER,
+            MemoryModuleType.TEMPTATION_COOLDOWN_TICKS,
+            MemoryModuleType.IS_TEMPTED,
+            MemoryModuleType.HURT_BY,
+            MemoryModuleType.HURT_BY_ENTITY,
+            MemoryModuleType.NEAREST_ATTACKABLE,
+            WBMemoryModules.IS_IN_WATER.get(),
+            WBMemoryModules.IS_PREGNANT.get(),
+            WBMemoryModules.UNREACHABLE_TONGUE_TARGETS.get()
+        );
+    private static final EntityDataAccessor<Integer> VARIANT
+        = SynchedEntityData.defineId(Frog.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<OptionalInt> TARGET
+        = SynchedEntityData.defineId(
+            Frog.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT
+        );
     public final AnimationState longJumpingAnimationState = new AnimationState();
     public final AnimationState croakingAnimationState = new AnimationState();
     public final AnimationState usingTongueAnimationState = new AnimationState();
@@ -107,9 +140,10 @@ public class Frog extends Animal {
         return FrogBrain.create(this.brainProvider().makeBrain(dynamic));
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public Brain<Frog> getBrain() {
-        return (Brain<Frog>)super.getBrain();
+        return (Brain<Frog>) super.getBrain();
     }
 
     @Override
@@ -124,7 +158,11 @@ public class Frog extends Animal {
     }
 
     public Optional<Entity> getFrogTarget() {
-        return this.entityData.get(TARGET).stream().mapToObj(this.level::getEntity).filter(Objects::nonNull).findFirst();
+        return this.entityData.get(TARGET)
+            .stream()
+            .mapToObj(this.level::getEntity)
+            .filter(Objects::nonNull)
+            .findFirst();
     }
 
     public void setFrogTarget(Entity entity) {
@@ -167,17 +205,19 @@ public class Frog extends Animal {
     }
 
     private boolean shouldWalk() {
-        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && !this.isInWaterOrBubble();
+        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D
+            && !this.isInWaterOrBubble();
     }
 
     private boolean shouldSwim() {
-        return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && this.isInWaterOrBubble();
+        return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D
+            && this.isInWaterOrBubble();
     }
 
     @Override
     protected void customServerAiStep() {
         this.level.getProfiler().push("frogBrain");
-        this.getBrain().tick((ServerLevel)this.level, this);
+        this.getBrain().tick((ServerLevel) this.level, this);
         this.level.getProfiler().pop();
         this.level.getProfiler().push("frogActivityUpdate");
         FrogBrain.updateActivities(this);
@@ -238,10 +278,12 @@ public class Frog extends Animal {
         return this.getPose() == pose;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
         Frog frog = WBEntityTypes.FROG.get().create(level);
-        if (frog != null) FrogBrain.coolDownLongJump(frog, level.getRandom());
+        if (frog != null)
+            FrogBrain.coolDownLongJump(frog, level.getRandom());
         return frog;
     }
 
@@ -256,7 +298,8 @@ public class Frog extends Animal {
     @Override
     public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
         ServerPlayer player = this.getLoveCause();
-        if (player == null) player = partner.getLoveCause();
+        if (player == null)
+            player = partner.getLoveCause();
 
         if (player != null) {
             player.awardStat(Stats.ANIMALS_BRED);
@@ -268,12 +311,25 @@ public class Frog extends Animal {
         this.resetLove();
         partner.resetLove();
         this.getBrain().setMemory(WBMemoryModules.IS_PREGNANT.get(), Unit.INSTANCE);
-        level.broadcastEntityEvent(this, (byte)18);
-        if (level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) level.addFreshEntity(new ExperienceOrb(level, this.getX(), this.getY(), this.getZ(), this.getRandom().nextInt(7) + 1));
+        level.broadcastEntityEvent(this, (byte) 18);
+        if (level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
+            level.addFreshEntity(new ExperienceOrb(
+                level,
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                this.getRandom().nextInt(7) + 1
+            ));
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData groupData, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(
+        ServerLevelAccessor accessor,
+        DifficultyInstance difficulty,
+        MobSpawnType spawnType,
+        @Nullable SpawnGroupData groupData,
+        @Nullable CompoundTag tag
+    ) {
         Holder<Biome> biome = accessor.getBiome(this.blockPosition());
         if (biome.is(WBBiomeTags.SPAWNS_COLD_VARIANT_FROGS)) {
             this.setVariant(Variant.COLD);
@@ -287,20 +343,26 @@ public class Frog extends Animal {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 1.0D).add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ATTACK_DAMAGE, 10.0D);
+        return Mob.createMobAttributes()
+            .add(Attributes.MOVEMENT_SPEED, 1.0D)
+            .add(Attributes.MAX_HEALTH, 10.0D)
+            .add(Attributes.ATTACK_DAMAGE, 10.0D);
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     protected SoundEvent getAmbientSound() {
         return WBSoundEvents.FROG_AMBIENT;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return WBSoundEvents.FROG_HURT;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     protected SoundEvent getDeathSound() {
         return WBSoundEvents.FROG_DEATH;
     }
@@ -343,7 +405,8 @@ public class Frog extends Animal {
     }
 
     public static boolean isValidFrogFood(LivingEntity entity) {
-        return (!(entity instanceof Slime slime) || slime.getSize() == 1) && entity.getType().is(WBEntityTypeTags.FROG_FOOD);
+        return (!(entity instanceof Slime slime) || slime.getSize() == 1)
+            && entity.getType().is(WBEntityTypeTags.FROG_FOOD);
     }
 
     @Override
@@ -356,14 +419,22 @@ public class Frog extends Animal {
         return FOOD.test(stack);
     }
 
-    public static boolean checkFrogSpawnRules(EntityType<? extends Animal> type, LevelAccessor accessor, MobSpawnType spawnType, BlockPos pos, Random random) {
-        return accessor.getBlockState(pos.below()).is(WBBlockTags.FROGS_SPAWNABLE_ON) && isBrightEnoughToSpawn(accessor, pos);
+    public static boolean checkFrogSpawnRules(
+        EntityType<? extends Animal> type,
+        LevelAccessor accessor,
+        MobSpawnType spawnType,
+        BlockPos pos,
+        Random random
+    ) {
+        return accessor.getBlockState(pos.below()).is(WBBlockTags.FROGS_SPAWNABLE_ON)
+            && isBrightEnoughToSpawn(accessor, pos);
     }
 
     class FrogLookController extends LookControl {
         FrogLookController(Mob mobEntity) {
             super(mobEntity);
         }
+
         @Override
         protected boolean resetXRotOnTick() {
             return Frog.this.getFrogTarget().isEmpty();
@@ -371,7 +442,8 @@ public class Frog extends Animal {
     }
 
     static class FrogNodeEvaluator extends AmphibiousNodeEvaluator {
-        private final BlockPos.MutableBlockPos preferredBlock = new BlockPos.MutableBlockPos();
+        private final BlockPos.MutableBlockPos preferredBlock
+            = new BlockPos.MutableBlockPos();
 
         public FrogNodeEvaluator(boolean penalizeDeepWater) {
             super(penalizeDeepWater);
@@ -381,7 +453,11 @@ public class Frog extends Animal {
         public BlockPathTypes getBlockPathType(BlockGetter getter, int x, int y, int z) {
             this.preferredBlock.set(x, y - 1, z);
             BlockState state = getter.getBlockState(this.preferredBlock);
-            return state.is(WBBlockTags.FROG_PREFER_JUMP_TO) ? BlockPathTypes.OPEN : FrogNodeEvaluator.getBlockPathTypeStatic(getter, this.preferredBlock.move(Direction.UP));
+            return state.is(WBBlockTags.FROG_PREFER_JUMP_TO)
+                ? BlockPathTypes.OPEN
+                : FrogNodeEvaluator.getBlockPathTypeStatic(
+                    getter, this.preferredBlock.move(Direction.UP)
+                );
         }
     }
 
@@ -389,6 +465,7 @@ public class Frog extends Animal {
         FrogPathNavigator(Frog frog, Level level) {
             super(frog, level);
         }
+
         @Override
         protected PathFinder createPathFinder(int range) {
             this.nodeEvaluator = new FrogNodeEvaluator(true);
@@ -411,7 +488,10 @@ public class Frog extends Animal {
         TEMPERATE(0, "temperate"),
         WARM(1, "warm"),
         COLD(2, "cold");
-        private static final Variant[] VARIANTS = Arrays.stream(Variant.values()).sorted(Comparator.comparingInt(Variant::getId)).toArray(Variant[]::new);
+        private static final Variant[] VARIANTS
+            = Arrays.stream(Variant.values())
+                  .sorted(Comparator.comparingInt(Variant::getId))
+                  .toArray(Variant[] ::new);
         private final int id;
         private final String name;
 

@@ -17,14 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements EntityExperience {
-    @Shadow @Nullable protected Player lastHurtByPlayer;
+    @Shadow
+    @Nullable
+    protected Player lastHurtByPlayer;
     private boolean expDroppingDisabled;
 
     public LivingEntityMixin(EntityType<?> type, Level level) {
         super(type, level);
     }
 
-    @Shadow protected abstract int getExperienceReward(Player player);
+    @Shadow
+    protected abstract int getExperienceReward(Player player);
 
     @Inject(method = "die", at = @At("HEAD"))
     private void wb$die(DamageSource source, CallbackInfo ci) {
@@ -48,6 +51,7 @@ public abstract class LivingEntityMixin extends Entity implements EntityExperien
 
     @Inject(method = "dropExperience", at = @At("HEAD"), cancellable = true)
     private void wb$dropExp(CallbackInfo ci) {
-        if (this.isExpDropDisabled()) ci.cancel();
+        if (this.isExpDropDisabled())
+            ci.cancel();
     }
 }

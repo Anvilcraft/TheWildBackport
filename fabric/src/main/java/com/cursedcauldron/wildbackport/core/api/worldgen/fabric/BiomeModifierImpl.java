@@ -8,8 +8,11 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BiomeModifierImpl {
     public static void setup() {
-        BiomeModifications.create(new ResourceLocation("biome_modifier")).add(ModificationPhase.ADDITIONS, ctx -> true, (selector, modifier) -> {
-            BiomeModifier.INSTANCE.register(new FabricBiomeWriter().build(selector, modifier));
-        });
+        BiomeModifications.create(new ResourceLocation("biome_modifier"))
+            .add(ModificationPhase.ADDITIONS, ctx -> true, (selector, modifier) -> {
+                BiomeModifier.INSTANCE.register(
+                    new FabricBiomeWriter().build(selector, modifier)
+                );
+            });
     }
 }

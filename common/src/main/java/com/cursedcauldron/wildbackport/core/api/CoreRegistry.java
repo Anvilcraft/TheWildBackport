@@ -1,10 +1,10 @@
 package com.cursedcauldron.wildbackport.core.api;
 
+import java.util.function.Supplier;
+
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.function.Supplier;
 
 /**
  * @author Trikzon & Andante
@@ -28,7 +28,10 @@ public abstract class CoreRegistry<T> {
     public abstract <E extends T> Supplier<E> register(String key, Supplier<E> entry);
 
     public void register() {
-        if (this.isPresent) throw new IllegalArgumentException("Duplication of Registry: " + this.registry);
+        if (this.isPresent)
+            throw new IllegalArgumentException(
+                "Duplication of Registry: " + this.registry
+            );
         this.isPresent = true;
         this.bootstrap();
     }
@@ -42,7 +45,9 @@ public abstract class CoreRegistry<T> {
 
         @Override
         public <E extends T> Supplier<E> register(String key, Supplier<E> entry) {
-            E registry = Registry.register(this.registry, new ResourceLocation(this.modId, key), entry.get());
+            E registry = Registry.register(
+                this.registry, new ResourceLocation(this.modId, key), entry.get()
+            );
             return () -> registry;
         }
 

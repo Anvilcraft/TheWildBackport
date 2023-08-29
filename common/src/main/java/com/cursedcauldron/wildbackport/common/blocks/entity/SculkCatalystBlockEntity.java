@@ -27,7 +27,8 @@ import org.jetbrains.annotations.Nullable;
 //<>
 
 public class SculkCatalystBlockEntity extends BlockEntity implements GameEventListener {
-    private final BlockPositionSource positionSource = new BlockPositionSource(this.worldPosition);
+    private final BlockPositionSource positionSource
+        = new BlockPositionSource(this.worldPosition);
     private final SculkSpreadManager spreadManager = SculkSpreadManager.create();
 
     public SculkCatalystBlockEntity(BlockPos pos, BlockState state) {
@@ -45,23 +46,39 @@ public class SculkCatalystBlockEntity extends BlockEntity implements GameEventLi
     }
 
     @Override
-    public boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
+    public boolean
+    handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
         if (!this.isRemoved()) {
             if (event == WBGameEvents.ENTITY_DIE.get()) {
-                if (entity instanceof LivingEntity living && living instanceof EntityExperience mob) {
+                if (entity instanceof LivingEntity living
+                    && living instanceof EntityExperience mob) {
                     if (!mob.isExpDropDisabled()) {
                         int charge = mob.getExpToDrop();
                         if (!living.isBaby() && charge > 0) {
-                            this.spreadManager.spread(new BlockPos(PositionUtils.relative(PositionUtils.toVec(pos), Direction.UP, 0.5D)), charge);
+                            this.spreadManager.spread(
+                                new BlockPos(PositionUtils.relative(
+                                    PositionUtils.toVec(pos), Direction.UP, 0.5D
+                                )),
+                                charge
+                            );
                             LivingEntity attacker = living.getLastHurtByMob();
                             if (attacker instanceof ServerPlayer player) {
-                                DamageSource source = living.getLastDamageSource() == null ? DamageSource.playerAttack(player) : living.getLastDamageSource();
-                                WBCriteriaTriggers.KILL_MOB_NEAR_SCULK_CATALYST.trigger(player, entity, source);
+                                DamageSource source = living.getLastDamageSource() == null
+                                    ? DamageSource.playerAttack(player)
+                                    : living.getLastDamageSource();
+                                WBCriteriaTriggers.KILL_MOB_NEAR_SCULK_CATALYST.trigger(
+                                    player, entity, source
+                                );
                             }
                         }
 
                         mob.disableExpDrop();
-                        SculkCatalystBlock.bloom((ServerLevel) level, this.worldPosition, this.getBlockState(), level.getRandom());
+                        SculkCatalystBlock.bloom(
+                            (ServerLevel) level,
+                            this.worldPosition,
+                            this.getBlockState(),
+                            level.getRandom()
+                        );
                     }
 
                     return true;
@@ -72,7 +89,8 @@ public class SculkCatalystBlockEntity extends BlockEntity implements GameEventLi
         return false;
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, SculkCatalystBlockEntity catalyst) {
+    public static void
+    tick(Level level, BlockPos pos, BlockState state, SculkCatalystBlockEntity catalyst) {
         catalyst.spreadManager.tick(level, pos, level.getRandom(), true);
     }
 

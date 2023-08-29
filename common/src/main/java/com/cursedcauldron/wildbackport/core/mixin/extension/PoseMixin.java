@@ -1,5 +1,9 @@
 package com.cursedcauldron.wildbackport.core.mixin.extension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.cursedcauldron.wildbackport.common.entities.access.api.Poses;
 import net.minecraft.world.entity.Pose;
 import org.spongepowered.asm.mixin.Final;
@@ -11,21 +15,29 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Mixin(Pose.class)
 public class PoseMixin {
-    @Shadow @Mutable @Final private static Pose[] $VALUES;
+    @Shadow
+    @Mutable
+    @Final
+    private static Pose[] $VALUES;
 
     @Invoker("<init>")
     public static Pose create(String name, int id) {
         throw new AssertionError();
     }
 
-    @Inject(method = "<clinit>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Pose;$VALUES:[Lnet/minecraft/world/entity/Pose;", shift = At.Shift.AFTER))
-    private static void wb$addPose(CallbackInfo ci) {
+    @Inject(
+        method = "<clinit>",
+        at = @At(
+            value = "FIELD",
+            target
+            = "Lnet/minecraft/world/entity/Pose;$VALUES:[Lnet/minecraft/world/entity/Pose;",
+            shift = At.Shift.AFTER
+        )
+    )
+    private static void
+    wb$addPose(CallbackInfo ci) {
         List<Pose> poses = new ArrayList<>(Arrays.asList($VALUES));
         Pose last = poses.get(poses.size() - 1);
         int i = 1;

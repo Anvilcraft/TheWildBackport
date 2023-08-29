@@ -14,7 +14,9 @@ public class BlockEntityTypeMixin {
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     @Inject(method = "isValid", at = @At("HEAD"), cancellable = true)
     private void wb$isValid(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (BlockEntityType.SIGN.equals(this) && (state.getBlock() instanceof SignBlock || state.getBlock() instanceof WallSignBlock)) {
+        if (BlockEntityType.SIGN.equals(this)
+            && (state.getBlock() instanceof SignBlock
+                || state.getBlock() instanceof WallSignBlock)) {
             cir.setReturnValue(true);
         }
     }

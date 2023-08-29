@@ -1,5 +1,14 @@
 package com.cursedcauldron.wildbackport.common.blocks;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Supplier;
+
 import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.client.particle.SculkChargeParticleOptions;
 import com.cursedcauldron.wildbackport.client.registry.WBParticleTypes;
@@ -36,15 +45,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Supplier;
-
 public class SculkSpreadManager {
     final boolean isWorldGen;
     private final TagKey<Block> replaceableBlocks;
@@ -54,7 +54,14 @@ public class SculkSpreadManager {
     private final int decayChance;
     private List<Cursor> cursors = new ArrayList<>();
 
-    public SculkSpreadManager(boolean isWorldGen, TagKey<Block> replaceableBlocks, int extraBlockChance, int maxDistance, int spreadChance, int decayChance) {
+    public SculkSpreadManager(
+        boolean isWorldGen,
+        TagKey<Block> replaceableBlocks,
+        int extraBlockChance,
+        int maxDistance,
+        int spreadChance,
+        int decayChance
+    ) {
         this.isWorldGen = isWorldGen;
         this.replaceableBlocks = replaceableBlocks;
         this.extraBlockChance = extraBlockChance;
@@ -68,7 +75,9 @@ public class SculkSpreadManager {
     }
 
     public static SculkSpreadManager createWorldGen() {
-        return new SculkSpreadManager(true, WBBlockTags.SCULK_REPLACEABLE_WORLD_GEN, 50, 1, 5, 10);
+        return new SculkSpreadManager(
+            true, WBBlockTags.SCULK_REPLACEABLE_WORLD_GEN, 50, 1, 5, 10
+        );
     }
 
     public TagKey<Block> getReplaceableBlocks() {
@@ -102,7 +111,11 @@ public class SculkSpreadManager {
     public void readTag(CompoundTag tag) {
         if (tag.contains("cursors", 9)) {
             this.cursors.clear();
-            List<Cursor> cursors = Cursor.CODEC.listOf().parse(new Dynamic<>(NbtOps.INSTANCE, tag.getList("cursors", 10))).resultOrPartial(WildBackport.LOGGER::error).orElseGet(ArrayList::new);
+            List<Cursor> cursors
+                = Cursor.CODEC.listOf()
+                      .parse(new Dynamic<>(NbtOps.INSTANCE, tag.getList("cursors", 10)))
+                      .resultOrPartial(WildBackport.LOGGER::error)
+                      .orElseGet(ArrayList::new);
             int size = Math.min(cursors.size(), 32);
 
             for (int i = 0; i < size; i++) {
@@ -112,9 +125,10 @@ public class SculkSpreadManager {
     }
 
     public void writeTag(CompoundTag tag) {
-        Cursor.CODEC.listOf().encodeStart(NbtOps.INSTANCE, this.cursors).resultOrPartial(WildBackport.LOGGER::error).ifPresent(value -> {
-            tag.put("cursors", value);
-        });
+        Cursor.CODEC.listOf()
+            .encodeStart(NbtOps.INSTANCE, this.cursors)
+            .resultOrPartial(WildBackport.LOGGER::error)
+            .ifPresent(value -> { tag.put("cursors", value); });
     }
 
     public void spread(BlockPos pos, int charge) {
@@ -131,7 +145,8 @@ public class SculkSpreadManager {
         }
     }
 
-    public void tick(LevelAccessor level, BlockPos pos, Random random, boolean shouldConvert) {
+    public void
+    tick(LevelAccessor level, BlockPos pos, Random random, boolean shouldConvert) {
         Level instance = level instanceof Level side ? side : null;
         if (!this.cursors.isEmpty()) {
             List<Cursor> cursors = new ArrayList<>();
@@ -144,7 +159,11 @@ public class SculkSpreadManager {
                     applySculkCharge(instance, cursor.getPos(), 0);
                 } else {
                     BlockPos position = cursor.getPos();
-                    positions.computeInt(position, (blockPos, charge) -> (charge == null ? 0 : charge) + cursor.charge);
+                    positions.computeInt(
+                        position,
+                        (blockPos,
+                         charge) -> (charge == null ? 0 : charge) + cursor.charge
+                    );
                     Cursor target = cursorPositions.get(position);
                     if (target == null) {
                         cursorPositions.put(position, cursor);
@@ -166,8 +185,9 @@ public class SculkSpreadManager {
                 Cursor cursor = cursorPositions.get(position);
                 Set<Direction> directions = cursor == null ? null : cursor.getFacings();
                 if (exp > 0 && directions != null) {
-                    int charge = (int)(Math.log1p(exp) / (double)2.3F) + 1;
-                    int data = (charge << 6) + SculkVeinBlock.directionsToFlag(directions);
+                    int charge = (int) (Math.log1p(exp) / (double) 2.3F) + 1;
+                    int data
+                        = (charge << 6) + SculkVeinBlock.directionsToFlag(directions);
                     applySculkCharge(instance, cursor.getPos(), data);
                 }
             }
@@ -177,27 +197,60 @@ public class SculkSpreadManager {
     }
 
     public static class Cursor {
-        private static final ObjectArrayList<Vec3i> OFFSETS = Util.make(new ObjectArrayList<>(18), positions -> {
-            BlockPos.betweenClosedStream(new BlockPos(-1, -1, -1), new BlockPos(1, 1, 1)).filter(pos -> {
-                return (pos.getX() == 0 || pos.getY() == 0 || pos.getZ() == 0) && pos != BlockPos.ZERO;
-            }).map(BlockPos::immutable).forEach(positions::add);
-        });
+        private static final ObjectArrayList<Vec3i> OFFSETS
+            = Util.make(new ObjectArrayList<>(18), positions -> {
+                  BlockPos
+                      .betweenClosedStream(
+                          new BlockPos(-1, -1, -1), new BlockPos(1, 1, 1)
+                      )
+                      .filter(pos -> {
+                          return (pos.getX() == 0 || pos.getY() == 0 || pos.getZ() == 0)
+                              && pos != BlockPos.ZERO;
+                      })
+                      .map(BlockPos::immutable)
+                      .forEach(positions::add);
+              });
         private BlockPos pos;
         private int charge;
         private int updateDelay;
         private int decayDelay;
         @Nullable
         private Set<Direction> facings;
-        private static final Codec<Set<Direction>> DIRECTION_SET = Direction.CODEC.listOf().xmap(directions -> Sets.newEnumSet(directions, Direction.class), Lists::newArrayList);
+        private static final Codec<Set<Direction>> DIRECTION_SET
+            = Direction.CODEC.listOf().xmap(
+                directions
+                -> Sets.newEnumSet(directions, Direction.class),
+                Lists::newArrayList
+            );
         public static final Codec<Cursor> CODEC = RecordCodecBuilder.create(instance -> {
-            return instance.group(BlockPos.CODEC.fieldOf("pos").forGetter(Cursor::getPos), Codec.intRange(0, 1000).fieldOf("charge").orElse(0).forGetter(Cursor::getCharge), Codec.intRange(0, 1).fieldOf("decay_delay").orElse(1).forGetter(Cursor::getDecayDelay), Codec.intRange(0, Integer.MAX_VALUE).fieldOf("update_delay").orElse(0).forGetter(cursor -> {
-                return cursor.updateDelay;
-            }), DIRECTION_SET.optionalFieldOf("facings").forGetter(cursor -> {
-                return Optional.ofNullable(cursor.getFacings());
-            })).apply(instance, Cursor::new);
+            return instance
+                .group(
+                    BlockPos.CODEC.fieldOf("pos").forGetter(Cursor::getPos),
+                    Codec.intRange(0, 1000).fieldOf("charge").orElse(0).forGetter(
+                        Cursor::getCharge
+                    ),
+                    Codec.intRange(0, 1)
+                        .fieldOf("decay_delay")
+                        .orElse(1)
+                        .forGetter(Cursor::getDecayDelay),
+                    Codec.intRange(0, Integer.MAX_VALUE)
+                        .fieldOf("update_delay")
+                        .orElse(0)
+                        .forGetter(cursor -> { return cursor.updateDelay; }),
+                    DIRECTION_SET.optionalFieldOf("facings").forGetter(cursor -> {
+                        return Optional.ofNullable(cursor.getFacings());
+                    })
+                )
+                .apply(instance, Cursor::new);
         });
 
-        private Cursor(BlockPos pos, int charge, int decayDelay, int updateDelay, Optional<Set<Direction>> facings) {
+        private Cursor(
+            BlockPos pos,
+            int charge,
+            int decayDelay,
+            int updateDelay,
+            Optional<Set<Direction>> facings
+        ) {
             this.pos = pos;
             this.charge = charge;
             this.decayDelay = decayDelay;
@@ -238,31 +291,59 @@ public class SculkSpreadManager {
             }
         }
 
-        public void spread(LevelAccessor level, BlockPos pos, Random random, SculkSpreadManager spreadManager, boolean shouldConvert) {
+        public void spread(
+            LevelAccessor level,
+            BlockPos pos,
+            Random random,
+            SculkSpreadManager spreadManager,
+            boolean shouldConvert
+        ) {
             if (this.canSpread(level, pos, spreadManager.isWorldGen)) {
                 if (this.updateDelay > 0) {
                     --this.updateDelay;
                 } else {
                     BlockState state = level.getBlockState(this.pos);
                     SculkSpreadable spreadable = getSpreadable(state);
-                    if (shouldConvert && spreadable.spread(level, this.pos, state, this.facings, spreadManager.isWorldGen())) {
+                    if (shouldConvert
+                        && spreadable.spread(
+                            level,
+                            this.pos,
+                            state,
+                            this.facings,
+                            spreadManager.isWorldGen()
+                        )) {
                         if (spreadable.shouldConvertToSpreadable()) {
                             state = level.getBlockState(this.pos);
                             spreadable = getSpreadable(state);
                         }
 
-                        level.playSound(null, this.pos, WBSoundEvents.BLOCK_SCULK_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound(
+                            null,
+                            this.pos,
+                            WBSoundEvents.BLOCK_SCULK_BREAK,
+                            SoundSource.BLOCKS,
+                            1.0F,
+                            1.0F
+                        );
                     }
 
-                    this.charge = spreadable.spread(this, level, pos, random, spreadManager, shouldConvert);
+                    this.charge = spreadable.spread(
+                        this, level, pos, random, spreadManager, shouldConvert
+                    );
                     if (this.charge <= 0) {
                         spreadable.spreadAtSamePosition(level, state, this.pos, random);
                     } else {
                         BlockPos target = getSpreadPos(level, this.pos, random);
                         if (target != null) {
-                            spreadable.spreadAtSamePosition(level, state, this.pos, random);
+                            spreadable.spreadAtSamePosition(
+                                level, state, this.pos, random
+                            );
                             this.pos = target.immutable();
-                            if (spreadManager.isWorldGen() && !this.pos.closerThan(new Vec3i(pos.getX(), this.pos.getY(), pos.getZ()), 15.0D)) {
+                            if (spreadManager.isWorldGen()
+                                && !this.pos.closerThan(
+                                    new Vec3i(pos.getX(), this.pos.getY(), pos.getZ()),
+                                    15.0D
+                                )) {
                                 this.charge = 0;
                                 return;
                             }
@@ -288,7 +369,9 @@ public class SculkSpreadManager {
         }
 
         private static SculkSpreadable getSpreadable(BlockState state) {
-            return state.getBlock() instanceof SculkSpreadable spreadable ? spreadable : SculkSpreadable.DEFAULT;
+            return state.getBlock() instanceof SculkSpreadable spreadable
+                ? spreadable
+                : SculkSpreadable.DEFAULT;
         }
 
         private static List<Vec3i> shuffleOffsets(Random random) {
@@ -296,14 +379,16 @@ public class SculkSpreadManager {
         }
 
         @Nullable
-        private static BlockPos getSpreadPos(LevelAccessor level, BlockPos pos, Random random) {
+        private static BlockPos
+        getSpreadPos(LevelAccessor level, BlockPos pos, Random random) {
             BlockPos.MutableBlockPos target = pos.mutable();
             BlockPos.MutableBlockPos source = pos.mutable();
 
             for (Vec3i offset : shuffleOffsets(random)) {
                 source.setWithOffset(pos, offset);
                 BlockState state = level.getBlockState(source);
-                if (state.getBlock() instanceof SculkSpreadable && canSpread(level, pos, source)) {
+                if (state.getBlock() instanceof SculkSpreadable
+                    && canSpread(level, pos, source)) {
                     target.set(source);
                     if (SculkVeinBlock.veinCoversSculkReplaceable(level, state, source)) {
                         break;
@@ -314,66 +399,128 @@ public class SculkSpreadManager {
             return target.equals(pos) ? null : target;
         }
 
-        private static boolean canSpread(LevelAccessor level, BlockPos source, BlockPos target) {
+        private static boolean
+        canSpread(LevelAccessor level, BlockPos source, BlockPos target) {
             if (source.distManhattan(target) == 1) {
                 return true;
             } else {
                 BlockPos pos = target.subtract(target);
-                Direction xAxis = Direction.fromAxisAndDirection(Direction.Axis.X, pos.getX() < 0 ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE);
-                Direction yAxis = Direction.fromAxisAndDirection(Direction.Axis.Y, pos.getY() < 0 ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE);
-                Direction zAxis = Direction.fromAxisAndDirection(Direction.Axis.Z, pos.getZ() < 0 ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE);
+                Direction xAxis = Direction.fromAxisAndDirection(
+                    Direction.Axis.X,
+                    pos.getX() < 0 ? Direction.AxisDirection.NEGATIVE
+                                   : Direction.AxisDirection.POSITIVE
+                );
+                Direction yAxis = Direction.fromAxisAndDirection(
+                    Direction.Axis.Y,
+                    pos.getY() < 0 ? Direction.AxisDirection.NEGATIVE
+                                   : Direction.AxisDirection.POSITIVE
+                );
+                Direction zAxis = Direction.fromAxisAndDirection(
+                    Direction.Axis.Z,
+                    pos.getZ() < 0 ? Direction.AxisDirection.NEGATIVE
+                                   : Direction.AxisDirection.POSITIVE
+                );
                 if (pos.getX() == 0) {
-                    return canSpread(level, source, yAxis) || canSpread(level, source, zAxis);
+                    return canSpread(level, source, yAxis)
+                        || canSpread(level, source, zAxis);
                 } else if (pos.getY() == 0) {
-                    return canSpread(level, source, xAxis) || canSpread(level, source, zAxis);
+                    return canSpread(level, source, xAxis)
+                        || canSpread(level, source, zAxis);
                 } else {
-                    return canSpread(level, source, xAxis) || canSpread(level, source, yAxis);
+                    return canSpread(level, source, xAxis)
+                        || canSpread(level, source, yAxis);
                 }
             }
         }
 
-        private static boolean canSpread(LevelAccessor level, BlockPos pos, Direction direction) {
+        private static boolean
+        canSpread(LevelAccessor level, BlockPos pos, Direction direction) {
             BlockPos facing = pos.relative(direction);
-            return !level.getBlockState(facing).isFaceSturdy(level, facing, direction.getOpposite());
+            return !level.getBlockState(facing).isFaceSturdy(
+                level, facing, direction.getOpposite()
+            );
         }
     }
 
     public static void applySculkCharge(Level level, BlockPos pos, int data) {
-        if (level == null) return;
+        if (level == null)
+            return;
 
         Random random = level.getRandom();
-        ClientLevel client = level.isClientSide() && level instanceof ClientLevel side ? side : null;
+        ClientLevel client
+            = level.isClientSide() && level instanceof ClientLevel side ? side : null;
         ServerLevel server = level instanceof ServerLevel side ? side : null;
 
         int charge = data >> 6;
         if (charge > 0) {
-            if (random.nextFloat() < (float)charge * 0.2F) {
-                float volume = 0.15F + 0.05F * (float)charge * (float)charge * random.nextFloat();
-                float pitch = 0.4F * (float)charge - 0.2F * random.nextFloat();
-                if (client != null) client.playLocalSound(pos, WBSoundEvents.BLOCK_SCULK_CHARGE, SoundSource.BLOCKS, volume, pitch, false);
+            if (random.nextFloat() < (float) charge * 0.2F) {
+                float volume = 0.15F
+                    + 0.05F * (float) charge * (float) charge * random.nextFloat();
+                float pitch = 0.4F * (float) charge - 0.2F * random.nextFloat();
+                if (client != null)
+                    client.playLocalSound(
+                        pos,
+                        WBSoundEvents.BLOCK_SCULK_CHARGE,
+                        SoundSource.BLOCKS,
+                        volume,
+                        pitch,
+                        false
+                    );
             }
 
-            int facings = (byte)(data & 63);
+            int facings = (byte) (data & 63);
             UniformInt spread = UniformInt.of(0, charge);
             Supplier<Vec3> velocities = () -> {
-                return new Vec3(Mth.nextDouble(random, -0.005D, 0.005D), Mth.nextDouble(random, -0.005D, 0.005D), Mth.nextDouble(random, -0.005D, 0.005D));
+                return new Vec3(
+                    Mth.nextDouble(random, -0.005D, 0.005D),
+                    Mth.nextDouble(random, -0.005D, 0.005D),
+                    Mth.nextDouble(random, -0.005D, 0.005D)
+                );
             };
 
             if (facings == 0) {
                 for (Direction direction : Direction.values()) {
-                    float roll = direction == Direction.DOWN ? (float)Math.PI : 0.0F;
-                    double offset = direction == Direction.UP || direction == Direction.DOWN ? 0.32D : 0.57D;
-                    ParticleUtils.spawnParticles(level, pos, new SculkChargeParticleOptions(roll), spread, direction, velocities, offset);
+                    float roll = direction == Direction.DOWN ? (float) Math.PI : 0.0F;
+                    double offset
+                        = direction == Direction.UP || direction == Direction.DOWN
+                        ? 0.32D
+                        : 0.57D;
+                    ParticleUtils.spawnParticles(
+                        level,
+                        pos,
+                        new SculkChargeParticleOptions(roll),
+                        spread,
+                        direction,
+                        velocities,
+                        offset
+                    );
                 }
             } else {
-                for (Direction direction : DirectionUtils.unpack((byte)data)) {
-                    float roll = direction == Direction.UP ? (float)Math.PI : 0.0F;
-                    ParticleUtils.spawnParticles(level, pos, new SculkChargeParticleOptions(roll), spread, direction, velocities, 0.35D);
+                for (Direction direction : DirectionUtils.unpack((byte) data)) {
+                    float roll = direction == Direction.UP ? (float) Math.PI : 0.0F;
+                    ParticleUtils.spawnParticles(
+                        level,
+                        pos,
+                        new SculkChargeParticleOptions(roll),
+                        spread,
+                        direction,
+                        velocities,
+                        0.35D
+                    );
                 }
             }
         } else {
-            if (client != null) client.playLocalSound(pos, WBSoundEvents.BLOCK_SCULK_CHARGE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
-            boolean fullBlock = level.getBlockState(pos).isCollisionShapeFullBlock(level, pos);
+            if (client != null)
+                client.playLocalSound(
+                    pos,
+                    WBSoundEvents.BLOCK_SCULK_CHARGE,
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    1.0F,
+                    false
+                );
+            boolean fullBlock
+                = level.getBlockState(pos).isCollisionShapeFullBlock(level, pos);
             int tries = fullBlock ? 40 : 20;
             float spread = fullBlock ? 0.45F : 0.25F;
 
@@ -381,7 +528,18 @@ public class SculkSpreadManager {
                 float x = 2.0F * random.nextFloat() - 1.0F;
                 float y = 2.0F * random.nextFloat() - 1.0F;
                 float z = 2.0F * random.nextFloat() - 1.0F;
-                if (server != null) server.sendParticles(WBParticleTypes.SCULK_CHARGE_POP.get(), (double)pos.getX() + 0.5D + (double)(x * spread), (double)pos.getY() + 0.5D + (double)(y * spread), (double)pos.getZ() + 0.5D + (double)(z * spread), 1, x * 0.07F, y * 0.07F, z * 0.07F, 0.0D);
+                if (server != null)
+                    server.sendParticles(
+                        WBParticleTypes.SCULK_CHARGE_POP.get(),
+                        (double) pos.getX() + 0.5D + (double) (x * spread),
+                        (double) pos.getY() + 0.5D + (double) (y * spread),
+                        (double) pos.getZ() + 0.5D + (double) (z * spread),
+                        1,
+                        x * 0.07F,
+                        y * 0.07F,
+                        z * 0.07F,
+                        0.0D
+                    );
             }
         }
     }

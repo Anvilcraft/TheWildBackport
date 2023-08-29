@@ -1,5 +1,7 @@
 package com.cursedcauldron.wildbackport.common.blocks;
 
+import java.util.Random;
+
 import com.cursedcauldron.wildbackport.common.blocks.entity.SculkShriekerBlockEntity;
 import com.cursedcauldron.wildbackport.common.registry.WBBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -32,24 +34,28 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-
 //<>
 
-public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class SculkShriekerBlock
+    extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty SHRIEKING = StateProperties.SHRIEKING;
     public static final BooleanProperty CAN_SUMMON = StateProperties.CAN_SUMMON;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+    private static final VoxelShape SHAPE
+        = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
     public static final double TOP_Y = SHAPE.max(Direction.Axis.Y);
 
     public SculkShriekerBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(SHRIEKING, false).setValue(WATERLOGGED, false).setValue(CAN_SUMMON, false));
+        this.registerDefaultState(this.stateDefinition.any()
+                                      .setValue(SHRIEKING, false)
+                                      .setValue(WATERLOGGED, false)
+                                      .setValue(CAN_SUMMON, false));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void
+    createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(SHRIEKING, WATERLOGGED, CAN_SUMMON);
     }
 
@@ -58,7 +64,8 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
         if (level instanceof ServerLevel server) {
             ServerPlayer player = SculkShriekerBlockEntity.tryGetPlayer(entity);
             if (player != null) {
-                server.getBlockEntity(pos, WBBlockEntities.SCULK_SHRIEKER.get()).ifPresent(shrieker -> shrieker.tryShriek(server, player));
+                server.getBlockEntity(pos, WBBlockEntities.SCULK_SHRIEKER.get())
+                    .ifPresent(shrieker -> shrieker.tryShriek(server, player));
             }
         }
 
@@ -66,10 +73,13 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+    public void onRemove(
+        BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving
+    ) {
         if (level instanceof ServerLevel server) {
             if (state.getValue(SHRIEKING) && !state.is(newState.getBlock())) {
-                server.getBlockEntity(pos, WBBlockEntities.SCULK_SHRIEKER.get()).ifPresent(shrieker -> shrieker.tryRespond(server));
+                server.getBlockEntity(pos, WBBlockEntities.SCULK_SHRIEKER.get())
+                    .ifPresent(shrieker -> shrieker.tryRespond(server));
             }
         }
 
@@ -80,7 +90,8 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
         if (state.getValue(SHRIEKING)) {
             level.setBlock(pos, state.setValue(SHRIEKING, false), 3);
-            level.getBlockEntity(pos, WBBlockEntities.SCULK_SHRIEKER.get()).ifPresent(shrieker -> shrieker.tryRespond(level));
+            level.getBlockEntity(pos, WBBlockEntities.SCULK_SHRIEKER.get())
+                .ifPresent(shrieker -> shrieker.tryRespond(level));
         }
     }
 
@@ -90,12 +101,15 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(
+        BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context
+    ) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
+    public VoxelShape
+    getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
         return SHAPE;
     }
 
@@ -104,39 +118,67 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
         return true;
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SculkShriekerBlockEntity(pos, state);
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor level, BlockPos pos, BlockPos newPos) {
-        if (state.getValue(WATERLOGGED)) level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+    public BlockState updateShape(
+        BlockState state,
+        Direction direction,
+        BlockState newState,
+        LevelAccessor level,
+        BlockPos pos,
+        BlockPos newPos
+    ) {
+        if (state.getValue(WATERLOGGED))
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         return super.updateShape(state, direction, newState, level, pos, newPos);
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+        return this.defaultBlockState().setValue(
+            WATERLOGGED,
+            context.getLevel().getFluidState(context.getClickedPos()).getType()
+                == Fluids.WATER
+        );
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false)
+                                           : super.getFluidState(state);
     }
 
     @Override
-    public void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack) {
-        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) this.popExperience(level, pos, 5);
+    public void
+    spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack)
+            == 0)
+            this.popExperience(level, pos, 5);
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public <T extends BlockEntity> GameEventListener getListener(Level level, T type) {
-        return type instanceof SculkShriekerBlockEntity shrieker ? shrieker.getListener() : null;
+        return type instanceof SculkShriekerBlockEntity shrieker ? shrieker.getListener()
+                                                                 : null;
     }
 
-    @Nullable @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return !level.isClientSide ? createTickerHelper(type, WBBlockEntities.SCULK_SHRIEKER.get(), (levelIn, posIn, stateIn, shrieker) -> shrieker.getListener().tick(levelIn)) : null;
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T>
+    getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return !level.isClientSide ? createTickerHelper(
+                   type,
+                   WBBlockEntities.SCULK_SHRIEKER.get(),
+                   (levelIn, posIn, stateIn, shrieker
+                   ) -> shrieker.getListener().tick(levelIn)
+               )
+                                   : null;
     }
 }

@@ -71,7 +71,8 @@ public class ChestBoat extends MangroveBoat implements Container, MenuProvider {
         super.addAdditionalSaveData(tag);
         if (this.lootTable != null) {
             tag.putString("LootTable", this.lootTable.toString());
-            if (this.lootTableSeed != 0L) tag.putLong("LootTableSeed", this.lootTableSeed);
+            if (this.lootTableSeed != 0L)
+                tag.putLong("LootTableSeed", this.lootTableSeed);
         } else {
             ContainerHelper.saveAllItems(tag, this.stacks);
         }
@@ -96,14 +97,16 @@ public class ChestBoat extends MangroveBoat implements Container, MenuProvider {
             Containers.dropContents(this.level, this, this);
             if (!this.level.isClientSide) {
                 Entity entity = source.getDirectEntity();
-                if (entity != null && entity.getType() == EntityType.PLAYER) PiglinAi.angerNearbyPiglins((Player)entity, true);
+                if (entity != null && entity.getType() == EntityType.PLAYER)
+                    PiglinAi.angerNearbyPiglins((Player) entity, true);
             }
         }
     }
 
     @Override
     public void remove(Entity.RemovalReason reason) {
-        if (!this.level.isClientSide && reason.shouldDestroy()) Containers.dropContents(this.level, this, this);
+        if (!this.level.isClientSide && reason.shouldDestroy())
+            Containers.dropContents(this.level, this, this);
         super.remove(reason);
     }
 
@@ -131,7 +134,8 @@ public class ChestBoat extends MangroveBoat implements Container, MenuProvider {
         }
     }
 
-    @Override @SuppressWarnings("UnnecessaryDefault")
+    @Override
+    @SuppressWarnings("UnnecessaryDefault")
     public Item getDropItem() {
         return switch (this.getBoatType()) {
             case OAK -> WBItems.OAK_CHEST_BOAT.get();
@@ -211,30 +215,37 @@ public class ChestBoat extends MangroveBoat implements Container, MenuProvider {
                 ChestBoat.this.setItem(slot, stack);
                 return true;
             }
-        } : super.getSlot(slot);
-    }
-
-    @Override
-    public void setChanged() {}
-
-    @Override
-    public boolean stillValid(Player player) {
-        return !this.isRemoved() && this.position().closerThan(player.position(), 8.0D);
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : this.stacks) if (!stack.isEmpty()) return false;
-        return true;
-    }
-
-    @Override @Nullable
-    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        if (this.lootTable == null || !player.isSpectator()) {
-            this.unpackLootTable(inventory.player);
-            return ChestMenu.threeRows(i, inventory, this);
+        } :
+                super.getSlot(slot);
         }
 
-        return null;
+        @Override
+        public void setChanged() {}
+
+        @Override
+        public boolean stillValid(Player player) {
+            return !this.isRemoved()
+                && this.position().closerThan(player.position(), 8.0D);
+        }
+
+        @Override
+        public boolean isEmpty() {
+            for (ItemStack stack : this.stacks)
+                if (!stack.isEmpty())
+                    return false;
+            return true;
+        }
+
+        @Override
+        @Nullable
+        public AbstractContainerMenu createMenu(
+            int i, Inventory inventory, Player player
+        ) {
+            if (this.lootTable == null || !player.isSpectator()) {
+                this.unpackLootTable(inventory.player);
+                return ChestMenu.threeRows(i, inventory, this);
+            }
+
+            return null;
+        }
     }
-}

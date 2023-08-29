@@ -30,12 +30,24 @@ public class ForgeBiomeWriter extends BiomeWriter {
     }
 
     @Override
-    public void addFeature(GenerationStep.Decoration step, Holder<PlacedFeature> feature) {
+    public void
+    addFeature(GenerationStep.Decoration step, Holder<PlacedFeature> feature) {
         this.event.getGeneration().addFeature(step, feature);
     }
 
     @Override
-    public void addSpawn(MobCategory category, EntityType<?> entityType, int weight, int minGroupSize, int maxGroupSize) {
-        this.event.getSpawns().addSpawn(category, new MobSpawnSettings.SpawnerData(entityType, weight, minGroupSize, maxGroupSize));
+    public void addSpawn(
+        MobCategory category,
+        EntityType<?> entityType,
+        int weight,
+        int minGroupSize,
+        int maxGroupSize
+    ) {
+        this.event.getSpawns().addSpawn(
+            category,
+            new MobSpawnSettings.SpawnerData(
+                entityType, weight, minGroupSize, maxGroupSize
+            )
+        );
     }
 }

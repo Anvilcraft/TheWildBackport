@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(RecordItem.class)
 public interface RecordItemAccessor {
     @Invoker("<init>")
-    static RecordItem createRecordItem(int i, SoundEvent soundEvent, Item.Properties properties) {
+    static RecordItem
+    createRecordItem(int i, SoundEvent soundEvent, Item.Properties properties) {
         throw new UnsupportedOperationException();
     }
 }

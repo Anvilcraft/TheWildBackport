@@ -7,7 +7,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 
 public class WBEntityTypeTags {
-    public static final TagBuilder<EntityType<?>> TAGS = TagBuilder.create(Registry.ENTITY_TYPE, "minecraft");
+    public static final TagBuilder<EntityType<?>> TAGS
+        = TagBuilder.create(Registry.ENTITY_TYPE, "minecraft");
 
     public static final TagKey<EntityType<?>> FROG_FOOD = TAGS.create("frog_food");
 }

@@ -53,7 +53,9 @@ public class VanillaIntegration {
 
         // Strippables
         addStrippable(WBBlocks.MANGROVE_LOG.get(), WBBlocks.STRIPPED_MANGROVE_LOG.get());
-        addStrippable(WBBlocks.MANGROVE_WOOD.get(), WBBlocks.STRIPPED_MANGROVE_WOOD.get());
+        addStrippable(
+            WBBlocks.MANGROVE_WOOD.get(), WBBlocks.STRIPPED_MANGROVE_WOOD.get()
+        );
 
         // Turning Dirt into Mud
         Interactions.addRightClick(context -> {
@@ -62,18 +64,40 @@ public class VanillaIntegration {
             Player player = context.getPlayer();
             ItemStack stack = context.getItemInHand();
             BlockState state = level.getBlockState(pos);
-            if (player != null && context.getClickedFace() != Direction.DOWN && state.is(WBBlockTags.CONVERTABLE_TO_MUD) && PotionUtils.getPotion(stack) == Potions.WATER) {
-                level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
-                player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+            if (player != null && context.getClickedFace() != Direction.DOWN
+                && state.is(WBBlockTags.CONVERTABLE_TO_MUD)
+                && PotionUtils.getPotion(stack) == Potions.WATER) {
+                level.playSound(
+                    null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F
+                );
+                player.setItemInHand(
+                    context.getHand(),
+                    ItemUtils.createFilledResult(
+                        stack, player, new ItemStack(Items.GLASS_BOTTLE)
+                    )
+                );
                 player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 
                 if (!level.isClientSide()) {
                     for (int i = 0; i < 5; i++) {
-                        ((ServerLevel)level).sendParticles(ParticleTypes.SPLASH, (double)pos.getX() + level.random.nextDouble(), pos.getY() + 1, (double)pos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
+                        ((ServerLevel) level)
+                            .sendParticles(
+                                ParticleTypes.SPLASH,
+                                (double) pos.getX() + level.random.nextDouble(),
+                                pos.getY() + 1,
+                                (double) pos.getZ() + level.random.nextDouble(),
+                                1,
+                                0.0D,
+                                0.0D,
+                                0.0D,
+                                1.0D
+                            );
                     }
                 }
 
-                level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(
+                    null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F
+                );
                 level.gameEvent(GameEvent.FLUID_PLACE, pos);
                 level.setBlockAndUpdate(pos, WBBlocks.MUD.get().defaultBlockState());
                 return InteractionResult.sidedSuccess(level.isClientSide());
@@ -83,27 +107,51 @@ public class VanillaIntegration {
         });
 
         DispenserBlock.registerBehavior(Items.POTION, new DefaultDispenseItemBehavior() {
-            private final DefaultDispenseItemBehavior behavior = new DefaultDispenseItemBehavior();
+            private final DefaultDispenseItemBehavior behavior
+                = new DefaultDispenseItemBehavior();
 
-            @Override protected ItemStack execute(BlockSource source, ItemStack stack) {
+            @Override
+            protected ItemStack execute(BlockSource source, ItemStack stack) {
                 if (PotionUtils.getPotion(stack) != Potions.WATER) {
                     return this.behavior.dispense(source, stack);
                 } else {
                     ServerLevel level = source.getLevel();
                     BlockPos sourcePos = source.getPos();
-                    BlockPos dispenserPos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-                    if (!level.getBlockState(dispenserPos).is(WBBlockTags.CONVERTABLE_TO_MUD)) {
+                    BlockPos dispenserPos = source.getPos().relative(
+                        source.getBlockState().getValue(DispenserBlock.FACING)
+                    );
+                    if (!level.getBlockState(dispenserPos)
+                             .is(WBBlockTags.CONVERTABLE_TO_MUD)) {
                         return this.behavior.dispense(source, stack);
                     } else {
                         if (!level.isClientSide()) {
                             for (int i = 0; i < 5; i++) {
-                                level.sendParticles(ParticleTypes.SPLASH, (double)sourcePos.getX() + level.random.nextDouble(), sourcePos.getY() + 1, (double)sourcePos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
+                                level.sendParticles(
+                                    ParticleTypes.SPLASH,
+                                    (double) sourcePos.getX() + level.random.nextDouble(),
+                                    sourcePos.getY() + 1,
+                                    (double) sourcePos.getZ() + level.random.nextDouble(),
+                                    1,
+                                    0.0D,
+                                    0.0D,
+                                    0.0D,
+                                    1.0D
+                                );
                             }
                         }
 
-                        level.playSound(null, sourcePos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound(
+                            null,
+                            sourcePos,
+                            SoundEvents.BOTTLE_EMPTY,
+                            SoundSource.BLOCKS,
+                            1.0F,
+                            1.0F
+                        );
                         level.gameEvent(GameEvent.FLUID_PLACE, sourcePos);
-                        level.setBlockAndUpdate(dispenserPos, WBBlocks.MUD.get().defaultBlockState());
+                        level.setBlockAndUpdate(
+                            dispenserPos, WBBlocks.MUD.get().defaultBlockState()
+                        );
                         return new ItemStack(Items.GLASS_BOTTLE);
                     }
                 }
@@ -112,7 +160,7 @@ public class VanillaIntegration {
     }
 
     public static void addFlammable(Block block, int flameOdds, int burnOdds) {
-        ((FireBlockAccessor)Blocks.FIRE).callSetFlammable(block, flameOdds, burnOdds);
+        ((FireBlockAccessor) Blocks.FIRE).callSetFlammable(block, flameOdds, burnOdds);
     }
 
     public static void addCompostable(ItemLike item, float chance) {
