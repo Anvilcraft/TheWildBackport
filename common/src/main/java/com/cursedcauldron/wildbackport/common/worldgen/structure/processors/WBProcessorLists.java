@@ -1,8 +1,8 @@
 package com.cursedcauldron.wildbackport.common.worldgen.structure.processors;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.common.tag.WBBlockTags;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.core.Holder;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;

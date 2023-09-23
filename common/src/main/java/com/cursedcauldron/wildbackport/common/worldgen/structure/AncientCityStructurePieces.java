@@ -1,10 +1,10 @@
 package com.cursedcauldron.wildbackport.common.worldgen.structure;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.common.worldgen.structure.pools.AncientCityStructurePools;
 import com.cursedcauldron.wildbackport.common.worldgen.structure.processors.WBProcessorLists;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceLocation;

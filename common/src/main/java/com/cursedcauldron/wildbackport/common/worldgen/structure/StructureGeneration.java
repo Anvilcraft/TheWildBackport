@@ -2,9 +2,9 @@ package com.cursedcauldron.wildbackport.common.worldgen.structure;
 
 import java.util.List;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.core.mixin.access.StructureTemplatePoolAccessor;
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.PillagerOutpostPools;
 import net.minecraft.data.worldgen.ProcessorLists;

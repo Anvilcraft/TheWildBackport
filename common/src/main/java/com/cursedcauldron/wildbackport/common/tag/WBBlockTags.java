@@ -1,7 +1,7 @@
 package com.cursedcauldron.wildbackport.common.tag;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.core.api.TagBuilder;
+
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;

@@ -34,7 +34,7 @@ public class BlockTagRotProcessor extends StructureProcessor {
           });
     private static final StructureProcessorType<BlockTagRotProcessor> BLOCK_TAG_ROT
         = Registry.register(
-            Registry.STRUCTURE_PROCESSOR, new ResourceLocation("block_rot"), () -> CODEC
+            Registry.STRUCTURE_PROCESSOR, new ResourceLocation("block_rot_alec"), () -> CODEC
         );
     private final Optional<HolderSet<Block>> rottableBlocks;
     private final float integrity;

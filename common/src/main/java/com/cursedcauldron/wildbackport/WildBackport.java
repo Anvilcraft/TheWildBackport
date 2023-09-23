@@ -1,9 +1,9 @@
 package com.cursedcauldron.wildbackport;
 
+import org.slf4j.Logger;
+
 import com.cursedcauldron.wildbackport.client.registry.WBParticleTypes;
 import com.cursedcauldron.wildbackport.client.registry.WBSoundEvents;
-import com.cursedcauldron.wildbackport.common.entities.access.Recovery;
-import com.cursedcauldron.wildbackport.common.items.CompassItemPropertyFunction;
 import com.cursedcauldron.wildbackport.common.registry.Instruments;
 import com.cursedcauldron.wildbackport.common.registry.WBBiomes;
 import com.cursedcauldron.wildbackport.common.registry.WBBlockEntities;
@@ -20,6 +20,7 @@ import com.cursedcauldron.wildbackport.common.registry.entity.WBMemoryModules;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBSensorTypes;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.RootPlacerType;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBFeatures;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBStructures;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTreeDecorators;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTrunkPlacers;
 import com.cursedcauldron.wildbackport.common.tag.InstrumentTags;
@@ -29,10 +30,6 @@ import com.cursedcauldron.wildbackport.common.tag.WBEntityTypeTags;
 import com.cursedcauldron.wildbackport.common.tag.WBGameEventTags;
 import com.cursedcauldron.wildbackport.common.tag.WBItemTags;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import org.slf4j.Logger;
 
 //<>
 
@@ -64,6 +61,8 @@ public class WildBackport {
 
         WBGameRules.setup();
 
+        WBStructures.setup();
+
         // Tags
         WBBiomeTags.TAGS.bootstrap();
         WBBlockTags.BUILDER.bootstrap();
@@ -72,11 +71,14 @@ public class WildBackport {
         WBItemTags.TAGS.bootstrap();
         InstrumentTags.TAGS.bootstrap();
 
-        //        ItemProperties.register(WBItems.RECOVERY_COMPASS.get(), new
-        //        ResourceLocation("angle"), new CompassItemPropertyFunction((level,
-        //        stack, entity) -> {
-        //            return entity instanceof Player player ?
-        //            Recovery.of(player).getLastDeathLocation().orElse(null) : null;
-        //        }));
+        //ItemProperties.register(
+        //    WBItems.RECOVERY_COMPASS.get(),
+        //    new ResourceLocation("angle"),
+        //    new CompassItemPropertyFunction((level, stack, entity) -> {
+        //        return entity instanceof Player player
+        //            ? Recovery.of(player).getLastDeathLocation().orElse(null)
+        //            : null;
+        //    })
+        //);
     }
 }
