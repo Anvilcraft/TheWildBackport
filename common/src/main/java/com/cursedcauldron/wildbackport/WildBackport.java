@@ -20,9 +20,11 @@ import com.cursedcauldron.wildbackport.common.registry.entity.WBMemoryModules;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBSensorTypes;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.RootPlacerType;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBFeatures;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBStructureFeatures;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBStructures;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTreeDecorators;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBTrunkPlacers;
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBWorldGeneration;
 import com.cursedcauldron.wildbackport.common.tag.InstrumentTags;
 import com.cursedcauldron.wildbackport.common.tag.WBBiomeTags;
 import com.cursedcauldron.wildbackport.common.tag.WBBlockTags;
@@ -58,6 +60,12 @@ public class WildBackport {
         WBSoundEvents.SOUNDS.register();
         WBTreeDecorators.DECORATORS.register();
         WBTrunkPlacers.PLACERS.register();
+        WBWorldGeneration.CONFIGURED_FEATURES.register();
+        WBWorldGeneration.PLACED_FEATURES.register();
+        WBStructureFeatures.STRUCTURE_FEATURES.register();
+        WBStructures.CONFIGURED_STRUCTURE_FEATURES.register();
+        WBStructures.STRUCTURE_SETS.register();
+        WBStructures.STRUCTURE_PROCESSORS.register();
 
         WBGameRules.setup();
 

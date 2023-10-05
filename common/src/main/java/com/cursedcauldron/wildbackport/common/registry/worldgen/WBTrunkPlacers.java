@@ -2,10 +2,10 @@ package com.cursedcauldron.wildbackport.common.registry.worldgen;
 
 import java.util.function.Supplier;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.common.worldgen.placers.UpwardBranchingTrunk;
 import com.cursedcauldron.wildbackport.core.api.CoreRegistry;
 import com.cursedcauldron.wildbackport.core.mixin.access.TrunkPlacerTypeAccessor;
+
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 

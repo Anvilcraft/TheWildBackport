@@ -5,6 +5,7 @@ import com.cursedcauldron.wildbackport.common.registry.entity.WBEntityTypes;
 import com.cursedcauldron.wildbackport.common.registry.worldgen.WBWorldGeneration;
 import com.cursedcauldron.wildbackport.core.api.worldgen.BiomeModifier;
 import com.cursedcauldron.wildbackport.core.api.worldgen.BiomeWriter;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;

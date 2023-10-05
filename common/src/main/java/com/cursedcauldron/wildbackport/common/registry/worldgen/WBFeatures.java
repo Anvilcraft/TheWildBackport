@@ -2,8 +2,6 @@ package com.cursedcauldron.wildbackport.common.registry.worldgen;
 
 import java.util.function.Supplier;
 
-import com.cursedcauldron.wildbackport.common.worldgen.AdvancedJigsawConfiguration;
-import com.cursedcauldron.wildbackport.common.worldgen.features.AncientCityFeature;
 import com.cursedcauldron.wildbackport.common.worldgen.features.GrassDiskConfiguration;
 import com.cursedcauldron.wildbackport.common.worldgen.features.GrassDiskFeature;
 import com.cursedcauldron.wildbackport.common.worldgen.features.RootedTreeConfig;
@@ -12,10 +10,8 @@ import com.cursedcauldron.wildbackport.common.worldgen.features.SculkGrowthFeatu
 import com.cursedcauldron.wildbackport.common.worldgen.features.SculkPatchConfiguration;
 import com.cursedcauldron.wildbackport.common.worldgen.features.SculkPatchFeature;
 import com.cursedcauldron.wildbackport.core.api.CoreRegistry;
-import com.cursedcauldron.wildbackport.core.mixin.access.StructureFeatureAccessor;
 
 import net.minecraft.core.Registry;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.GlowLichenConfiguration;
 
@@ -39,12 +35,5 @@ public class WBFeatures {
     public static final Supplier<Feature<GlowLichenConfiguration>> SCULK_GROWTH
         = FEATURES.register(
             "sculk_growth", () -> new SculkGrowthFeature(GlowLichenConfiguration.CODEC)
-        );
-
-    public static final AncientCityFeature ANCIENT_CITY
-        = StructureFeatureAccessor.callRegister(
-            "ancient_city",
-            new AncientCityFeature(AdvancedJigsawConfiguration.CODEC),
-            Decoration.UNDERGROUND_STRUCTURES
         );
 }

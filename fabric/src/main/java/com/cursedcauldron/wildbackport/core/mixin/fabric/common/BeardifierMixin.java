@@ -1,4 +1,4 @@
-package com.cursedcauldron.wildbackport.core.mixin.common;
+package com.cursedcauldron.wildbackport.core.mixin.fabric.common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,8 @@ public class BeardifierMixin {
         at = @At(
             value = "INVOKE",
             target = "Lit/unimi/dsi/fastutil/objects/ObjectList;add(Ljava/lang/Object;)Z"
-        )
+        ),
+        remap = false
     )
     private void
     addStructurePieceToMap(

@@ -2,9 +2,9 @@ package com.cursedcauldron.wildbackport.common.registry;
 
 import java.util.function.Supplier;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.core.api.CoreRegistry;
 import com.cursedcauldron.wildbackport.core.mixin.access.OverworldBiomesAccessor;
+
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;

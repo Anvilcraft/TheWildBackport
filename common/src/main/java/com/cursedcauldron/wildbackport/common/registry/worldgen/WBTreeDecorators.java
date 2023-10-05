@@ -2,16 +2,13 @@ package com.cursedcauldron.wildbackport.common.registry.worldgen;
 
 import java.util.function.Supplier;
 
-import com.cursedcauldron.wildbackport.WildBackport;
 import com.cursedcauldron.wildbackport.common.worldgen.decorator.AttachedToLeavesDecorator;
 import com.cursedcauldron.wildbackport.common.worldgen.decorator.WeightedLeaveVineDecorator;
-import com.cursedcauldron.wildbackport.common.worldgen.placers.UpwardBranchingTrunk;
 import com.cursedcauldron.wildbackport.core.api.CoreRegistry;
 import com.cursedcauldron.wildbackport.core.mixin.access.TreeDecoratorTypeAccessor;
-import com.cursedcauldron.wildbackport.core.mixin.access.TrunkPlacerTypeAccessor;
+
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
 //<>
 

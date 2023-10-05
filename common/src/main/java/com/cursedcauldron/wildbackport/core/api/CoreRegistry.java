@@ -7,12 +7,12 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * @author Trikzon & Andante
+ * @author LordMZTE & tilera
  */
 public abstract class CoreRegistry<T> {
-    protected final Registry<T> registry;
-    protected final String modId;
-    protected boolean isPresent;
+    public final Registry<T> registry;
+    public final String modId;
+    public boolean isPresent;
 
     protected CoreRegistry(Registry<T> registry, String modId) {
         this.registry = registry;

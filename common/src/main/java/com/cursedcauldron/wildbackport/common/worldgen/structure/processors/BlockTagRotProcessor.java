@@ -2,13 +2,16 @@ package com.cursedcauldron.wildbackport.common.worldgen.structure.processors;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.cursedcauldron.wildbackport.common.registry.worldgen.WBStructures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
 
 public class BlockTagRotProcessor extends StructureProcessor {
     public static final Codec<BlockTagRotProcessor> CODEC
@@ -32,10 +34,7 @@ public class BlockTagRotProcessor extends StructureProcessor {
                   )
                   .apply(instance, BlockTagRotProcessor::new);
           });
-    private static final StructureProcessorType<BlockTagRotProcessor> BLOCK_TAG_ROT
-        = Registry.register(
-            Registry.STRUCTURE_PROCESSOR, new ResourceLocation("block_rot_alec"), () -> CODEC
-        );
+
     private final Optional<HolderSet<Block>> rottableBlocks;
     private final float integrity;
 
@@ -68,6 +67,6 @@ public class BlockTagRotProcessor extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return BLOCK_TAG_ROT;
+        return WBStructures.BLOCK_TAG_ROT.value();
     }
 }
