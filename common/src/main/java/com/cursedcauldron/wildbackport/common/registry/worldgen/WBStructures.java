@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import com.cursedcauldron.wildbackport.common.tag.WBBiomeTags;
 import com.cursedcauldron.wildbackport.common.utils.SupplierHolder;
-import com.cursedcauldron.wildbackport.common.worldgen.AdvancedJigsawConfiguration;
 import com.cursedcauldron.wildbackport.common.worldgen.features.AncientCityFeature;
 import com.cursedcauldron.wildbackport.common.worldgen.structure.AncientCityStructurePieces;
 import com.cursedcauldron.wildbackport.common.worldgen.structure.processors.BlockTagRotProcessor;
 import com.cursedcauldron.wildbackport.core.api.CoreRegistry;
 
+import net.anvilcraft.anvillib.worldgen.AdvancedStructurePoolFeatureConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
@@ -49,11 +49,10 @@ public class WBStructures {
             ()
                 -> ((AncientCityFeature) WBStructureFeatures.ANCIENT_CITY.value())
                        .configured(
-                           new AdvancedJigsawConfiguration(
+                           new AdvancedStructurePoolFeatureConfig(
                                AncientCityStructurePieces.START,
                                7,
-                               116,
-                               Optional.of(new ResourceLocation("city_anchor"))
+                               116
                            ),
                            WBBiomeTags.HAS_ANCIENT_CITY,
                            true,

@@ -4,8 +4,7 @@
     "package": "com.cursedcauldron.wildbackport.core.mixin.forge",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-        "common.BeardifierMixin",
-        "common.JigsawPlacementMixin"
+        "common.BeardifierMixin"
     ],
     "client": [],
     "injectors": {

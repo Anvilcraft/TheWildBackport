@@ -9,8 +9,7 @@
     "client": [
         "client.FogRendererMixin",
         "client.SheetsMixin",
-        "common.BeardifierMixin",
-        "common.JigsawPlacementMixin"
+        "common.BeardifierMixin"
     ],
     "injectors": {
         "defaultRequire": 1

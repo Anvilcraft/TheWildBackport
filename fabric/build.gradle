@@ -30,6 +30,8 @@ dependencies {
 //    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
     modImplementation("com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}")
 
+    modImplementation("net.anvilcraft:anvillib-18-fabric:0.2.0") {transitive = false}
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }

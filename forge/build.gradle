@@ -37,6 +37,8 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     modApi "com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}"
 
+    modImplementation("net.anvilcraft:anvillib-18-forge:0.2.0") {transitive = false}
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
