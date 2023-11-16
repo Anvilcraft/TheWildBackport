@@ -1,5 +1,8 @@
 package com.cursedcauldron.wildbackport.client;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+
 import com.cursedcauldron.wildbackport.client.particle.SculkChargeParticle;
 import com.cursedcauldron.wildbackport.client.particle.SculkChargePopParticle;
 import com.cursedcauldron.wildbackport.client.particle.SculkSoulParticle;
@@ -16,22 +19,25 @@ import com.cursedcauldron.wildbackport.client.render.model.ChestBoatModel;
 import com.cursedcauldron.wildbackport.client.render.model.FrogModel;
 import com.cursedcauldron.wildbackport.client.render.model.TadpoleModel;
 import com.cursedcauldron.wildbackport.client.render.model.WardenModel;
-import com.cursedcauldron.wildbackport.common.entities.access.Recovery;
 import com.cursedcauldron.wildbackport.common.items.CompassItemPropertyFunction;
+import com.cursedcauldron.wildbackport.common.items.RecoveryCompassTarget;
 import com.cursedcauldron.wildbackport.common.registry.WBBlocks;
 import com.cursedcauldron.wildbackport.common.registry.WBItems;
 import com.cursedcauldron.wildbackport.common.registry.entity.WBEntityTypes;
 import com.cursedcauldron.wildbackport.core.api.ColorRegistry;
 import com.cursedcauldron.wildbackport.core.api.ParticleRegistry;
 import com.cursedcauldron.wildbackport.core.api.RenderRegistry;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 
 @Environment(EnvType.CLIENT)
@@ -110,5 +116,35 @@ public class ClientSetup {
             WBBlocks.MANGROVE_PROPAGULE.get(),
             WBBlocks.POTTED_MANGROVE_PROPAGULE.get()
         );
+
+        var isForge = false;
+        try {
+            // TODO: wonk
+            Class.forName("net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext");
+            isForge = true;
+        } catch (ClassNotFoundException alec) {}
+
+        try {
+            var registerItemPropertyFunc = ItemProperties.class.getDeclaredMethod(
+                isForge ? "register" : "method_27879",
+                Item.class,
+                ResourceLocation.class,
+                // Thanks for patching, forge!
+                isForge ? ItemPropertyFunction.class : ClampedItemPropertyFunction.class
+            );
+
+            registerItemPropertyFunc.setAccessible(true);
+
+            registerItemPropertyFunc.invoke(
+                null,
+                WBItems.RECOVERY_COMPASS.get(),
+                new ResourceLocation("angle"),
+                new CompassItemPropertyFunction(RecoveryCompassTarget.INSTANCE)
+            );
+        } catch (
+            InvocationTargetException | IllegalAccessException | NoSuchMethodException e
+        ) {
+            throw new RuntimeException(e);
+        }
     }
 }
