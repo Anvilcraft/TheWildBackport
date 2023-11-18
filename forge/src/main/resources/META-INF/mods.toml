@@ -32,3 +32,10 @@ license = "All Rights Reserved"
     versionRange="[1.0.0.59,)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.wildbackport]]
+    modId="anvillib"
+    mandatory=true
+    versionRange="[0.2.0,)"
+    ordering="NONE"
+    side="BOTH"
