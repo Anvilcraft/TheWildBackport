@@ -11,7 +11,7 @@ dependencies {
     // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 
-    modImplementation("net.anvilcraft:anvillib-18:0.2.0") {transitive = false}
+    modImplementation("net.anvilcraft:anvillib-18:1.1.0") {transitive = false}
     // Remove the next line if you don't want to depend on the API
 //    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 }

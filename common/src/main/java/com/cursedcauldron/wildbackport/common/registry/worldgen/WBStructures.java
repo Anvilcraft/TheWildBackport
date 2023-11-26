@@ -52,7 +52,8 @@ public class WBStructures {
                            new AdvancedStructurePoolFeatureConfig(
                                AncientCityStructurePieces.START,
                                7,
-                               116
+                               116,
+                               true
                            ),
                            WBBiomeTags.HAS_ANCIENT_CITY,
                            true,
